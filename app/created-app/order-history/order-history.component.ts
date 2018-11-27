@@ -114,6 +114,9 @@ export class OrderHistoryComponent implements OnInit {
 
     itemToggle(item: any) {
         item.opened = !item.opened;
+        if (!item.is_seen) {
+            this.viewOrder(item.id)
+        }
     }
 
     getOrderList() {
@@ -137,74 +140,64 @@ export class OrderHistoryComponent implements OnInit {
         )
     }
 
-    // getAppOrderDetails(id) {
-    //     this.createdAppService.getAppOrderDetails(id).subscribe(
-    //         res => {
-    //             this.order_details = res;
-    //             this.visible_key = true
-    //             this.loader.hide();
-    //         },
-    //         error => {
-    //             console.log(error)
-    //             this.loader.hide();
-    //         }
-    //     )
-    // }
-
-    // viewOrder(id) {
-    //     this.createdAppService.customerOrderSeen(id).subscribe(
-    //         res => {
-    //         },
-    //         error => {
-    //             console.log(error)
-    //         }
-    //     )
-    // }
+    viewOrder(id) {
+        this.createdAppService.customerOrderSeen(id).subscribe(
+            res => {
+            },
+            error => {
+                console.log(error)
+            }
+        )
+    }
 
     getDiscount(price, discounted_price) {
         return Math.floor(((price - discounted_price) * 100) / price) + '%';
     }
 
-    // updateCustomerOrderPayment() {
+    updateCustomerOrderPayment(order_id) {
+        var data = {
+            id: order_id,
+        }
+        this.loader.show(this.lodaing_options);
+        this.createdAppService.updateCustomerOrderPayment(data).subscribe(
+            res => {
+                var index = this.order_list.findIndex(x => x.id == order_id)
+                if (index != -1) {
+                    this.order_list[index]['is_paid'] = true;
+                }
+                this.loader.hide();
+                console.log(res)
+            },
+            error => {
+                this.loader.hide();
+                console.log(error)
+            }
+        )
 
-    //     var data = {
-    //         id: this.order_id,
-    //     }
-    //     this.loader.show(this.lodaing_options);
-    //     this.createdAppService.updateCustomerOrderPayment(data).subscribe(
-    //         res => {
-    //             this.loader.hide();
-    //             this.getAppOrderDetails(this.order_id)
-
-    //         },
-    //         error => {
-    //             this.loader.hide();
-    //             console.log(error)
-    //         }
-    //     )
-
-    // }
+    }
 
 
-    // updateCustomerOrderDelivery() {
-    //     var data = {
-    //         id: this.order_id,
-    //     }
-    //     this.loader.show(this.lodaing_options);
-    //     this.createdAppService.updateCustomerOrderDelivery(data).subscribe(
-    //         res => {
-    //             console.log("Success");
-    //             this.loader.hide();
-    //             this.getAppOrderDetails(this.order_id)
+    updateCustomerOrderDelivery(order_id) {
+        var data = {
+            id: order_id
+        }
+        this.loader.show(this.lodaing_options);
+        this.createdAppService.updateCustomerOrderDelivery(data).subscribe(
+            res => {                
+                var index = this.order_list.findIndex(x => x.id == order_id)
+                if (index != -1) {
+                    this.order_list[index]['delivery_status'] = true;
+                }
+                this.loader.hide();
+                console.log(res)
+            },
+            error => {
+                this.loader.hide();
+                console.log(error)
+            }
+        )
 
-    //         },
-    //         error => {
-    //             this.loader.hide();
-    //             console.log(error)
-    //         }
-    //     )
-
-    // }
+    }
 
     addMoreItemsFromSource() {
         if (this.next_page != null) {

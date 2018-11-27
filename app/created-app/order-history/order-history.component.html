@@ -22,9 +22,9 @@
             <GridLayout tkExampleTitle tkToggleNavButton *ngIf="order_list.length > 0">
                 <RadListView [items]="order_list" loadOnDemandMode="Manual" (loadMoreDataRequested)="onLoadMoreItemsRequested($event)">
                     <ng-template tkListItemTemplate let-order="item">
-                        <GridLayout rows="*,*" class="individual_sec">
+                        <GridLayout rows="auto,auto" class="individual_sec">
                             <StackLayout row="0" padding="10 5" orientation="vertical" (tap)="itemToggle(order)" class="order_top_sec">
-                                <GridLayout rows="*" columns="auto,auto,*,20" verticalAlignment="center">
+                                <GridLayout rows="*,*" columns="auto,auto,*,20" verticalAlignment="center">
                                     <Label row="0" col="0" horizontalAlignment="left" verticalAlignment="center" text="Order no. "
                                         textWrap="true"></Label>
                                     <Label row="0" col="1" horizontalAlignment="left" verticalAlignment="center" [text]="order.order_id"
@@ -37,6 +37,27 @@
                                     </Label>
                                     <Label class="fa arrow" horizontalAlignment="right" verticalAlignment="center" row="0"
                                         col="3" [text]="!order.opened ? '&#xf078;' : '&#xf077;'" textWrap="true"></Label>
+                                    <GridLayout row="1" colSpan="4" rows="*,*" columns="*,*,*,*" verticalAlignment="center"
+                                        class="min_status_sec">
+                                        <Label class="heading" text="Payment Type" textWrap="true" verticalAlignment="center"
+                                            horizontalAlignment="center" row="0" col="0"></Label>
+                                        <Label class="title" [text]="order.payment_type == 0 ? 'COD' : 'Paytm'"
+                                            textWrap="true" verticalAlignment="center" horizontalAlignment="center" row="1"
+                                            col="0"></Label>
+                                        <Label class="heading" text="Payment Status" textWrap="true" verticalAlignment="center"
+                                            horizontalAlignment="center" row="0" col="1"></Label>
+                                        <Label class="title" [text]="order.is_paid ? 'Paid' : 'Not Paid'" textWrap="true"
+                                            verticalAlignment="center" horizontalAlignment="center" row="1" col="1"></Label>
+                                        <Label class="heading" text="Delivery Status" textWrap="true" verticalAlignment="center"
+                                            horizontalAlignment="center" row="0" col="2"></Label>
+                                        <Label class="title" [text]="order.delivery_status ? 'Delivered' : 'Not Delivered'"
+                                            textWrap="true" verticalAlignment="center" horizontalAlignment="center" row="1"
+                                            col="2"></Label>
+                                        <Label class="heading" text="Total Price" textWrap="true" verticalAlignment="center"
+                                            horizontalAlignment="center" row="0" col="3"></Label>
+                                        <Label class="title price fa" [text]="'&#xf156;' + order.price" textWrap="true"
+                                            verticalAlignment="center" horizontalAlignment="center" row="1" col="3"></Label>
+                                    </GridLayout>
                                 </GridLayout>
                             </StackLayout>
                             <StackLayout row="1" *ngIf="order.opened" orientation="vertical" margin="5 0 0 0">
@@ -93,6 +114,27 @@
                                             class="fa price" [text]="order.is_paid ? 'Paid' : 'Not Paid'"></Label>
                                     </GridLayout>
                                 </GridLayout>
+                                <GridLayout rows="*,*" class="customer_sec">
+                                    <StackLayout class="heading_sec" row="0">
+                                        <Label text="Customer Info" textWrap="true"></Label>
+                                    </StackLayout>
+                                    <GridLayout columns="*,*" rows="*,*,*,*,*," row="1">
+                                        <Label row="0" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Name" class="ttl"></Label>
+                                        <Label row="0" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa lbl" [text]="order.customer_details.name"></Label>
+                                        <StackLayout row="1" colSpan="2" class="hr-line"></StackLayout>
+                                        <Label row="2" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Email" class="ttl"></Label>
+                                        <Label row="2" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa lbl" [text]="order.customer_details.email" textWrap="true"></Label>
+                                        <StackLayout row="3" colSpan="2" class="hr-line"></StackLayout>
+                                        <Label row="4" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Phone" class="ttl"></Label>
+                                        <Label row="4" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa lbl" [text]="order.customer_details.contact_no"></Label>
+                                    </GridLayout>
+                                </GridLayout>
                                 <GridLayout rows="*,*" class="address_sec">
                                     <StackLayout class="heading_sec" row="0">
                                         <Label text="Shipping Address" textWrap="true"></Label>
@@ -108,12 +150,23 @@
                                         </Label>
                                     </StackLayout>
                                 </GridLayout>
+                                <GridLayout columns="*,*" rows="*" class="action_sec" *ngIf="!order?.is_paid || !order?.delivery_status">
+                                    <Button class="btn btn-primary delivered_btn" padding="10" borderRadius="30" text="Make Delivered"
+                                        (tap)="updateCustomerOrderDelivery(order.id)" horizontalAlignment="center"
+                                        verticalAlignment="center" row="0" col="0" *ngIf="!order?.delivery_status">
+                                    </Button>
+                                    <Button class="btn btn-primary paid_btn" padding="10" borderRadius="30" text="Make Paid"
+                                        (tap)="updateCustomerOrderPayment(order.id)" horizontalAlignment="center"
+                                        verticalAlignment="center" row="0" col="1" *ngIf="!order?.is_paid">
+                                    </Button>
+                                </GridLayout>
                             </StackLayout>
                         </GridLayout>
                     </ng-template>
                 </RadListView>
             </GridLayout>
-            <StackLayout orientation="vertical" textAlignment="center" verticalAlignment="center" *ngIf="order_list.length == 0" margin="10">
+            <StackLayout orientation="vertical" textAlignment="center" verticalAlignment="center" *ngIf="order_list.length == 0"
+                margin="10">
                 <StackLayout class="full-cardview">
                     <Label class="section_heading" fontSize="15" text="Sorry! You don’t have any order yet"></Label>
                 </StackLayout>
