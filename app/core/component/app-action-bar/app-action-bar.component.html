@@ -1,0 +1,10 @@
+<ActionBar title="">
+    <GridLayout rows="*" columns="30,50,*,40,40" verticalAlignment="center" *ngIf="visible_key">
+        <Image src="~/images/back.png" class="back-prev" row="0" col="0" verticalAlignment="center" (tap)="goBack()"></Image>
+        <Image [src]="app_details?.logo" class="action-image" marginRight="10" row="0" col="1" verticalAlignment="center" *ngIf="app_details?.logo != null" ></Image>
+        <Image src="~/images/no-image-logo.jpg" class="action-image" marginRight="10" row="0" col="1" *ngIf="app_details?.logo == null" ></Image>
+        <Label [text]="app_details?.business_name" class="action-label" fontSize="12" row="0" col="2" verticalAlignment="center"></Label>
+        <Label class="fa logout-label" (tap)="navigateToHome()" text="&#xf015;" *ngIf="isLoggedin" row="0" col="3" verticalAlignment="center"></Label>
+        <Label class="fa logout-label" (tap)="logout()" text="&#xf011;" *ngIf="isLoggedin" row="0" col="4" verticalAlignment="center"></Label>
+    </GridLayout>
+</ActionBar>

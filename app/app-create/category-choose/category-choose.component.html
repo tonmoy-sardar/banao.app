@@ -1,0 +1,38 @@
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Create New App"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout class="page page-content">
+        <StackLayout class="full-content">
+            <StackLayout class="card-form">
+
+                <StackLayout row="0">
+                    <Label class="card-form-heading" text="Choose your Business Category"></Label>
+                </StackLayout>
+                <GridLayout tkExampleTitle tkToggleNavButton *ngIf="visible_key">
+                    <RadListView [items]="category_list">
+                        <ng-template tkListItemTemplate let-item="item" let-i="index">
+                            <StackLayout class="boder-color" height="100" verticalAlignment="center" [borderRightWidth]="(i+1) % 3 == 0? 0: 1" borderBottomWidth="1">
+                                <FrescoDrawee placeholderImageUri="~/images/placeholder.png" aspectRatio="1" [imageUri]="item.icon" width="30" height="30"></FrescoDrawee>
+                                <Label horizontalAlignment="center" verticalAlignment="center" class="category-name" [text]="item.category_name"></Label>
+                            </StackLayout>
+                        </ng-template>
+                        <ListViewGridLayout tkListViewLayout scrollDirection="Vertical" spanCount="3"></ListViewGridLayout>
+                    </RadListView>
+                </GridLayout>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

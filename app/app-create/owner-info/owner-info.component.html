@@ -1,0 +1,59 @@
+<create-app-action-bar></create-app-action-bar>
+<ScrollView row="0">
+    <StackLayout class="full-dashboard">
+        <Label color="#021733" fontSize="15" textAlignment="center" text="Owner Details"></Label>
+        <StackLayout width="100%" textAlignment="left" class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+        <StackLayout class="form" [formGroup]="form" novalidate>
+
+            <StackLayout class="full-content">
+
+                <FlexboxLayout marginBottom="30" flexWrap="wrap" justifyContent="space-around" alignItems="flex-start" width="33%">
+                    <CardView class="card" elevation="0" borderColor="#6c6969" shadowOffsetWidth="0" shadowOffsetHeight="0" alignSelf="flex-start">
+                        <StackLayout orientation="vertical">
+                            <StackLayout class="app-icon" (tap)="pickImage()">
+                                <AbsoluteLayout class="camera-icon" paddingLeft="20">
+                                    <Image [src]="owner_pic" *ngIf="owner_pic != ''"></Image>
+                                    <Image src="~/images/no-image-logo.jpg" *ngIf="owner_pic == ''"></Image>
+
+                                    <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo" [text]="'fa-camera' | fonticon" *ngIf="owner_pic == ''"></Label>
+                                </AbsoluteLayout>
+                            </StackLayout>
+                        </StackLayout>
+                        <!-- <Label fontSize="15" VerticalAlignment="center" textAlignment="center" text="Owner Image"></Label> -->
+
+                    </CardView>
+                </FlexboxLayout>
+
+
+
+
+                <StackLayout class="edit-container">
+
+
+                    <GridLayout rows="auto, auto, auto, auto,auto">
+
+                        <StackLayout class="input-filld" row="0">
+                            <TextField hint="Owner's Name" class="input input-border cyan-border m-t-10" returnKeyType="next" formControlName="owner_name" [(ngModel)]="owner_details.owner_name" [ngClass]="displayFieldCss('owner_name')" height="40" padding="10" fontSize="12"></TextField>
+                            <StackLayout *ngIf="isFieldValid('owner_name')" class="invalid-feedback">
+                                <Label fontSize="8" text="Owner's Name is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout class="input-filld" row="1">
+                            <DropDown #dd class="dropdown m-t-10" formControlName="owner_designation" [items]="designations" [hint]="hint" [(ngModel)]="owner_details.owner_designation" (selectedIndexChanged)="onchange($event)" borderRadius="2" height="40" fontSize="12" borderWidth="1"
+                                borderColor="#dfdfdf"></DropDown>
+                        </StackLayout>
+                        <StackLayout class="input-filld" row="2">
+                            <TextField hint="Foundation Year" class="input input-border cyan-border m-t-10" returnKeyType="next" keyboardType="number" formControlName="business_est_year" [(ngModel)]="owner_details.business_est_year" maxlength="4" borderRadius="2" height="40" padding="10" fontSize="12"></TextField>
+                        </StackLayout>
+                        <StackLayout class="input-filld" row="3">
+                            <TextField hint="Business Location" class="input input-border cyan-border m-t-10" returnKeyType="done" formControlName="store_address" [(ngModel)]="owner_details.store_address" (tap)="searchLocation()" borderRadius="2" height="40" padding="10" fontSize="12"></TextField>
+                        </StackLayout>
+                    </GridLayout>
+
+                    <Button class="btn btn-primary simple-btn" text="Next" (tap)="submitOwnerInfo()">
+                    </Button>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</ScrollView>

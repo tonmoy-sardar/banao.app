@@ -1,0 +1,10 @@
+<ActionBar title="">
+    <GridLayout rows="*" columns="30,*,40,40" verticalAlignment="center">
+        <!-- <NavigationButton icon="~/images/back.png" (tap)="goBack()"  row="0" col="0"></NavigationButton> -->
+        <Image src="~/images/back.png" class="back-prev" row="0" col="0" verticalAlignment="center" (tap)="goBack()"></Image>
+        
+        <Label text="Create App" class="action-label" fontSize="12" row="0" col="1" verticalAlignment="center"></Label>
+        <Label class="fa logout-label" (tap)="navigateToHome()" text="&#xf011;" *ngIf="isLoggedin" row="0" col="2" verticalAlignment="center"></Label>
+        <Label class="fa logout-label" (tap)="logout()" text="&#xf011;" *ngIf="isLoggedin" row="0" col="3" verticalAlignment="center"></Label>
+    </GridLayout>
+</ActionBar>

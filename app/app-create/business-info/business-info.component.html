@@ -1,0 +1,70 @@
+<create-app-action-bar></create-app-action-bar>
+<ScrollView row="0">
+    <StackLayout class="full-dashboard">
+        <Label color="#021733" textAlignment="center" VerticalAlignment="center" fontSize="15" text="Enter Your Business Details
+        "></Label>
+        <StackLayout width="100%" textAlignment="center" class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+        <StackLayout class="full-content">
+            <FlexboxLayout marginBottom="30" flexWrap="wrap" justifyContent="space-around" alignItems="flex-start" width="33%">
+                <CardView class="card" elevation="0" borderColor="#6c6969" shadowOffsetWidth="0" shadowOffsetHeight="0" alignSelf="flex-start">
+                    <StackLayout orientation="vertical">
+                        <StackLayout class="app-icon" (tap)="pickImage()">
+                            <AbsoluteLayout class="camera-icon" paddingLeft="20">
+                                <Image [src]="logo" *ngIf="logo != ''"></Image>
+                                <Image src="~/images/no-image-logo.jpg" *ngIf="logo == ''"></Image>
+
+                                <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo upload-image" [text]="'fa-camera' | fonticon" *ngIf="logo == ''"></Label>
+                            </AbsoluteLayout>
+                        </StackLayout>
+                        <!-- <Label fontSize="15" VerticalAlignment="center" textAlignment="center" text="Upload Logo"></Label> -->
+                    </StackLayout>
+                </CardView>
+            </FlexboxLayout>
+
+
+            <StackLayout class="edit-container">
+                <StackLayout class="form" [formGroup]="form" novalidate>
+
+                    <GridLayout rows="auto,auto,auto,auto">
+
+                        <StackLayout class="input-filld" row="0">
+                            <TextField height="40" padding="10" fontSize="12" hint="Name Of Your Business" class="input input-border cyan-border m-t-10" returnKeyType="next" formControlName="business_name" [ngClass]="displayFieldCss('business_name')" borderRadius="2" borderColor="#6c6969"></TextField>
+                            <StackLayout *ngIf="isFieldValid('business_name')" class="invalid-feedback">
+                                <Label fontSize="8" text="Your business name is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="1">
+                            <TextField height="40" padding="10" fontSize="12" hint="Website URL (Optional)" class="input input-border cyan-border m-t-10" returnKeyType="next" formControlName="app_website_url" borderRadius="2" borderColor="#6c6969" backgroundColor="#fff"></TextField>
+
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="2">
+
+                            <TextView lineHeight="12" height="100" padding="10" fontSize="12" hint="A few lines about your business" class="input input-border cyan-border m-t-10" returnKeyType="done" formControlName="business_description" [ngClass]="displayFieldCss('business_description')"
+                                borderRadius="2" borderColor="#6c6969" backgroundColor="#fff"></TextView>
+                            <StackLayout *ngIf="isFieldValid('business_description')" class="invalid-feedback">
+                                <Label fontSize="8" text="Your business description is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout class="input-filld" row="3">
+                            <Label class="section_heading" text="Business Type"></Label>
+                            <StackLayout *ngFor="let option of businessTypeOptions">
+                                <StackLayout orientation="horizontal" verticalAlignment="center">
+                                    <CheckBox #elem [checked]="option.selected" (checkedChange)="elem.checked !== option.selected && changeCheckedRadioBusinessType(option)" class="checkbox" boxType="circle"></CheckBox>
+                                    <StackLayout verticalAlignment="center">
+                                        <Label [text]="option.text" textWrap="true" (tap)="changeCheckedRadioBusinessType(option)"></Label>
+                                    </StackLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+
+                    </GridLayout>
+
+                    <Button class="btn btn-primary simple-btn" text="Next" (tap)="submitCreateAppBusinessInfo()">
+                    </Button>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</ScrollView>

@@ -1,0 +1,37 @@
+<ActionBar class="action-bar">
+    <!-- 
+                    Use the NavigationButton as a side-drawer button in Android
+                    because ActionItems are shown on the right side of the ActionBar
+                    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+                    Use the ActionItem for IOS with position set to left. Using the
+                    NavigationButton as a side-drawer button in iOS is not possible,
+                    because its function is to always navigate back in the application.
+                    -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Customer List"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout class="page page-content">
+        <StackLayout class="full-content">
+            <StackLayout class="card-form" *ngIf="visible_key">
+                <StackLayout style="padding-bottom: 5">
+                    <Label class="card-form-heading" text="Customer List"></Label>
+                </StackLayout>
+                <GridLayout tkExampleTitle tkToggleNavButton>
+                    <RadListView [items]="customer_list" class="list-group">
+                        <ng-template tkListItemTemplate let-item="item" let-i="index">
+                            <GridLayout rows="auto, auto" columns="auto, *, auto" class="list-group-item" borderBottomWidth="1" borderColor="#CCC"  verticalAlignment="center">
+                                <Image row="0" col="0" rowSpan="2" src="~/images/user.png" class="thumb" verticalAlignment="center"></Image>
+                                <Label fontSize="12" row="0" col="1" [text]="item.customer.customer_name" verticalAlignment="center"></Label>
+                                <Label fontSize="10" row="1" col="1" [text]="item.customer.email" class="body" verticalAlignment="center"></Label>
+                                <Label fontSize="10" row="0" col="2" [text]="item.customer.contact_no" class="body" verticalAlignment="center"></Label>
+                            </GridLayout>
+                        </ng-template>
+                    </RadListView>
+                </GridLayout>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

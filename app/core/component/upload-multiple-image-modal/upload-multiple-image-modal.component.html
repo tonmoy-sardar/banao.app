@@ -1,0 +1,7 @@
+<StackLayout class="apps-container">
+    <GridLayout rows="*" columns="*,*" padding="10" verticalAlignment="center">
+        <Button class="fa" text="&#xf041;" row="0" col="0" verticalAlignment="center" (tap)='onTakePictureTap($event)'></Button>
+        <Button class="fa" text="&#xf1c5;" row="0" col="1" verticalAlignment="center" (tap)="onSelectMultipleTap()"></Button>
+    </GridLayout>
+    <Button text="Cancel" (tap)="cancel()"></Button>
+</StackLayout>

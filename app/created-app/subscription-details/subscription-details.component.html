@@ -1,0 +1,56 @@
+<ActionBar class="action-bar">
+    <!-- 
+                Use the NavigationButton as a side-drawer button in Android
+                because ActionItems are shown on the right side of the ActionBar
+                -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+                Use the ActionItem for IOS with position set to left. Using the
+                NavigationButton as a side-drawer button in iOS is not possible,
+                because its function is to always navigate back in the application.
+                -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" [text]="business_name"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout class="card-form" *ngIf="visible_key">
+                <StackLayout style="padding-bottom: 5">
+                    <Label class="card-form-heading" text="Subscription Details"></Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Label class="card-form-subheading" text="App details:"></Label>
+                </StackLayout>
+                <StackLayout>
+                    <GridLayout rows="*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
+                        <Label row="0" col="0" text="Name" verticalAlignment="center"></Label>
+                        <Label row="0" col="1" [text]="subscription_details[0].appmaster_data.business_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="1" col="0" text="Owner's name" verticalAlignment="center"></Label>
+                        <Label row="1" col="1" [text]="subscription_details[0].appmaster_data.owner_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="2" col="0" text="Category" verticalAlignment="center"></Label>
+                        <Label row="2" col="1" [text]="subscription_details[0].appmaster_data.category" class="body" verticalAlignment="center"></Label>
+                    </GridLayout>
+                </StackLayout>
+
+                <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+                <StackLayout>
+                    <Label class="card-form-subheading" text="Subscription summary:"></Label>
+                </StackLayout>
+                <StackLayout>
+                    <GridLayout rows="*,*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
+                        <Label row="0" col="0" text="Created on" verticalAlignment="center"></Label>
+                        <Label row="0" col="1" [text]="subscription_details[0].created_at | date:'dd-MM-yyyy'" class="body" verticalAlignment="center"></Label>
+                        <Label row="1" col="0" text="App expiry date" verticalAlignment="center"></Label>
+                        <Label row="1" col="1" [text]="subscription_details[0].valid_until | date:'dd-MM-yyyy'" class="body" verticalAlignment="center"></Label>
+                        <Label row="2" col="0" text="Subscription type" verticalAlignment="center"></Label>
+                        <Label row="2" col="1" [text]="subscription_details[0].subscription_type.type_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="3" col="0" text="Total cost" verticalAlignment="center"></Label>
+                        <Label row="3" col="1" [text]="subscription_details[0].total_cost" class="body" verticalAlignment="center"></Label>
+                    </GridLayout>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

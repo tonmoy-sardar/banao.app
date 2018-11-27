@@ -1,0 +1,7 @@
+<ActionBar title="">
+    <GridLayout rows="*" columns="120,*,40" verticalAlignment="center">
+        <Image src="~/images/logo.png" class="action-image" row="0" col="0" verticalAlignment="center"></Image>
+        <Label text="" class="action-label" color="#00aff0" row="0" col="1" verticalAlignment="center"></Label>
+        <Label class="fa logout-label" (tap)="logout()" text="&#xf011;" *ngIf="isLoggedin" row="0" col="2" verticalAlignment="center"></Label>
+    </GridLayout>
+</ActionBar>

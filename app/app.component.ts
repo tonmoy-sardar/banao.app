@@ -1,0 +1,165 @@
+import { Component, OnInit, NgZone, ViewChild } from "@angular/core";
+var orientation = require('nativescript-orientation');
+import * as application from "tns-core-modules/application";
+import { NavigationEnd, Router } from "@angular/router";
+import * as app from "application";
+import { RouterExtensions } from "nativescript-angular/router";
+import { DrawerTransitionBase, RadSideDrawer, SlideInOnTopTransition } from "nativescript-ui-sidedrawer";
+import { filter } from "rxjs/operators";
+
+import { getString, setString, getBoolean, setBoolean, clear } from "application-settings";
+
+import { LoginService } from "../app/core/services/login.service";
+var Globals = require("../app/core/globals");
+import * as Connectivity from "tns-core-modules/connectivity";
+import { Color } from "tns-core-modules/color";
+import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
+
+
+@Component({
+    selector: "ns-app",
+    templateUrl: "app.component.html"
+})
+export class AppComponent implements OnInit {
+    private _activatedUrl: string;
+    private _sideDrawerTransition: DrawerTransitionBase;
+    public connectionType: string;
+    private feedback: Feedback;
+    is_success: boolean;
+
+    isLoggedin: boolean;
+    logged_user_id: string;
+    logged_user_first_name: string;
+    logged_user_last_name: string;
+    logged_user_email: string;
+    logged_user_contact_no: string;
+    logged_user_profile_image: string;
+    img_base_url;
+
+    constructor(
+        private router: Router, 
+        private routerExtensions: RouterExtensions,
+        private loginService: LoginService,
+        private zone: NgZone,
+    ) {
+        // Use the component constructor to inject services.
+        orientation.setOrientation("portrait");
+        application.android.on(application.AndroidApplication.activityBackPressedEvent, (args: any) => {
+            if (this.routerExtensions.canGoBack()) {
+                args.cancel = true;
+                // this.router.back();
+            } else {
+                args.cancel = false;
+            }
+        });
+        loginService.getLoginStatus.subscribe(status => this.changeLoginStatus(status))
+    }
+
+
+    private changeLoginStatus(status: boolean): void {
+        if (status) {
+            this.loadUserData();
+        }
+        else {
+            this.loadUserData();
+        }
+    }
+
+    ngOnInit(): void {
+
+        
+
+        this._activatedUrl = "/home";
+        this._sideDrawerTransition = new SlideInOnTopTransition();
+
+        this.router.events
+        .pipe(filter((event: any) => event instanceof NavigationEnd))
+        .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
+        this.loadUserData();
+        this.img_base_url = Globals.img_base_url;
+
+        this.connectionType = this.connectionToString(Connectivity.getConnectionType());
+        Connectivity.startMonitoring(connectionType => {
+            this.zone.run(() => {
+                this.connectionType = this.connectionToString(connectionType);
+                if (this.connectionType == "0" && !this.is_success) {
+                    this.is_success = true;
+                    this.feedback.error({
+                        title: "No Connection!",
+                        backgroundColor: new Color("red"),
+                        titleColor: new Color("black"),
+                        position: FeedbackPosition.Bottom,
+                        type: FeedbackType.Custom
+                    });                    
+                }
+                else if(this.connectionType == "1" && this.is_success){
+                    this.is_success = false;
+                    this.feedback.success({
+                        title: 'Network Connected',
+                        backgroundColor: new Color("green"),
+                        titleColor: new Color("black"),
+                        position: FeedbackPosition.Bottom,
+                        type: FeedbackType.Custom
+                    });
+                }
+
+            });
+        });
+    }
+
+    connectionToString(connectionType: number): string {
+        switch (connectionType) {
+            case Connectivity.connectionType.none:
+                return "0";
+            case Connectivity.connectionType.wifi:
+                return "1";
+            case Connectivity.connectionType.mobile:
+                return "1";
+            default:
+                return "0";
+        }
+    }
+
+    loadUserData() {
+        this.isLoggedin = getBoolean('isLoggedin');
+        this.logged_user_id = getString('user_id');
+        this.logged_user_first_name = getString('first_name');
+        this.logged_user_last_name = getString('last_name');
+        this.logged_user_email = getString('email');
+        this.logged_user_contact_no = getString('contact_no');
+    }
+
+    get sideDrawerTransition(): DrawerTransitionBase {
+        return this._sideDrawerTransition;
+    }
+
+    isComponentSelected(url: string): boolean {
+        return this._activatedUrl === url;
+    }
+
+    onNavItemTap(navItemRoute: string): void {
+        this.routerExtensions.navigate([navItemRoute], {
+            transition: {
+                name: "fade"
+            }
+        });
+
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.closeDrawer();
+    }
+
+    logout() {
+
+        clear();
+        this.loginService.loginStatus(false)
+
+        var navItemRoute = '/login'
+        this.routerExtensions.navigate([navItemRoute], {
+            transition: {
+                name: "fade"
+            }
+        });
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.closeDrawer();
+    }
+}

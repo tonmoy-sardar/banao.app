@@ -1,0 +1,66 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Sign In"></Label>
+</ActionBar>
+
+<GridLayout class="page page-content">
+    <FlexboxLayout class="login-page">
+
+        <StackLayout class="full-content">
+
+            <StackLayout class="apps-container">
+                <Image class="logo m-t-10" src="~/images/logo.png"></Image>
+                <StackLayout class="form" [formGroup]="form" novalidate>
+                    
+                    <GridLayout rows="auto, auto">
+                        <StackLayout class="input-filld" row="0">
+                            <TextField class="input input-border cyan-border m-t-10"  padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;" hint="Email id / Mobile Number " returnKeyType="next" formControlName="username" [ngClass]="displayFieldCss('username')"></TextField>
+                            <StackLayout *ngIf="isFieldValid('username')" class="invalid-feedback">
+                                <Label text="User name is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+
+                        <StackLayout class="input-filld" row="1">
+                            <TextField hint="Password" class="input input-border cyan-border m-t-10" padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;" secure="true" returnKeyType="done" formControlName="password" [ngClass]="displayFieldCss('password')"
+                                ></TextField>
+                            <StackLayout *ngIf="isFieldValid('password')" class="invalid-feedback">
+                                <Label  text="Password is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </GridLayout>
+
+                    <Button class="btn btn-primary" text="SIGN IN"  padding="10 0" borderRadius="18" (tap)="signIn()">
+                    </Button>
+                    <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+                    <Label  class="tag-line-grey m-b-10 m-t-10" (tap)="onNavItemTap('/forgot-password')">
+                        <FormattedString>
+                                <Span text="Forgot your password?" class="bold-tag"></Span>
+                            </FormattedString>
+                    </Label>
+
+                    <Label class="tag-line-grey m-b-10 m-t-10" style="padding-bottom:20" (tap)="onNavItemTap('/signup')">
+                        <FormattedString>
+                            <Span text="Not a member?" class="bold-tag"></Span>
+                            <Span text=" Register here." class="bold-tag"></Span>
+                        </FormattedString>
+                    </Label>
+                   
+                </StackLayout>
+
+            </StackLayout>
+        </StackLayout>
+
+    </FlexboxLayout>
+</GridLayout>

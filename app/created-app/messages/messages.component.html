@@ -1,0 +1,63 @@
+<ActionBar class="action-bar">
+    <!-- 
+                    Use the NavigationButton as a side-drawer button in Android
+                    because ActionItems are shown on the right side of the ActionBar
+                    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+                    Use the ActionItem for IOS with position set to left. Using the
+                    NavigationButton as a side-drawer button in iOS is not possible,
+                    because its function is to always navigate back in the application.
+                    -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Message List"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout class="page page-content">
+        <StackLayout class="full-content">
+            <StackLayout class="card-form" *ngIf="visible_key">
+                <StackLayout style="padding-bottom: 5">
+                    <Label class="card-form-heading" text="Message List"></Label>
+                </StackLayout>
+                <GridLayout tkExampleTitle tkToggleNavButton>
+                    <RadListView [items]="chats" class="list-group">
+                        <ng-template tkListItemTemplate let-item="item" let-i="index">
+                            <GridLayout rows="auto, auto" columns="auto, *, auto" class="list-group-item" borderBottomWidth="1" borderColor="#CCC" (tap)="goToChat(item.id)">
+                                <Image row="0" col="0" rowSpan="2" src="~/images/user.png" class="thumb"></Image>
+                                <Label row="0" col="1" [text]="item.name"></Label>
+                                <Label row="1" col="1" [text]="item.last_message" class="body"></Label>
+                                <Label row="0" col="2" [text]="item.last_messages_time | date: 'shortTime'" class="body time time-unread"></Label>
+                                <StackLayout row="1" col="2" orientation="horizontal" class="m-x-auto" *ngIf="item.unread_messages > 0">
+                                  <Label [text]="item.unread_messages" class="body unread"></Label>
+                                </StackLayout>
+                              </GridLayout>
+                        </ng-template>
+                    </RadListView>
+                </GridLayout>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
+<!-- <ListView [items]="chats" class="list-group">
+  <ng-template let-chat="item" let-index="index">
+    <GridLayout rows="auto, auto" columns="auto, *, auto" class="list-group-item" (tap)="goToChat(chat.id)">
+      <Image row="0" col="0" rowSpan="2" src="~/images/user.png" class="thumb"></Image>
+      <Label row="0" col="1" [text]="chat.name"></Label>
+      <Label row="1" col="1" [text]="chat.last_message" class="body"></Label>
+      <Label row="0" col="2" [text]="chat.last_messages_time | date: 'shortTime'" class="body time time-unread"></Label>
+      <StackLayout row="1" col="2" orientation="horizontal" class="m-x-auto" *ngIf="chat.unread_messages > 0">
+        <Label [text]="chat.unread_messages" class="body unread"></Label>
+      </StackLayout>
+    </GridLayout>
+  </ng-template>
+</ListView>
+
+<StackLayout *ngIf="chats.length==0">
+  <StackLayout borderWidth="1" borderColor="#ccc" style="margin-bottom: 5px;" class="list-group">
+      <CardView class="whiteCard">
+          <GridLayout rows="auto" columns="*" class="list-group-item" padding="10" verticalAlignment="center">
+              <Label row="0" col="0" text="No messages yet" verticalAlignment="center"></Label>
+          </GridLayout>
+      </CardView>
+  </StackLayout>
+</StackLayout> -->

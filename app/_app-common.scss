@@ -1,0 +1,413 @@
+// Place any CSS rules you want to apply on both iOS and Android here.
+// This is where the vast majority of your CSS code goes.
+// Font icon class
+.fa {
+    font-family: "FontAwesome";
+}
+// Common page class
+
+.page-content {
+    .page-placeholder {
+        color: $page-icon-color;
+        font-size: $page-content-placeholder-font-size;
+        vertical-align: center;
+        horizontal-align: center;
+    }
+
+    .page-icon {
+        font-size: 72;
+        vertical-align: top;
+        horizontal-align: center;
+        color: $page-icon-color;
+        margin-top: 20%;
+    }
+}
+
+.login-page {
+    align-items: center;
+    background: #ffffff;
+}
+
+.logo {
+    margin-bottom: 30;
+    width: 200;
+    font-weight: bold;
+}
+.full-content {
+    margin-left: 5;
+    margin-right: 5;
+    margin-top: 5;
+    flex-grow: 2;
+    vertical-align: top;
+}
+
+.boder-color{
+    border-color:$light;
+}
+
+.category-name{
+    padding-top:5;
+    font-size: 12;
+    color :$disabled;
+}
+
+.invalid-feedback {
+    color: #f73340;
+    font-size: 15;
+}
+
+.apps-container {
+    background-color: #cccccc;
+    border-radius: 8;
+    -webkit-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    -moz-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    padding: 25;
+}
+
+.card {
+    background-color: #FFFFFF;
+    border-radius: 5;
+    -webkit-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    -moz-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    margin:10 10 0 10;
+    padding: 10;
+}
+
+.card-form {
+    background-color: #FFFFFF;
+    padding: 10;
+}
+
+.card-form-heading {
+    color: #284058;
+    text-align: left;
+    font-size: 20;
+    padding-bottom: 5;
+    border-bottom-width: 3px;
+    border-bottom-color: #CCC;
+}
+
+.card-form-subheading
+{
+    color: #284058;
+    text-align: left;
+    font-size: 17;
+    padding-bottom: 5;
+    border-bottom-width: 3px;
+    border-bottom-color: #CCC;
+}
+
+.card-form-field {
+    padding:5;
+    border-radius:5;
+    background-color:#FFFFFF;
+    color:#666;
+}
+
+.social-icon {
+    background-color: #cb202d;
+    border-radius: 100%;
+    color: #fff;
+    font-size: 15;
+    display: inline-block;
+    height: 30;
+    width: 30;
+    text-align: center;
+    line-height: 15;
+    padding-top: 8;
+}
+
+
+.card-menu {
+    background-color: #FFFFFF;
+    border-radius: 2;
+    -webkit-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    -moz-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    margin:2;
+    padding: 10;
+    border-width: 1px;
+    border-color: #CCC
+}
+
+.card-menu-icon
+{
+    font-size: 24;
+    color:#FFFFFF;
+    background-color: #f73340;
+    border-radius: 50%;
+    border-width: 10px;
+    border-color: #CCC
+}
+
+.card-app {
+    background-color: #284058;
+    border-radius: 5;
+    -webkit-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    -moz-box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
+    margin:10 10 0 10;
+    padding: 10;
+}
+
+.create-app-text
+{
+    font-size: 16;
+    color:#FFFFFF;
+}
+.unread {
+    color: #fff;
+    background-color: #284058;
+    float: right;
+    text-align: center;
+    padding: 2;
+    height: 20;
+    width: 20;
+    border-radius: 50%;
+}
+
+.app-name{
+    padding-top:5;
+    font-size: 12;
+    color:#FFFFFF;
+}
+
+.wallpaper{
+    /* background: #f2f2f2; */
+    background-image:url("~/images/explore-bg.jpg")
+}
+
+
+.message-box{width:100%;align-items:flex-end}.message-box .icon{padding:5;flex-grow:0;border-radius:50%}.message-box .text-area{flex-grow:1;align-items:flex-end}.message-box .text-area .text-view{flex-grow:1}
+.message-box{background-color:#FAFAFA;border-top-color:#D6D3CD;border-top-width:1}
+
+.messages-area{width:100%}.messages-area .messages{flex-direction:column;align-items:flex-start;padding:0 10 5 10}.messages-area .messages .message-bubble{margin:10 15 2 0;padding:0}.messages-area .messages .message-bubble.myself{align-self:flex-end;margin-right:0;margin-left:15}.messages-area .messages .message-bubble.myself .message-bubble-content{background-color:#dcf8c6}.messages-area .messages .message-bubble.continuation{margin-top:1}.messages-area .messages .message-bubble .message-bubble-content{align-items:flex-start;flex-wrap:wrap;justify-content:flex-end;border-radius:8;background-color:white}.messages-area .messages .message-bubble .message-bubble-content .message-text{color:#8D1B1B;font-size:15;margin:5}.messages-area .messages .message-bubble .message-bubble-content .meta{align-self:flex-end;justify-content:flex-end;margin:0 5 5 5}.messages-area .messages .message-bubble .message-bubble-content .meta .time{font-size:13;opacity:.7;margin-right:5}.messages-area .messages .message-bubble .message-bubble-content .meta .time.ios{font-size:11;opacity:.4}.messages-area .messages .message-bubble .message-bubble-content .meta .check{font-size:14;padding-top:2;margin-left:-4}.messages-area .messages .message-bubble .message-bubble-content .meta .check.ios{opacity:.6}.messages-area .messages .message-bubble .message-bubble-content .meta .check.blue{color:#52c5f7}.messages-area .messages .message-bubble .message-bubble-content .meta .check.blue.ios{color:#2F97F3;opacity:1}
+
+.tag-line-grey {
+    color: #284058;
+    text-align: center;
+    font-size: 15;
+}
+
+
+
+// order list
+.order_history_area {
+    .individual_sec {
+        background: $background-light;
+        margin: 5;
+        padding: 5;
+
+        .order_top_sec {
+            border-width: 1;
+            border-color: $disabled;
+
+            .order_no {
+                color: $accent-dark;
+                font-size: 15;
+            }
+
+            .order_date {
+                color: $disabled;
+                font-size: 12;
+                padding-right: 10;
+            }
+
+            .arrow {
+                color: $disabled;
+                font-size: 12;
+            }
+        }
+
+
+        .prod_sec {
+            .heading_sec {
+                background: $accent-dark;
+                padding: 10;
+
+                Label {
+                    color: $background-light;
+                    font-size: 15;
+                }
+            }
+
+            .list_sec {
+                margin: 7 0;
+
+                .indivl_product {
+                    background: $background-dark;
+                    margin: 3 0;
+
+                    .product_name {
+                        color: $secondary;
+                        font-size: 12;
+                        padding: 0 10;
+                    }
+
+                    .discounted_price {
+                        font-weight: 600;
+                        color: $accent-dark;
+                        font-size: 12;
+                        padding-left: 10;
+                    }
+
+                    .original_price {
+                        color: $accent-dark;
+                        font-size: 12;
+                        font-weight: 600;
+                        padding: 0 10;
+                    }
+
+                    .original_price.isDiscount {
+                        text-decoration: line-through;
+                        color: $disabled;
+                        font-weight: normal;
+                    }
+
+                    .quantity {
+                        color: $disabled;
+                        padding: 0 10;
+                        font-size: 12;
+                        font-weight: 600;
+                    }
+                }
+            }
+        }
+
+        .address_sec {
+            margin-bottom: 10;
+
+            .heading_sec {
+                background: $accent-dark;
+                padding: 10;
+
+                Label {
+                    color: $background-light;
+                    font-size: 15;
+                }
+            }
+
+            .address {
+                font-size: 12;
+                color: $disabled;
+                padding: 10 0 0 0;
+            }
+
+        }
+
+        .price_sec {
+            .heading_sec {
+                background: $accent-dark;
+                padding: 10;
+
+                Label {
+                    color: $background-light;
+                    font-size: 15;
+                }
+            }
+
+            .ttl {
+                font-size: 12;
+                color: $disabled;
+                padding: 10 0;
+            }
+
+            .price {
+                font-size: 12;
+                color: $accent-dark;
+                padding: 10 0;
+            }
+
+            .hr-line {
+                border-top-width: 1;
+                border-color: $disabled;
+            }
+        }
+    }
+
+    .full-cardview {
+        width: 100%;
+        padding: 15;
+        text-align: center;
+        border-width: 1;
+        border-color: $disabled;
+
+        .section_heading {
+            color: $primary;
+            text-align: center;
+            font-size: 15;
+            font-weight: 100;
+            margin-bottom: 10;
+            padding: 0 12;
+        }
+    }
+
+}
+//Action bar
+ActionBar .action-bar-title {
+    horizontal-align: center;
+}
+
+ // Drawer navigation custom styles
+$sidedrawer-header-image-size: 60;
+$sidedrawer-header-image-offset-top: 20;
+$sidedrawer-header-image-offset-bottom: 5;
+$sidedrawer-list-item-offset-left: 15;
+$sidedrawer-list-icon-offset: 10;
+$sidedrawer-list-icon-size: 20;
+
+.sidedrawer {
+    &.sidedrawer-left {
+        background-color: $ab-background;
+
+        .sidedrawer-header-image {
+            color: $background-dark;
+            height: $sidedrawer-header-image-size;
+            width: $sidedrawer-header-image-size;
+            font-size: $sidedrawer-header-image-size;
+            padding: 0;
+            margin-bottom: $sidedrawer-header-image-offset-bottom;
+            margin-top: $sidedrawer-header-image-offset-top;
+        }
+
+        .footnote {
+            color: rgba($ab-color, 0.5);
+        }
+    }
+
+    .sidedrawer-header {
+        background-color: $ab-background;
+
+        .sidedrawer-header-brand {
+            color: $ab-color;
+        }
+    }
+
+    .sidedrawer-content {
+        background-color: $side-drawer-background;
+
+        $sidedrawer-list-item-offset-left: 15;
+        $sidedrawer-list-icon-offset: 10;
+        $sidedrawer-list-icon-size: 20;
+
+        .sidedrawer-list-item {
+            padding-left: $sidedrawer-list-item-offset-left;
+            Label {
+                vertical-align: center;
+                color: $blue-dark;
+            }
+            .fa {
+                width: $sidedrawer-list-icon-size;
+                margin-right: $sidedrawer-list-icon-offset;
+            }
+            &.selected {
+                background-color: $item-active-background;
+                Label {
+                    color: $item-active-color;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,115 @@
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" [text]="app_data.business_name"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout  style="padding-top:30">
+                <AbsoluteLayout width="50%" height="150">
+                    <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <Label class="card-app app-name" [text]="app_data.business_name" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
+                            textWrap="true"></Label>
+                    </StackLayout>
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="app_data.logo" width="70" height="70" actualImageScaleType="fitCenter"
+                            roundAsCircle="true"></FrescoDrawee>
+                    </StackLayout>
+                </AbsoluteLayout>
+            </StackLayout>
+            <StackLayout  class="form card-form" [formGroup]="form" novalidate>
+                <GridLayout rows="auto, auto, auto, auto,auto">
+
+                    <StackLayout row="0">
+                        <Label class="card-form-heading" text="Enter Your Business Details"></Label>
+                    </StackLayout>
+                    
+                    <StackLayout class="input-filld" row="1">
+                        <TextField  hint="Name Of Your Business" class="input input-border cyan-border  m-t-10 card-form-field"  returnKeyType="next" formControlName="business_name" [(ngModel)]="app_data.business_name" [ngClass]="displayFieldCss('business_name')"
+                         ></TextField>
+                        <StackLayout *ngIf="isFieldValid('business_name')" class="invalid-feedback">
+                            <Label fontSize="8" text="Your business name is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="2">
+                        <TextField hint="Website URL (Optional)" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="done" formControlName="app_website_url" [(ngModel)]="app_data.app_website_url" ></TextField>
+
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="3">
+                        <TextView  hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field"
+                            returnKeyType="done" formControlName="business_description" [(ngModel)]="app_data.business_description"
+                            [ngClass]="displayFieldCss('business_description')" ></TextView>
+                        <StackLayout *ngIf="isFieldValid('business_description')" class="invalid-feedback">
+                            <Label text="A few lines about your business is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                </GridLayout>
+
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Update" (tap)="updateAppInfo()"></Button>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
+<!-- <ScrollView>
+    <StackLayout class="full-dashboard" *ngIf="visible_key">
+        <FlexboxLayout marginBottom="30" flexWrap="wrap" justifyContent="space-around">
+            <CardView class="card" elevation="0" borderColor="#6c6969" shadowOffsetWidth="0" shadowOffsetHeight="0">
+                <StackLayout orientation="vertical">
+                    <StackLayout class="app-icon">
+                        <Image [src]="app_data.logo" *ngIf="app_data.logo != '' && app_data.logo != null"></Image>
+                        <Image src="~/images/no-image-logo.jpg" *ngIf="app_data.logo == '' || app_data.logo == null"></Image>
+                    </StackLayout>
+                    <Label fontSize="15" VerticalAlignment="center" textAlignment="center" [text]="app_data.business_name" textWrap="true"></Label>
+                </StackLayout>
+            </CardView>
+        </FlexboxLayout>
+        <StackLayout class="full-content">
+            <StackLayout class="edit-container">
+                <StackLayout class="form" [formGroup]="form" novalidate>
+                    <GridLayout rows="auto, auto,auto,auto">
+                        <StackLayout class="input-filld" row="0">
+                            <TextField height="40" padding="10" fontSize="12" hint="Name Of Your Business" class="input input-border cyan-border m-t-10" returnKeyType="next" formControlName="business_name" [(ngModel)]="app_data.business_name" [ngClass]="displayFieldCss('business_name')"
+                                borderRadius="2" borderColor="#6c6969"></TextField>
+                            <StackLayout *ngIf="isFieldValid('business_name')" class="invalid-feedback">
+                                <Label fontSize="8" text="Your business name is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="1">
+                            <TextField height="40" padding="10" fontSize="12" hint="Website URL (Optional)" class="input input-border cyan-border m-t-10" returnKeyType="done" formControlName="app_website_url" [(ngModel)]="app_data.app_website_url" borderRadius="2" borderColor="#6c6969" backgroundColor="#fff"></TextField>
+
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="2">
+                            <TextView lineHeight="12" height="100" padding="10" fontSize="12" hint="A few lines about your business" class="input input-border cyan-border m-t-10" returnKeyType="done" formControlName="business_description" [(ngModel)]="app_data.business_description"
+                                [ngClass]="displayFieldCss('business_description')" borderRadius="2" borderColor="#6c6969" backgroundColor="#fff"></TextView>
+                            <StackLayout *ngIf="isFieldValid('business_description')" class="invalid-feedback">
+                                <Label text="A few lines about your business is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                        
+                    </GridLayout>
+
+                    <Button class="btn btn-primary simple-btn" text="Update" (tap)="updateAppInfo()">
+                    </Button>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </StackLayout>
+</ScrollView> -->

@@ -1,0 +1,75 @@
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" [text]="app_data.business_name"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*,*" class="page page-content">
+        <StackLayout  col="0" row="0" class="full-content">
+            <StackLayout style="padding-top:30">
+                <AbsoluteLayout width="50%" height="150">
+                    <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <Label class="card-app app-name" [text]="app_data.business_name" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
+                            textWrap="true"></Label>
+                    </StackLayout>
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="app_data.logo" width="70" height="70" actualImageScaleType="fitCenter"
+                            roundAsCircle="true"></FrescoDrawee>
+                    </StackLayout>
+                </AbsoluteLayout>
+            </StackLayout>
+
+            <GridLayout  columns="*,*,*" rows="*,*">
+                <StackLayout col="0" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/edit-app')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label VerticalAlignment="center" class="fa" text="&#xf044;" horizontalAlignment="center"></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Edit App" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout col="1" row="0"  *ngIf="serviceType ==1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/products')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label VerticalAlignment="center" class="fa" text="&#xf07c;" horizontalAlignment="center"></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Edit Product" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout col="1" row="0"  *ngIf="serviceType ==2" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/products')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label VerticalAlignment="center" class="fa" text="&#xf0b1;" horizontalAlignment="center"></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Edit Service" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout col="2" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/edit-owner-info')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label VerticalAlignment="center" class="fa" text="&#xf007;" horizontalAlignment="center"></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Edit Owner Info" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout col="0" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/edit-business-images')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label VerticalAlignment="center" class="fa" text="&#xf1c5;" horizontalAlignment="center"></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Edit Business Images" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                
+                <StackLayout  col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/edit-social-media')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label VerticalAlignment="center" class="fa" text="&#xf1e0;" horizontalAlignment="center"></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Edit Social Media" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                
+            </GridLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

@@ -1,0 +1,123 @@
+<ActionBar class="action-bar" title="">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" [text]="app_data.business_name"></Label>
+</ActionBar>
+
+<ScrollView>
+    <GridLayout rows="*" class="page page-content">
+        <StackLayout row="0" verticalAlignment="top" style="margin:20 0" class="order_history_area" *ngIf="visible_key">
+            <GridLayout tkExampleTitle tkToggleNavButton *ngIf="order_list.length > 0">
+                <RadListView [items]="order_list" loadOnDemandMode="Manual" (loadMoreDataRequested)="onLoadMoreItemsRequested($event)">
+                    <ng-template tkListItemTemplate let-order="item">
+                        <GridLayout rows="*,*" class="individual_sec">
+                            <StackLayout row="0" padding="10 5" orientation="vertical" (tap)="itemToggle(order)" class="order_top_sec">
+                                <GridLayout rows="*" columns="auto,auto,*,20" verticalAlignment="center">
+                                    <Label row="0" col="0" horizontalAlignment="left" verticalAlignment="center" text="Order no. "
+                                        textWrap="true"></Label>
+                                    <Label row="0" col="1" horizontalAlignment="left" verticalAlignment="center" [text]="order.order_id"
+                                        class="order_no"></Label>
+                                    <Label row="0" col="2" horizontalAlignment="right" verticalAlignment="center" class="order_date">
+                                        <FormattedString>
+                                            <Span text="Order on "></Span>
+                                            <Span [text]="order.created_at | date:'dd-MM-yyyy'"></Span>
+                                        </FormattedString>
+                                    </Label>
+                                    <Label class="fa arrow" horizontalAlignment="right" verticalAlignment="center" row="0"
+                                        col="3" [text]="!order.opened ? '&#xf078;' : '&#xf077;'" textWrap="true"></Label>
+                                </GridLayout>
+                            </StackLayout>
+                            <StackLayout row="1" *ngIf="order.opened" orientation="vertical" margin="5 0 0 0">
+                                <GridLayout rows="*,*" class="prod_sec">
+                                    <StackLayout class="heading_sec" row="0">
+                                        <Label text="Products" textWrap="true"></Label>
+                                    </StackLayout>
+                                    <GridLayout tkExampleTitle tkToggleNavButton class="list_sec" row="1">
+                                        <RadListView [items]="order.order_details">
+                                            <ng-template tkListItemTemplate let-item="item" let-i="index">
+                                                <GridLayout columns="100,auto,*" rows="*,*" class="indivl_product">
+                                                    <FrescoDrawee rowSpan="2" col="0" horizontalAlignment="center"
+                                                        placeholderImageUri="~/images/placeholder.png" [imageUri]="img_base_url+'/media/'+item.product_details.product_image"
+                                                        width="100" height="100" aspectRatio="1"></FrescoDrawee>
+                                                    <Label row="0" col="1" class="product_name" verticalAlignment="center"
+                                                        [text]="item.product_details.product_name" textWrap="true"></Label>
+                                                    <StackLayout orientation="horizontal" row="2" col="1"
+                                                        verticalAlignment="center">
+                                                        <Label [text]="'&#xf156;' + (item.quantity * item.product_details.discounted_price)"
+                                                            class="fa discounted_price" textWrap="true" *ngIf="item.product_details.discounted_price > 0"></Label>
+                                                        <Label [text]="'&#xf156;' + (item.quantity * item.product_details.price)"
+                                                            class="fa original_price" textWrap="true" [ngClass]="[item.product_details.discounted_price > 0 ? 'isDiscount' : '']"></Label>
+                                                    </StackLayout>
+                                                    <Label class="quantity" [text]="'QTY: ' + item.quantity" row="2"
+                                                        col="2" verticalAlignment="center" horizontalAlignment="right"></Label>
+                                                </GridLayout>
+                                            </ng-template>
+                                        </RadListView>
+                                    </GridLayout>
+                                </GridLayout>
+                                <GridLayout rows="*,*" class="price_sec">
+                                    <StackLayout class="heading_sec" row="0">
+                                        <Label text="Total" textWrap="true"></Label>
+                                    </StackLayout>
+                                    <GridLayout columns="*,*" rows="*,*,*,*,*,*,*" row="1">
+                                        <Label row="0" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Total price" class="ttl"></Label>
+                                        <Label row="0" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa price" [text]="'&#xf156;' + order.price"></Label>
+                                        <StackLayout row="1" colSpan="2" class="hr-line"></StackLayout>
+                                        <Label row="2" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Delivery Status" class="ttl"></Label>
+                                        <Label row="2" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa price" [text]="order.delivery_status ? 'Delivered' : 'Not Delivered'"></Label>
+                                        <StackLayout row="3" colSpan="2" class="hr-line"></StackLayout>
+                                        <Label row="4" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Payment Type" class="ttl"></Label>
+                                        <Label row="4" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa price" [text]="order.payment_type == 0 ? 'Cash On Delivery' : 'Paytm'"></Label>
+                                        <StackLayout row="5" colSpan="2" class="hr-line"></StackLayout>
+                                        <Label row="6" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Payment Status" class="ttl"></Label>
+                                        <Label row="6" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa price" [text]="order.is_paid ? 'Paid' : 'Not Paid'"></Label>
+                                    </GridLayout>
+                                </GridLayout>
+                                <GridLayout rows="*,*" class="address_sec">
+                                    <StackLayout class="heading_sec" row="0">
+                                        <Label text="Shipping Address" textWrap="true"></Label>
+                                    </StackLayout>
+                                    <StackLayout row="1">
+                                        <Label class="address">
+                                            <FormattedString>
+                                                <Span [text]="order.shipping_address.address +',' "></Span>
+                                                <Span [text]="order.shipping_address.state.state_name +',' "></Span>
+                                                <Span [text]="order.shipping_address.pincode +',' "></Span>
+                                                <Span [text]="order.shipping_address.state.country"></Span>
+                                            </FormattedString>
+                                        </Label>
+                                    </StackLayout>
+                                </GridLayout>
+                            </StackLayout>
+                        </GridLayout>
+                    </ng-template>
+                </RadListView>
+            </GridLayout>
+            <StackLayout orientation="vertical" textAlignment="center" verticalAlignment="center" *ngIf="order_list.length == 0" margin="10">
+                <StackLayout class="full-cardview">
+                    <Label class="section_heading" fontSize="15" text="Sorry! You don’t have any order yet"></Label>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

@@ -1,0 +1,39 @@
+<ActionBar class="action-bar">
+    <!-- 
+            Use the NavigationButton as a side-drawer button in Android
+            because ActionItems are shown on the right side of the ActionBar
+            -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+            Use the ActionItem for IOS with position set to left. Using the
+            NavigationButton as a side-drawer button in iOS is not possible,
+            because its function is to always navigate back in the application.
+            -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Social Media Links"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout class="form card-form" *ngIf="visible_key">
+                <StackLayout>
+                    <Label class="card-form-heading" text="Enter Social Media Links"></Label>
+                </StackLayout>
+                <GridLayout tkExampleTitle tkToggleNavButton>
+                    <RadListView [items]="social_media_type">
+                        <ng-template tkListItemTemplate let-item="item" let-i="index">
+                            <GridLayout rows="*" columns="40,*">
+                                <Label class="fa social-icon" [text]="getSocialIconUnicode(item.id)" verticalAlignment="center" horizontalAlignment="center"
+                                    row="0" col="0" verticalAlignment="center"></Label>
+                                <TextField hint="https://example.com" [(ngModel)]="item.url" class="input input-border cyan-border m-t-10" returnKeyType="next"
+                                    height="40" padding="10" fontSize="12" row="0" col="1" keyboardType="url"></TextField>
+                            </GridLayout>
+                        </ng-template>
+                    </RadListView>
+                </GridLayout>
+               
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Update" (tap)="update()"></Button>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
