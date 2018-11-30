@@ -24,7 +24,7 @@
                 <GridLayout tkExampleTitle tkToggleNavButton *ngIf="visible_key">
                     <RadListView [items]="category_list">
                         <ng-template tkListItemTemplate let-item="item" let-i="index">
-                            <StackLayout class="boder-color" height="100" verticalAlignment="center" [borderRightWidth]="(i+1) % 3 == 0? 0: 1" borderBottomWidth="1">
+                            <StackLayout class="boder-color" height="100" verticalAlignment="center" [borderRightWidth]="(i+1) % 3 == 0? 0: 1" borderBottomWidth="1" (tap)="chooseCategory(item.id)">
                                 <FrescoDrawee placeholderImageUri="~/images/placeholder.png" aspectRatio="1" [imageUri]="item.icon" width="30" height="30"></FrescoDrawee>
                                 <Label horizontalAlignment="center" verticalAlignment="center" class="category-name" [text]="item.category_name"></Label>
                             </StackLayout>

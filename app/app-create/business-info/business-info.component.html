@@ -1,5 +1,100 @@
-<create-app-action-bar></create-app-action-bar>
-<ScrollView row="0">
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Business Information"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout style="padding-top:30">
+                <AbsoluteLayout width="50%" height="150">
+                    <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <Label class="card-app app-name" text="Upload Logo" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
+                            textWrap="true"></Label>
+                    </StackLayout>
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center" (tap)="pickImage()">
+
+                        <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                            <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="logo" width="70" height="70" actualImageScaleType="fitCenter"
+                                    roundAsCircle="true"></FrescoDrawee>
+
+                            </StackLayout>
+                            <Label left="53" backgroundColor="#cb202d" color="#fff" fontSize="10" style="padding: 6" borderRadius="50%" VerticalAlignment="center"
+                                class="fa" text="&#xf030;"></Label>
+                        </AbsoluteLayout>
+                    </StackLayout>
+                    <!-- <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center" *ngIf="logo == ''" (tap)="pickImage()">
+                        <FrescoDrawee placeholderImageUri="~/images/placeholder.png" imageUri="~/images/no-image-logo.jpg" width="70" height="70" actualImageScaleType="fitCenter"
+                            roundAsCircle="true"></FrescoDrawee>
+                    </StackLayout>
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center" *ngIf="logo != ''" (tap)="pickImage()">
+                        <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="logo" width="70" height="70" actualImageScaleType="fitCenter"
+                            roundAsCircle="true"></FrescoDrawee>
+                    </StackLayout> -->
+                </AbsoluteLayout>
+            </StackLayout>
+            <StackLayout class="form card-form" [formGroup]="form" novalidate>
+                <GridLayout rows="auto, auto, auto, auto,auto">
+
+                    <StackLayout row="0">
+                        <Label class="card-form-heading" text="Enter Your Business Details"></Label>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="1">
+                        <TextField hint="Name Of Your Business" class="input input-border cyan-border  m-t-10 card-form-field" returnKeyType="next"
+                            formControlName="business_name" [ngClass]="displayFieldCss('business_name')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('business_name')" class="invalid-feedback">
+                            <Label fontSize="8" text="Your business name is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="2">
+                        <TextField hint="Website URL (Optional)" class="input input-border cyan-border  m-t-10 card-form-field" returnKeyType="done"
+                            formControlName="app_website_url"></TextField>
+
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="3">
+                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="done"
+                            formControlName="business_description" [ngClass]="displayFieldCss('business_description')"></TextView>
+                        <StackLayout *ngIf="isFieldValid('business_description')" class="invalid-feedback">
+                            <Label text="A few lines about your business is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="4" style="padding-top: 10;">
+                        <Label class="section_heading" text="Business Type"></Label>
+                        <StackLayout *ngFor="let option of businessTypeOptions">
+                            <StackLayout orientation="horizontal" verticalAlignment="center">
+                                <CheckBox #elem [checked]="option.selected" (checkedChange)="elem.checked !== option.selected && changeCheckedRadioBusinessType(option)"
+                                    class="checkbox" boxType="circle"></CheckBox>
+                                <StackLayout verticalAlignment="center">
+                                    <Label [text]="option.text" textWrap="true" (tap)="changeCheckedRadioBusinessType(option)"></Label>
+                                </StackLayout>
+                            </StackLayout>
+                        </StackLayout>
+                    </StackLayout>
+
+                </GridLayout>
+
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Next" (tap)="submitCreateAppBusinessInfo()"></Button>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
+<!-- <ScrollView row="0">
     <StackLayout class="full-dashboard">
         <Label color="#021733" textAlignment="center" VerticalAlignment="center" fontSize="15" text="Enter Your Business Details
         "></Label>
@@ -16,7 +111,7 @@
                                 <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo upload-image" [text]="'fa-camera' | fonticon" *ngIf="logo == ''"></Label>
                             </AbsoluteLayout>
                         </StackLayout>
-                        <!-- <Label fontSize="15" VerticalAlignment="center" textAlignment="center" text="Upload Logo"></Label> -->
+                        
                     </StackLayout>
                 </CardView>
             </FlexboxLayout>
@@ -67,4 +162,4 @@
             </StackLayout>
         </StackLayout>
     </StackLayout>
-</ScrollView>
+</ScrollView> -->

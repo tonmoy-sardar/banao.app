@@ -1,0 +1,91 @@
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Besiness Images"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*,60" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout class="card-form">
+
+                <StackLayout style="padding-bottom: 20px;">
+                    <Label class="card-form-heading" text="Business Images"></Label>
+                </StackLayout>
+                <GridLayout tkExampleTitle tkToggleNavButton *ngIf="visible_key">
+                    <RadListView [items]="gallery_images">
+                        <ng-template tkListItemTemplate let-item="item" let-i="index">
+
+                            <StackLayout orientation="vertical">
+                                <StackLayout style="background-color: #CCC; border-color: #fff" verticalAlignment="center" [borderBottomWidth]="(i+1) % 3 == 0? 0: 2"
+                                    (tap)="pickBusinessImages(item.id)">
+                                    <AbsoluteLayout class="camera-icon">
+                                        <FrescoDrawee placeholderImageUri="~/images/placeholder.png" aspectRatio="1" [imageUri]="item.app_images" width="100%" height="200"
+                                            actualImageScaleType="fitCenter"></FrescoDrawee>
+
+                                        <Label backgroundColor="#cb202d" color="#fff" left="0" fontSize="16" style="padding: 20" borderRadius="50%" VerticalAlignment="center"
+                                            class="fa" text="&#xf030;"></Label>
+
+
+                                    </AbsoluteLayout>
+                                </StackLayout>
+                            </StackLayout>
+                        </ng-template>
+                        <!-- <ListViewGridLayout tkListViewLayout scrollDirection="Vertical" spanCount="3"></ListViewGridLayout> -->
+                    </RadListView>
+                </GridLayout>
+            </StackLayout>
+        </StackLayout>
+        <StackLayout *ngIf="gallery_images.length < 3" row="1" width="100%" style="background-color:#cb202d; height: 60" verticalAlignment="center"
+            horizontalAlignment="center" (tap)="pickNewBusinessImages()">
+            <Label text="Upload Business Image &#xf030;" class="fa create-app-text" textAlignment="center" textWrap="true"></Label>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
+<!-- <ScrollView row="0">
+    <StackLayout class="full-dashboard">
+        <Label color="#021733" textAlignment="center" fontSize="15" text="Edit Business Image"></Label>
+        <StackLayout width="100%" textAlignment="center" class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+
+
+        <FlexboxLayout marginBottom="30" flexWrap="wrap" justifyContent="space-around" alignItems="flex-start">
+            <CardView *ngFor="let item of gallery_images" class="card" elevation="0" borderColor="#6c6969" shadowOffsetWidth="0" shadowOffsetHeight="0" alignSelf="flex-start" width="33%">
+                <StackLayout orientation="vertical">
+                    <StackLayout class="app-icon" (tap)="pickBusinessImages(item.id)">
+
+                        <AbsoluteLayout class="camera-icon" paddingLeft="20">
+                            <Image borderColor="#d3d3d3" borderWidth="1" [src]="item.app_images" *ngIf="item.app_images != '' || item.app_images != null"></Image>
+
+                            <Image src="~/images/no-image-logo.jpg" *ngIf="item.app_images == '' || item.app_images == null"></Image>
+
+                            <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo  upload-image" [text]="'fa-camera' | fonticon"></Label>
+                        </AbsoluteLayout>
+
+                    </StackLayout>
+                </StackLayout>
+            </CardView>
+            <CardView class="card" *ngIf="gallery_images.length < 3" elevation="0" radius="0" shadowOpacity="0" shadowOffsetWidth="0" shadowOffsetHeight="0" alignSelf="flex-start" width="33%">
+                <StackLayout orientation="vertical">
+                    <StackLayout class="app-icon" (tap)="pickNewBusinessImages()">
+                        <AbsoluteLayout class="camera-icon" paddingLeft="20">
+                            <Image borderColor="#d3d3d3" borderWidth="1" src="~/images/no-image-logo.jpg"></Image>
+                            <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo upload-image" VerticalAlignment="center" [text]="'fa-camera' | fonticon"></Label>
+                        </AbsoluteLayout>
+                    </StackLayout>
+                </StackLayout>
+            </CardView>
+        </FlexboxLayout>
+        <Button *ngIf="key != ''" class="btn btn-primary simple-btn" text="Next" (tap)="next()">
+        </Button>
+    </StackLayout>
+</ScrollView> -->

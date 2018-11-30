@@ -73,8 +73,18 @@ export class CategoryChooseComponent implements OnInit {
             app_category: id
         }
         this.setCreateAppData(data);
+        var navItemRoute = "/app-create/business-info"
+        this.router.navigate([navItemRoute], {
+            transition: {
+              name: "fade"
+            }
+          });
+      
+          const sideDrawer = <RadSideDrawer>app.getRootView();
+          sideDrawer.closeDrawer();
 
-        this.router.navigate(['/app-create/business-info'])
+
+        // this.router.navigate(['/app-create/business-info'])
     }
 
     setCreateAppData(data) {

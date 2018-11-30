@@ -1,4 +1,7 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import * as app from "application";
+import { RouterExtensions } from "nativescript-angular/router";
+import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 
 import { LoadingIndicator } from "nativescript-loading-indicator"
 import { CreatedAppService, RadioOption } from "../../core/services/created-app.service";
@@ -9,7 +12,6 @@ import { ExploreService } from "../../core/services/explore.service";
 import { getString, setString, getBoolean, setBoolean, clear } from "application-settings";
 import * as Globals from '../../core/globals';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { RouterExtensions } from "nativescript-angular/router";
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { UploadSingleImageModalComponent } from "../../core/component/upload-single-image-modal/upload-single-image-modal.component";
 
@@ -191,6 +193,29 @@ export class BusinessInfoComponent implements OnInit {
 
 
     }
+
+    onDrawerButtonTap(): void {
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.showDrawer();
+      }
+    
+      onNavItemTap(navItemRoute: string): void {
+    
+        console.log(navItemRoute);
+        this.router.navigate([navItemRoute], {
+          transition: {
+            name: "fade"
+          }
+        });
+    
+        const sideDrawer = <RadSideDrawer>app.getRootView();
+        sideDrawer.closeDrawer();
+      }
+    
+      onNavBtnTap() {
+        // This code will be called only in Android.
+        this.router.back();
+      }
 
 
 

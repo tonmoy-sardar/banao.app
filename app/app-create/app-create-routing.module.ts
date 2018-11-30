@@ -11,6 +11,9 @@ const routes: Routes = [
         component: AppCreateComponent,
         children: [
             { path: "category-choose", loadChildren: "./category-choose/category-choose.module#CategoryChooseModule" },
+            { path: "business-info", loadChildren: "./business-info/business-info.module#BusinessInfoModule" },
+            { path: "owner-info", loadChildren: "./owner-info/owner-info.module#OwnerInfoModule" },
+            
             // { path: "manage-app", loadChildren: "./manage-app/manage-app.module#ManageAppModule" },
             // { path: "edit-app", loadChildren: "./edit-app/edit-app.module#EditAppModule" },
             // { path: "edit-social-media", loadChildren: "./edit-social-media/edit-social-media.module#EditSocialMediaModule" },

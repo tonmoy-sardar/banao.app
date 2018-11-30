@@ -1,0 +1,83 @@
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" [text]="app_details.business_name"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout class="card-form" *ngIf="visible_key">
+                <StackLayout style="padding-bottom: 5">
+                    <Label class="card-form-heading" text="Subscription Details"></Label>
+                </StackLayout>
+
+                <StackLayout>
+                    <Label class="card-form-subheading" text="Congratulations! Your app has been successfully created." textWrap="true" textAlignment="center"></Label>
+
+                </StackLayout>
+                <StackLayout>
+                    <GridLayout rows="*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
+                        <Label row="0" col="0" text="Business Name" verticalAlignment="center"></Label>
+                        <Label row="0" col="1" [text]="app_details.business_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="1" col="0" text="Owner's name" verticalAlignment="center"></Label>
+                        <Label row="1" col="1" [text]="app_details.owner_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="2" col="0" text="Category" verticalAlignment="center"></Label>
+                        <Label row="2" col="1" [text]="app_details.category" class="body" verticalAlignment="center"></Label>
+                    </GridLayout>
+                </StackLayout>
+
+                <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+                <Label textAlignment="center" fontSize="15" lineHeight="10" text="Now, enjoy the features and make the most of it! You can also visit Banao.partner App to manage your app and make changes. But before these, here’s your app Download Link:"
+                    class="m-t-30" textWrap="true"></Label>
+                <Label textAlignment="center" fontSize="15" lineHeight="10" text="to us on our helpline number *********** for assistance or guidance, any time!"
+                    class="m-t-30" textWrap="true"></Label>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
+<!-- <ScrollView row="0">
+    <StackLayout padding="10" *ngIf="visible_key">
+        <Label text="Congratulations! Your app has been successfully created." textWrap="true" class="m-b-30"
+            textAlignment="center" class="heading"></Label>
+        <Label textAlignment="center" fontSize="15" lineHeight="10" text="You note the details:" class="m-t-30"
+            textWrap="true"></Label>
+        <StackLayout horizontalAlignment="right" verticalAlignment="center" backgroundColor="#fff">
+            <GridLayout rows="*,*,*" verticalAlignment="center">
+                <Label row="0" verticalAlignment="center" textAlignment="center">
+                    <FormattedString>
+                        <Span text="Name - "></Span>
+                        <Span [text]="app_details.business_name"></Span>
+                    </FormattedString>
+                </Label>
+                <Label row="1" verticalAlignment="center" textAlignment="center">
+                    <FormattedString>
+                        <Span text="Owner's name - "></Span>
+                        <Span [text]="app_details.owner_name"></Span>
+                    </FormattedString>
+                </Label>
+                <Label row="2" verticalAlignment="center" textAlignment="center">
+                    <FormattedString>
+                        <Span text="Category - "></Span>
+                        <Span [text]="app_details.category"></Span>
+                    </FormattedString>
+                </Label>
+            </GridLayout>
+        </StackLayout>
+        <Label textAlignment="center" fontSize="15" lineHeight="10" text="Now, enjoy the features and make the most of it! You can also visit Banao.partner App to manage your app and make changes. But before these, here’s your app Download Link:"
+            class="m-t-30" textWrap="true"></Label>
+        <Label textAlignment="center" fontSize="15" lineHeight="10" text="to us on our helpline number *********** for assistance or guidance, any time!"
+            class="m-t-30" textWrap="true"></Label>
+        <Button class="btn btn-primary simple-btn" text="Ok" (tap)="ok()">
+        </Button>
+    </StackLayout>
+</ScrollView> -->
