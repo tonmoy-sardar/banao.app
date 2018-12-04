@@ -1,0 +1,85 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Add Product"></Label>
+</ActionBar>
+
+
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <!-- <StackLayout style="padding-top:30">
+                <AbsoluteLayout width="50%" height="150">
+                    <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <Label class="card-app app-name" text="Owner Image" height="80" style="padding-top:40;padding-bottom:10"
+                            textAlignment="center" textWrap="true"></Label>
+                    </StackLayout>
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center"
+                        (tap)="pickLogo()">
+
+                        <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                            <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="owner_details.owner_pic"
+                                    width="70" height="70" actualImageScaleType="fitCenter" roundAsCircle="true"></FrescoDrawee>
+                            </StackLayout>
+                            <Label left="53" backgroundColor="#cb202d" color="#fff" fontSize="10" style="padding: 6"
+                                borderRadius="50%" VerticalAlignment="center" class="fa" text="&#xf030;"></Label>
+                        </AbsoluteLayout>
+                    </StackLayout>
+                </AbsoluteLayout>
+            </StackLayout>
+            <StackLayout class="form card-form" [formGroup]="form" novalidate>
+                <GridLayout rows="auto, auto, auto, auto,auto">
+
+                    <StackLayout row="0">
+                        <Label class="card-form-heading" text="Enter Your Business Details"></Label>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="1">
+                        <TextField hint="Owner's Name" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" formControlName="owner_name" [(ngModel)]="owner_details.owner_name"
+                            [ngClass]="displayFieldCss('owner_name')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('owner_name')" class="invalid-feedback">
+                            <Label fontSize="8" text="Owner's Name is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="2">
+                        <DropDown #dd class="dropdown m-t-10" formControlName="owner_designation" [items]="designations"
+                            [hint]="hint" [(ngModel)]="owner_details.owner_designation" (selectedIndexChanged)="onchange($event)"
+                            borderRadius="2" height="40" fontSize="12" borderWidth="1" borderColor="#dfdfdf"></DropDown>
+
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="3">
+                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field"
+                            returnKeyType="next" formControlName="business_est_year" [(ngModel)]="owner_details.business_est_year"></TextView>
+
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="4">
+                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field"
+                            returnKeyType="done" formControlName="store_address" [(ngModel)]="owner_details.store_address"
+                            (tap)="searchLocation()"></TextView>
+
+                    </StackLayout>
+
+                </GridLayout>
+
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Update" (tap)="updateOwnerInfo()"></Button>
+            </StackLayout> -->
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

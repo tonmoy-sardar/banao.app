@@ -10,7 +10,7 @@
       "client_info": {
         "mobilesdk_app_id": "1:96396284544:android:a6ad7751c9f49dd9",
         "android_client_info": {
-          "package_name": "org.nativescript.banao.app"
+          "package_name": "org.nativescript.banao.partner"
         }
       },
       "oauth_client": [
@@ -52,6 +52,94 @@
     },
     {
       "client_info": {
+        "mobilesdk_app_id": "1:96396284544:android:8a13e1193725ddc7",
+        "android_client_info": {
+          "package_name": "org.nativescript.bluetouchindia"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96396284544-69oqo0pkhj6m9qin7jd4lk4lr5roraal.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.nativescript.bluetouchindia",
+            "certificate_hash": "2ddeaa92257d09831a7146345cf1ac15baaa215e"
+          }
+        },
+        {
+          "client_id": "96396284544-g6a45uua8au5uaqg7trmptgh7v72h9sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbkdGEqQJOoDBVhe-n6OS_xahlIVQBS2s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96396284544-g6a45uua8au5uaqg7trmptgh7v72h9sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96396284544:android:de5d55b6f525beed",
+        "android_client_info": {
+          "package_name": "org.nativescript.hingrestrobar"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96396284544-tcedu8jcm3ueqlqcj7jjr671sa4fl0n2.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.nativescript.hingrestrobar",
+            "certificate_hash": "913c91600bd2b965f6dbaa76413022741429751f"
+          }
+        },
+        {
+          "client_id": "96396284544-g6a45uua8au5uaqg7trmptgh7v72h9sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbkdGEqQJOoDBVhe-n6OS_xahlIVQBS2s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96396284544-g6a45uua8au5uaqg7trmptgh7v72h9sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
         "mobilesdk_app_id": "1:96396284544:android:6ee2fdf8d2065b83",
         "android_client_info": {
           "package_name": "org.nativescript.infiniqservices"
@@ -59,7 +147,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "96396284544-o8e2ojbi323konobrhmim9unue5nlvf5.apps.googleusercontent.com",
+          "client_id": "96396284544-0b49fc15e9mmu1tued0p5lg2usafnhei.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "org.nativescript.infiniqservices",
@@ -108,6 +196,50 @@
           "android_info": {
             "package_name": "org.nativescript.restaurantpremium",
             "certificate_hash": "eccf7af8e68a48e3deb20b77384ff7cd4baa3b13"
+          }
+        },
+        {
+          "client_id": "96396284544-g6a45uua8au5uaqg7trmptgh7v72h9sf.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAbkdGEqQJOoDBVhe-n6OS_xahlIVQBS2s"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "96396284544-g6a45uua8au5uaqg7trmptgh7v72h9sf.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:96396284544:android:ff2e9e9e29d0fdc7",
+        "android_client_info": {
+          "package_name": "org.nativescript.sistefashion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "96396284544-f37ls30u2u7kootvr8outqo974qg70og.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "org.nativescript.sistefashion",
+            "certificate_hash": "ea58b5679e7d5cac6e7fd98441df5c877e07d7c8"
           }
         },
         {

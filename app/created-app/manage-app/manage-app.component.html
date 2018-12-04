@@ -23,13 +23,11 @@
                         <Label class="card-app app-name" [text]="app_data.business_name" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
                             textWrap="true"></Label>
                     </StackLayout>
-                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center" (tap)="pickLogo()">
-                        <!-- <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="app_data.logo" width="70" height="70" actualImageScaleType="fitCenter"
-                            roundAsCircle="true"></FrescoDrawee> -->
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center" (tap)="pickLogo()">                       
                         <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
                             <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
                                 <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="app_data.logo" width="70" height="70" actualImageScaleType="fitCenter"
-                                    roundAsCircle="true"></FrescoDrawee>
+                                    roundAsCircle="true" backgroundColor="#ffffff" borderRadius="50"></FrescoDrawee>
 
                             </StackLayout>
                             <Label left="53" backgroundColor="#cb202d" color="#fff" fontSize="10" style="padding: 6" borderRadius="50%" VerticalAlignment="center" class="fa" text="&#xf030;"></Label>
@@ -49,13 +47,13 @@
                     <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
                         <Label VerticalAlignment="center" class="fa" text="&#xf07c;" horizontalAlignment="center"></Label>
                     </StackLayout>
-                    <Label textAlignment="center" text="Edit Product" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                    <Label textAlignment="center" text="Products" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
                 <StackLayout col="1" row="0" *ngIf="serviceType ==2" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/products')">
                     <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
                         <Label VerticalAlignment="center" class="fa" text="&#xf0b1;" horizontalAlignment="center"></Label>
                     </StackLayout>
-                    <Label textAlignment="center" text="Edit Service" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                    <Label textAlignment="center" text="Services" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
                 <StackLayout col="2" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/edit-owner-info')">
                     <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">

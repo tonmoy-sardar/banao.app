@@ -18,6 +18,16 @@ export class CreatedAppService {
     return this.http.get(Globals.apiEndpoint + 'app_all_details/' + id + '/')
   }
 
+  getAppCategoryProductList(id) {
+    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/')
+  }
+
+  getAllProductCategoryList(id) {
+    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/')
+  }
+
+  // http://132.148.147.239:8001/find_app_products_subcategory/108/?search=b
+
   getCategoryList(): Observable<any> {
     return this.http.get(Globals.apiEndpoint + 'all_categories/')
   }

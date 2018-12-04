@@ -8,9 +8,12 @@
 android {  
   defaultConfig {  
     generatedDensities = []
-    applicationId = "org.nativescript.banao.app"  
+    applicationId = "org.nativescript.banao.partner"  
   }  
   aaptOptions {  
     additionalParameters "--no-version-vectors"  
+  }
+  project.ext {
+    googlePlayServicesVersion = "15.0.0"
   }  
 } 

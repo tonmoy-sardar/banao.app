@@ -452,6 +452,7 @@ export class PaymentComponent implements OnInit {
             CALLBACK_URL: this.paymentdetails_data['CALLBACK_URL'],
             CHECKSUMHASH: this.paymentdetails_data['CHECKSUMHASH']
         };
+        console.log(this.orderToPaytm)
         console.log(new Date());
         console.log("createOrder");
         this.paytm.createOrder(this.orderToPaytm);

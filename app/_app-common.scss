@@ -87,7 +87,7 @@
     text-align: left;
     font-size: 20;
     padding-bottom: 5;
-    border-bottom-width: 3px;
+    border-bottom-width: 3;
     border-bottom-color: #CCC;
 }
 
@@ -96,7 +96,7 @@
     text-align: left;
     font-size: 17;
     padding-bottom: 5;
-    border-bottom-width: 3px;
+    border-bottom-width: 3;
     border-bottom-color: #CCC;
 }
 
@@ -130,10 +130,10 @@ DropDown Label {
     background: #FFFFFF;
     padding: 5;
     margin: 5;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 2 4 rgba(0, 0, 0, 0.1);
 }
 
-.camera-icon{
+.camera-icon {
     top: 32;
     left: 33;
     padding: 7;
@@ -148,16 +148,28 @@ DropDown Label {
     box-shadow: 0 0 18 3 rgba(0, 0, 0, 0.61);
     margin: 2;
     padding: 10;
-    border-width: 1px;
-    border-color: #CCC
+    border-width: 1;
+    border-color: #CCC;
+
+    Label {
+        font-size: 10;
+        color: #000000;
+    }
+
+    .card-menu-icon {
+        Label {
+            font-size: 24;
+            color: #FFFFFF;
+        }
+    }
 }
 
 .card-menu-icon {
     font-size: 24;
     color: #FFFFFF;
     background-color: #f73340;
-    border-radius: 50%;
-    border-width: 10px;
+    border-radius: 50;
+    border-width: 1;
     border-color: #CCC
 }
 
@@ -531,6 +543,110 @@ DropDown Label {
             padding: 0 12;
         }
     }
+
+}
+
+// product page
+.all_category_product_container {
+    background: #eeeeee;
+
+    .category_area {
+        background: #ffffff;
+        padding: 10;
+        margin-bottom: 10;
+
+        .heading_sec {
+            margin-bottom: 6;
+
+            Label {
+                color: $primary;
+                font-size: 15;
+                text-transform: uppercase;
+            }
+        }
+
+        .list-group-item {
+            padding: 5;
+            background: #edeeee;
+            margin-bottom: 10;
+
+            .product_image {
+                // border-width: 1;
+                border-color: $disabled;
+                border-radius: 10;
+            }
+
+            .middle_content_area {
+                padding: 0 10;
+
+                .productName {
+                    font-size: 12;
+                    color: $primary;
+                }
+
+                .productDesc {
+                    font-size: 8;
+                    color: $disabled;
+                }
+
+                .discounted_price {
+                    font-weight: 600;
+                    color: $accent-dark;
+                    font-size: 12;
+                    padding-right: 10;
+                }
+
+                .original_price {
+                    color: $accent-dark;
+                    font-size: 12;
+                    font-weight: 600;
+                }
+
+                .original_price.isDiscount {
+                    text-decoration: line-through;
+                    color: $disabled;
+                    font-weight: normal;
+                }
+
+            }
+
+
+            .btn_area {
+                .text_label {
+                    background: $primary;
+                    color: $background-light;
+                    text-align: center;
+                    height: 20;
+                    font-size: 12;
+                    padding-top: 2;
+
+                    &.active {
+                        background: $disabled;
+                        color: $background-light;
+                    }
+                }
+
+                .fa {
+                    background: $background-light;
+                    color: $primary;
+                    text-align: center;
+                    height: 20;
+                    padding-top: 4;
+                    font-size: 12;
+
+                    &.active {
+                        background: $background-light;
+                        color: $disabled;
+                        padding-top: 5;
+                    }
+                }
+
+            }
+
+
+        }
+    }
+
 
 }
 

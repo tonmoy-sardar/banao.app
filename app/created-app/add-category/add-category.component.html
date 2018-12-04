@@ -1,0 +1,52 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Add Category"></Label>
+</ActionBar>
+
+
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout class="form card-form" [formGroup]="form" novalidate>
+                <GridLayout rows="auto, auto, auto, auto,auto">
+
+                    <StackLayout row="0">
+                        <Label class="card-form-heading" text="Enter Your Business Category"></Label>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="1">
+                        <TextField hint="Category Name" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" formControlName="category_name" [(ngModel)]="product_category_data.category_name"
+                            [ngClass]="displayFieldCss('category_name')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('category_name')" class="invalid-feedback">
+                            <Label fontSize="8" text="Category name is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="3">
+                        <TextView hint="Description" class="input input-border  m-t-10 cyan-border card-form-field"
+                            returnKeyType="next" formControlName="description" [(ngModel)]="product_category_data.description"></TextView>
+
+                    </StackLayout>
+
+
+                </GridLayout>
+
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Save" (tap)="updateOwnerInfo()"></Button>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>
