@@ -8,6 +8,8 @@ import { LoadingIndicator } from "nativescript-loading-indicator"
 import { ExploreService } from "../../core/services/explore.service";
 import { ListViewEventData, RadListView, LoadOnDemandListViewEventData } from "nativescript-ui-listview";
 import * as Globals from '../../core/globals';
+import { Menu } from 'nativescript-menu';
+import { Page } from 'tns-core-modules/ui/page/page';
 
 @Component({
     selector: "products",
@@ -56,16 +58,19 @@ export class ProductsComponent implements OnInit {
     next_page: string;
     @Input() opened = false;
     img_base_url: string;
+    all_product_category: any = [];
     constructor(
         private routerExtensions: RouterExtensions,
         private location: Location,
         private exploreService: ExploreService,
         private CreatedAppService: CreatedAppService,
+        public current_page: Page
     ) {
         exploreService.homePageStatus(false);
     }
 
     ngOnInit(): void {
+        this.loader.show(this.lodaing_options);
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         if (full_location.length > 4) {
@@ -73,6 +78,86 @@ export class ProductsComponent implements OnInit {
         }
         this.getAppDetails();
         this.img_base_url = Globals.img_base_url;
+        this.getAllProductCategoryList();
+    }
+
+    parentCatTap(view_id, category) {
+        if (category.products == undefined) {
+            Menu.popup({
+                view: this.current_page.getViewById(view_id),
+                actions: ["Add Sub Category", "Edit Category", "Delete Category"]
+            })
+                .then(value => {
+                    if (value) {
+                        var vString = value.toString()
+                        if (vString == "Add Sub Category") {
+                            this.addSubCategory(category.id)
+                        }
+                        else if (vString == "Edit Category") {
+                            this.editCategory(category.id)
+                        }
+                        else if (vString == "Delete Category") {
+
+                        }
+                    }
+                })
+                .catch(console.log);
+        }
+        else {
+            Menu.popup({
+                view: this.current_page.getViewById(view_id),
+                actions: ["Edit Category", "Delete Category"]
+            })
+                .then(value => {
+                    if (value) {
+                        var vString = value.toString()
+                        if (vString == "Edit Category") {
+                            this.editCategory(category.id)
+                        }
+                        else if (vString == "Delete Category") {
+
+                        }
+                    }
+                })
+                .catch(console.log);
+        }
+
+    }
+
+    subCatTap(view_id, subCategory) {
+        Menu.popup({
+            view: this.current_page.getViewById(view_id),
+            actions: ["Edit Sub Category", "Delete Sub Category"]
+        })
+            .then(value => {
+                if (value) {
+                    var vString = value.toString()
+                    if (vString == "Edit Sub Category") {
+                        this.editSubCategory(subCategory.id)
+                    }
+                    else if (vString == "Delete Sub Category") {
+
+                    }
+                }
+            })
+            .catch(console.log);
+    }
+
+    itemToggle(item: any) {
+        item.opened = !item.opened;
+    }
+
+    getAllProductCategoryList() {
+        this.CreatedAppService.getAllProductCategoryList(this.app_id).subscribe(
+            (res: any[]) => {
+                console.log(res)
+                this.all_product_category = res;
+                this.getAppProductList()
+            },
+            error => {
+                console.log(error)
+            }
+        )
     }
 
     next() {
@@ -154,58 +239,90 @@ export class ProductsComponent implements OnInit {
     }
 
     getAppDetails() {
-        this.loader.show(this.lodaing_options);
-        this.CreatedAppService.getAppCategoryProductList(this.app_id).subscribe(
+        this.CreatedAppService.getCreatedAppDetails(this.app_id).subscribe(
             res => {
-                // this.next_page = res['next'];
-                // if (this.page == 1) {
-                //     this.category_list = [];
-                // }
-                // this.app_details = res;
-                // var data_list = [];
-                // data_list = this.app_details.app_product_categories;
+                this.app_details = res;
+                if (this.app_details.is_product_service) {
+                    this.serviceType = this.app_details.is_product_service;
+                }
+                else {
+                    this.serviceType = 1
+                }
+                this.app_data.logo = this.app_details.logo;
+                this.app_data.business_name = this.app_details.business_name;
+            },
+            error => {
+                // console.log(error)
+            }
+        )
+    }
 
+    getAppProductList() {
+        this.CreatedAppService.getAppProductList(this.app_id).subscribe(
+            res => {
+                this.next_page = res['next'];
+                if (this.page == 1) {
+                    this.category_list = [];
+                }
 
-                // if (this.app_details.is_product_service) {
-                //     this.serviceType = this.app_details.is_product_service;
-                // }
-                // else {
-                //     this.serviceType = 1
-                // }
+                var data_list = [];
+                data_list = res['results'];
 
-                // for (var i = 0; i < data_list.length; i++) {
-                    
-                //     if (i == 0 && this.page == 1) {
-                //         data_list[i]['opened'] = true;
-                //     }
-                //     else {
-                //         data_list[i]['opened'] = false;
-                //     }
+                for (var i = 0; i < data_list.length; i++) {
 
-                //     if (data_list[i]['products'][0].product_image != '') {
-                //         data_list[i]['hasProductImage'] = true;
-                //     }
-                //     else {
-                //         data_list[i]['hasProductImage'] = false;
-                //     }
+                    if (i == 0 && this.page == 1) {
+                        data_list[i]['opened'] = true;
+                    }
+                    else {
+                        data_list[i]['opened'] = false;
+                    }
 
-                //     var cat_index = this.category_list.findIndex(x => x.id == data_list[i].id)
-                //     if (cat_index != -1) {
-                //         data_list[i]['products'].forEach(z => {
-                //             this.category_list[cat_index]['products'].push(z)
-                //         })
-                //     }
-                //     else {
-                //         this.category_list.push(data_list[i])
-                //     }
-                // }
+                    var cat_index = this.category_list.findIndex(x => x.id == data_list[i].id)
+                    if (cat_index != -1) {
+                        if (data_list[i]['sub_category'] != undefined) {
+                            var Sub_cat_index = this.category_list[cat_index]['sub_category'].findIndex(y => y.id == data_list[i]['sub_category'].id)
+                            if (Sub_cat_index != -1) {
+                                data_list[i]['sub_category'][Sub_cat_index]['products'].forEach(z => {
+                                    this.category_list[cat_index]['sub_category'][Sub_cat_index]['products'].push(z)
+                                })
+                            }
+                        }
+                        else {
+                            data_list[i]['products'].forEach(m => {
+                                this.category_list[cat_index]['products'].push(m)
+                            })
+                        }
+
+                    }
+                    else {
+                        this.category_list.push(data_list[i])
+                    }
+                }
                 console.log(res)
+                console.log(this.all_product_category)
+                this.all_product_category.forEach(k => {
+                    var chk_cat_index = this.category_list.findIndex(l => l.id == k.id)
+                    if (chk_cat_index == -1) {
+                        this.category_list.push(k)
+                    }
+                    else if (chk_cat_index != -1 && k['sub_category'] != undefined) {
+                        k['sub_category'].forEach(p => {
+                            var chk_sub_cat_index = this.category_list[chk_cat_index]['sub_category'].findIndex(d => d.id == p.id)
+                            if (chk_sub_cat_index == -1) {
+                                this.category_list[chk_cat_index]['sub_category'].push(p)
+                            }
+                        })
+
+                    }
+
+                })
+                console.log(this.category_list)
                 this.visible_key = true
                 this.loader.hide();
             },
             error => {
                 this.loader.hide();
-                console.log(error)
+                // console.log(error)
             }
         )
     }
@@ -242,13 +359,12 @@ export class ProductsComponent implements OnInit {
         this.loader.show(this.lodaing_options);
         this.CreatedAppService.deleteProductCategory(id, data).subscribe(
             res => {
-                console.log("Success");
                 this.loader.hide();
                 this.onNavItemTap('/created-app/' + this.app_id + '/products')
             },
             error => {
                 this.loader.hide();
-                console.log(error)
+                // console.log(error)
             }
         )
     }
@@ -261,13 +377,12 @@ export class ProductsComponent implements OnInit {
         this.loader.show(this.lodaing_options);
         this.CreatedAppService.deleteProduct(id, data).subscribe(
             res => {
-                console.log("Success");
                 this.loader.hide();
                 this.onNavItemTap('/created-app/' + this.app_id + '/products')
             },
             error => {
                 this.loader.hide();
-                console.log(error)
+                // console.log(error)
             }
         )
     }

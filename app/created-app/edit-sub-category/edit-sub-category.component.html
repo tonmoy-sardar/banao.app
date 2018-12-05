@@ -18,10 +18,35 @@
 
 
 <ScrollView>
-    <GridLayout columns="*" rows="*" class="page page-content">
-        <StackLayout class="full-content" col="0" row="0">
-            <Label class="page-icon fa" text="&#xf002;"></Label>
-            <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
-        </StackLayout>
-    </GridLayout>
-</ScrollView>
+        <GridLayout columns="*" rows="*" class="page page-content" *ngIf="visible_key">
+            <StackLayout col="0" row="0" class="full-content">
+                <StackLayout class="form card-form" [formGroup]="form" novalidate>
+                    <GridLayout rows="auto, auto, auto">
+    
+                        <StackLayout row="0">
+                            <Label class="card-form-heading" text="Edit Your Business Category"></Label>
+                        </StackLayout>
+    
+                        <StackLayout class="input-filld" row="1">
+                            <TextField hint="Category Name" class="input input-border cyan-border  m-t-10 card-form-field"
+                                returnKeyType="next" formControlName="category_name" [(ngModel)]="product_category_data.category_name"
+                                [ngClass]="displayFieldCss('category_name')"></TextField>
+                            <StackLayout *ngIf="isFieldValid('category_name')" class="invalid-feedback">
+                                <Label fontSize="8" text="Category name is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+    
+                        <StackLayout class="input-filld" row="2">
+                            <TextView hint="Description" class="input input-border  m-t-10 cyan-border card-form-field"
+                                returnKeyType="done" formControlName="description" [(ngModel)]="product_category_data.description"></TextView>
+    
+                        </StackLayout>
+    
+    
+                    </GridLayout>
+    
+                    <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Update" (tap)="updateProductCategory()"></Button>
+                </StackLayout>
+            </StackLayout>
+        </GridLayout>
+    </ScrollView>

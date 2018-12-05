@@ -13,77 +13,254 @@
         ios.position="left">
     </ActionItem> -->
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
-    <Label class="action-bar-title" text="Products"></Label>
+    <Label class="action-bar-title" [text]="serviceType == 1 ? 'Products' : 'Services'"></Label>
 </ActionBar>
 
-<GridLayout rows="*,60" columns="*,*" class="page page-content">
+<GridLayout rows="*,60" columns="*,*" class="page page-content" *ngIf="visible_key">
     <ScrollView row="0" colSpan="2">
         <StackLayout class="full-content">
             <GridLayout tkExampleTitle tkToggleNavButton class="all_category_product_container">
                 <RadListView [items]="category_list" loadOnDemandMode="Manual" (loadMoreDataRequested)="onLoadMoreItemsRequested($event)">
-                    <ng-template tkListItemTemplate let-category="item">
-                        <StackLayout verticalAlignment="top" horizontalAlignment="center" class="category_area">
-                            <StackLayout class="heading_sec">
-                                <Label [text]="category.category_name" textWrap="true"></Label>
-                            </StackLayout>
-                            <GridLayout tkExampleTitle tkToggleNavButton>
-                                <RadListView [items]="category.products">
-                                    <ng-template tkListItemTemplate let-product="item" let-i="index">
-                                        <GridLayout columns="90,*,80" rows="*" class="list-group-item"
-                                            verticalAlignment="center">
-                                            <FrescoDrawee col="0" row="0" placeholderImageUri="~/images/placeholder.png"
-                                                aspectRatio="1.33" [imageUri]="img_base_url+'/media/'+product.product_image"
-                                                width="90" height="90" roundAsCircle="true" roundedCornerRadius="50"
-                                                actualImageScaleType="fitCenter" class="product_image"
-                                                verticalAlignment="center" horizontalAlignment="left"></FrescoDrawee>
-                                            <StackLayout orientation="vertical" col="1" row="0" verticalAlignment="center"
-                                                horizontalAlignment="left" class="middle_content_area">
-                                                <Label [text]="product.product_name" class="productName" textWrap="true"></Label>
-                                                <Label [text]="product.description | slice:1:100" class="productDesc"
-                                                    textWrap="true"></Label>
-                                                <StackLayout row="1" col="0" verticalAlignment="center" orientation="vertical"
-                                                    horizontalAlignment="left" class="m-t-5 m-b-5">
-                                                    <StackLayout orientation="horizontal">
-                                                        <Label [text]="'&#xf156;' + product.discounted_price" class="fa discounted_price"
-                                                            textWrap="true" *ngIf="product.discounted_price > 0"></Label>
-                                                        <Label [text]="'&#xf156;' + product.price" class="fa original_price"
-                                                            textWrap="true" [ngClass]="[product.discounted_price > 0 ? 'isDiscount' : '']"></Label>
-                                                    </StackLayout>
+                    <ng-template tkListItemTemplate let-category="item" let-i="index">
+                        <StackLayout verticalAlignment="top" horizontalAlignment="center" class="category_area" width="100%">
+                            <StackLayout verticalAlignment="top" horizontalAlignment="center" class="category_area_container">
+                                <GridLayout columns="auto, *" rows="*" verticalAlignment="center" class="heading_sec">
+                                    <GridLayout rows="*" columns="auto,20" verticalAlignment="center"
+                                        horizontalAlignment="left" verticalAlignment="center" col="0" row="0" (tap)="itemToggle(category)">
+                                        <Label [text]="category.category_name" textWrap="true" horizontalAlignment="left"
+                                            verticalAlignment="center" col="0" row="0"></Label>
+                                        <Label class="fa arrow" horizontalAlignment="right" verticalAlignment="center"
+                                            row="0" col="1" [text]="!category.opened ? '&#xf078;' : '&#xf077;'"
+                                            textWrap="true"></Label>
+                                    </GridLayout>
+                                    <Label [id]="i + 'parent'" padding="3 0" class="fa" text="&#xf142;"
+                                        verticalAlignment="center" textAlignment="center" color="#272727"
+                                         height="20" width="20" (tap)="parentCatTap(i + 'parent',category)"
+                                        horizontalAlignment="right" verticalAlignment="center" col="1" row="0" fontSize="12"
+                                        fontWeight="600"></Label>
+
+                                </GridLayout>
+                                <StackLayout verticalAlignment="top" horizontalAlignment="center" *ngIf="category.sub_category != undefined && category.opened">
+                                    <GridLayout tkExampleTitle tkToggleNavButton>
+                                        <RadListView [items]="category.sub_category">
+                                            <ng-template tkListItemTemplate let-subCategory="item" let-j="index">
+                                                <StackLayout verticalAlignment="top" horizontalAlignment="center" class="Sub_category_area">
+                                                    <StackLayout verticalAlignment="top" horizontalAlignment="center"
+                                                        class="Sub_category_container">
+                                                        <GridLayout columns="auto, *" rows="*" verticalAlignment="center"
+                                                            class="heading_sec">
+                                                            <GridLayout rows="*" columns="auto,20" verticalAlignment="center"
+                                                                horizontalAlignment="left" verticalAlignment="center"
+                                                                col="0" row="0" (tap)="itemToggle(subCategory)">
+                                                                <Label [text]="subCategory.category_name" textWrap="true"
+                                                                    horizontalAlignment="left" verticalAlignment="center"
+                                                                    col="0" row="0"></Label>
+                                                                <Label class="fa arrow" horizontalAlignment="right"
+                                                                    verticalAlignment="center" row="0" col="1" [text]="!subCategory.opened ? '&#xf078;' : '&#xf077;'"
+                                                                    textWrap="true"></Label>
+                                                            </GridLayout>
+                                                            <Label [id]="i + j + 'sub'" padding="3 0" class="fa" text="&#xf142;"
+                                                                verticalAlignment="center" textAlignment="center" color="#272727"
+                                                                 height="20" width="20" (tap)="subCatTap(i + j + 'sub',subCategory)"
+                                                                horizontalAlignment="right" verticalAlignment="center"
+                                                                col="1" row="0" fontSize="10" fontWeight="600"></Label>
+                                                            
+                                                        </GridLayout>
+                                                        <StackLayout verticalAlignment="top" horizontalAlignment="center"
+                                                            *ngIf="subCategory.opened">
+                                                            <GridLayout tkExampleTitle tkToggleNavButton>
+                                                                <RadListView [items]="subCategory.products">
+                                                                    <ng-template tkListItemTemplate let-product="item"
+                                                                        let-i="index">
+                                                                        <StackLayout verticalAlignment="top"
+                                                                            horizontalAlignment="center" class="list-group-item">
+                                                                            <GridLayout columns="90,*,80" rows="*"
+                                                                                class="list-group-item-container"
+                                                                                verticalAlignment="center">
+                                                                                <FrescoDrawee col="0" row="0"
+                                                                                    placeholderImageUri="~/images/placeholder.png"
+                                                                                    aspectRatio="1.33" [imageUri]="product.product_image"
+                                                                                    width="90" height="90"
+                                                                                    roundAsCircle="true"
+                                                                                    roundedCornerRadius="50"
+                                                                                    actualImageScaleType="fitCenter"
+                                                                                    class="product_image"
+                                                                                    verticalAlignment="center"
+                                                                                    horizontalAlignment="left"></FrescoDrawee>
+                                                                                <StackLayout orientation="vertical" col="1"
+                                                                                    row="0" verticalAlignment="center"
+                                                                                    horizontalAlignment="left" class="middle_content_area">
+                                                                                    <Label [text]="product.product_name"
+                                                                                        class="productName" textWrap="true"></Label>
+                                                                                    <Label [text]="product.description | slice:0:100"
+                                                                                        class="productDesc" textWrap="true"></Label>
+                                                                                    <StackLayout row="1" col="0"
+                                                                                        verticalAlignment="center"
+                                                                                        orientation="vertical"
+                                                                                        horizontalAlignment="left"
+                                                                                        class="m-t-5 m-b-5" *ngIf="serviceType == 1">
+                                                                                        <StackLayout orientation="horizontal">
+                                                                                            <Label [text]="'&#xf156;' + product.discounted_price"
+                                                                                                class="fa discounted_price"
+                                                                                                textWrap="true" *ngIf="product.discounted_price > 0"></Label>
+                                                                                            <Label [text]="'&#xf156;' + product.price"
+                                                                                                class="fa original_price"
+                                                                                                textWrap="true"
+                                                                                                [ngClass]="[product.discounted_price > 0 ? 'isDiscount' : '']"></Label>
+                                                                                        </StackLayout>
+                                                                                    </StackLayout>
+                                                                                </StackLayout>
+                                                                                
+                                                                            </GridLayout>
+                                                                            <GridLayout columns="*,*" rows="*"
+                                                                                verticalAlignment="center"
+                                                                                horizontalAlignment="center" *ngIf="serviceType == 1">
+                                                                                <GridLayout columns="*" rows="*" row="0"
+                                                                                    col="0" width="100%" style="background-color:#213548; height: 30"
+                                                                                    verticalAlignment="center"
+                                                                                    horizontalAlignment="center"
+                                                                                    borderRightWidth="1" borderColor="#ffffff"
+                                                                                    (tap)="editProduct(product.id)">
+                                                                                    <Label text="Edit &#xf044;" class="fa create-app-text"
+                                                                                        textAlignment="center" textWrap="true"
+                                                                                        verticalAlignment="center"
+                                                                                        horizontalAlignment="center"
+                                                                                        row="0" col="0" width="100%"
+                                                                                        fontSize="10"></Label>
+                                                                                </GridLayout>
+                                                                                <GridLayout columns="*" rows="*" row="0"
+                                                                                    col="1" width="100%" style="background-color:#213548; height: 30"
+                                                                                    verticalAlignment="center"
+                                                                                    horizontalAlignment="center">
+                                                                                    <Label text="Delete &#xf1f8;" class="fa create-app-text"
+                                                                                        textAlignment="center" textWrap="true"
+                                                                                        verticalAlignment="center"
+                                                                                        horizontalAlignment="center"
+                                                                                        row="0" col="0" fontSize="10"></Label>
+                                                                                </GridLayout>
+                                                                            </GridLayout>
+                                                                            <GridLayout columns="*,*" rows="*"
+                                                                                verticalAlignment="center"
+                                                                                horizontalAlignment="center" *ngIf="serviceType == 2">
+                                                                                <GridLayout columns="*" rows="*" row="0"
+                                                                                    col="0" width="100%" style="background-color:#213548; height: 30"
+                                                                                    verticalAlignment="center"
+                                                                                    horizontalAlignment="center"
+                                                                                    borderRightWidth="1" borderColor="#ffffff"
+                                                                                    (tap)="editService(product.id)">
+                                                                                    <Label text="Edit &#xf044;" class="fa create-app-text"
+                                                                                        textAlignment="center" textWrap="true"
+                                                                                        verticalAlignment="center"
+                                                                                        horizontalAlignment="center"
+                                                                                        row="0" col="0" width="100%"
+                                                                                        fontSize="10"></Label>
+                                                                                </GridLayout>
+                                                                                <GridLayout columns="*" rows="*" row="0"
+                                                                                    col="1" width="100%" style="background-color:#213548; height: 30"
+                                                                                    verticalAlignment="center"
+                                                                                    horizontalAlignment="center">
+                                                                                    <Label text="Delete &#xf1f8;" class="fa create-app-text"
+                                                                                        textAlignment="center" textWrap="true"
+                                                                                        verticalAlignment="center"
+                                                                                        horizontalAlignment="center"
+                                                                                        row="0" col="0" fontSize="10"></Label>
+                                                                                </GridLayout>
+                                                                            </GridLayout>
+                                                                        </StackLayout>
+                                                                    </ng-template>
+                                                                </RadListView>
+                                                            </GridLayout>
+                                                        </StackLayout>
+                                                    </StackLayout>                                                    
                                                 </StackLayout>
-                                                <!-- <GridLayout rows="*" columns="15,auto" verticalAlignment="center">
-                                                    <Label [text]="app.avg_rating" textWrap="true" class="rate_badge"
-                                                        verticalAlignment="center" horizontalAlignment="left" col="0"
-                                                        row="0"></Label>
-                                                    <StackLayout orientation="horizontal" verticalAlignment="center"
-                                                        col="1" row="0" horizontalAlignment="left" paddingLeft="3">
-                                                        <Label class="fa rating" text="&#xf005;" *ngFor="let rat of rating; let i = index"
-                                                            [ngClass]="[i <= app.avg_rating -1 ? 'active' : '']"></Label>
-                                                    </StackLayout>
-                                                </GridLayout> -->
+                                            </ng-template>
+                                        </RadListView>
+                                    </GridLayout>
+                                </StackLayout>
+                                <StackLayout verticalAlignment="top" horizontalAlignment="center" class="product_area"
+                                    *ngIf="category.products != undefined && category.opened">
+                                    <GridLayout tkExampleTitle tkToggleNavButton>
+                                        <RadListView [items]="category.products">
+                                            <ng-template tkListItemTemplate let-product="item" let-i="index">
 
-                                                <!-- <Label [text]="app.store_address" class="address" textWrap="true"></Label> -->
-                                            </StackLayout>
-                                            <StackLayout horizontalAlignment="right" verticalAlignment="center" col="2"
-                                                row="0" class="btn_area">
-                                                <!-- <GridLayout rows="*" columns="60,20" verticalAlignment="center" (tap)="addToDashboard(category.id,app.id)">
-                                                    <Label [text]="app.isDashboard ? 'Remove' : 'Add'" row="0" col="0"
-                                                        verticalAlignment="center" textWrap="true" class="text_label"
-                                                        [ngClass]="{'active': app.isDashboard}"></Label>
-                                                    <Label class="fa" [text]="app.isDashboard ? '&#xf068;' : '&#xf067;'"
-                                                        row="0" col="1" verticalAlignment="center" [ngClass]="{'active': app.isDashboard}"></Label>
-                                                </GridLayout>
-                                                <Label [text]="app.isDashboard ? 'Remove from dashboard' : 'Add to dashboard'"
-                                                    textWrap="true" class="info" [ngClass]="{'active': app.isDashboard}"></Label> -->
-
-                                            </StackLayout>
-                                        </GridLayout>
-                                    </ng-template>
-                                </RadListView>
-                            </GridLayout>                            
+                                                <StackLayout verticalAlignment="top" horizontalAlignment="center" class="list-group-item">
+                                                    <GridLayout columns="90,*,80" rows="*" class="list-group-item-container"
+                                                        verticalAlignment="center">
+                                                        <FrescoDrawee col="0" row="0" placeholderImageUri="~/images/placeholder.png"
+                                                            aspectRatio="1.33" [imageUri]="product.product_image" width="90"
+                                                            height="90" roundAsCircle="true" roundedCornerRadius="50"
+                                                            actualImageScaleType="fitCenter" class="product_image"
+                                                            verticalAlignment="center" horizontalAlignment="left"></FrescoDrawee>
+                                                        <StackLayout orientation="vertical" col="1" row="0"
+                                                            verticalAlignment="center" horizontalAlignment="left" class="middle_content_area">
+                                                            <Label [text]="product.product_name" class="productName"
+                                                                textWrap="true"></Label>
+                                                            <Label [text]="product.description | slice:0:100" class="productDesc"
+                                                                textWrap="true"></Label>
+                                                            <StackLayout row="1" col="0" verticalAlignment="center"
+                                                                orientation="vertical" horizontalAlignment="left" class="m-t-5 m-b-5"
+                                                                *ngIf="serviceType == 1">
+                                                                <StackLayout orientation="horizontal">
+                                                                    <Label [text]="'&#xf156;' + product.discounted_price"
+                                                                        class="fa discounted_price" textWrap="true"
+                                                                        *ngIf="product.discounted_price > 0"></Label>
+                                                                    <Label [text]="'&#xf156;' + product.price" class="fa original_price"
+                                                                        textWrap="true" [ngClass]="[product.discounted_price > 0 ? 'isDiscount' : '']"></Label>
+                                                                </StackLayout>
+                                                            </StackLayout>
+                                                        </StackLayout>                                                        
+                                                    </GridLayout>
+                                                    <GridLayout columns="*,*" rows="*" verticalAlignment="center"
+                                                        horizontalAlignment="center" *ngIf="serviceType == 1">
+                                                        <GridLayout columns="*" rows="*" row="0" col="0" width="100%"
+                                                            style="background-color:#213548; height: 30"
+                                                            verticalAlignment="center" horizontalAlignment="center"
+                                                            borderRightWidth="1" borderColor="#ffffff" (tap)="editProduct(product.id)">
+                                                            <Label text="Edit &#xf044;" class="fa create-app-text"
+                                                                textAlignment="center" textWrap="true"
+                                                                verticalAlignment="center" horizontalAlignment="center"
+                                                                row="0" col="0" width="100%" fontSize="10"></Label>
+                                                        </GridLayout>
+                                                        <GridLayout columns="*" rows="*" row="0" col="1" width="100%"
+                                                            style="background-color:#213548; height: 30"
+                                                            verticalAlignment="center" horizontalAlignment="center">
+                                                            <Label text="Delete &#xf1f8;" class="fa create-app-text"
+                                                                textAlignment="center" textWrap="true"
+                                                                verticalAlignment="center" horizontalAlignment="center"
+                                                                row="0" col="0" fontSize="10"></Label>
+                                                        </GridLayout>
+                                                    </GridLayout>
+                                                    <GridLayout columns="*,*" rows="*" verticalAlignment="center"
+                                                        horizontalAlignment="center" *ngIf="serviceType == 2">
+                                                        <GridLayout columns="*" rows="*" row="0" col="0" width="100%"
+                                                            style="background-color:#213548; height: 30"
+                                                            verticalAlignment="center" horizontalAlignment="center"
+                                                            borderRightWidth="1" borderColor="#ffffff" (tap)="editService(product.id)">
+                                                            <Label text="Edit &#xf044;" class="fa create-app-text"
+                                                                textAlignment="center" textWrap="true"
+                                                                verticalAlignment="center" horizontalAlignment="center"
+                                                                row="0" col="0" width="100%" fontSize="10"></Label>
+                                                        </GridLayout>
+                                                        <GridLayout columns="*" rows="*" row="0" col="1" width="100%"
+                                                            style="background-color:#213548; height: 30"
+                                                            verticalAlignment="center" horizontalAlignment="center">
+                                                            <Label text="Delete &#xf1f8;" class="fa create-app-text"
+                                                                textAlignment="center" textWrap="true"
+                                                                verticalAlignment="center" horizontalAlignment="center"
+                                                                row="0" col="0" fontSize="10"></Label>
+                                                        </GridLayout>
+                                                    </GridLayout>
+                                                </StackLayout>
+                                            </ng-template>
+                                        </RadListView>
+                                    </GridLayout>
+                                </StackLayout>
+                            </StackLayout>
                         </StackLayout>
                     </ng-template>
                 </RadListView>
             </GridLayout>
+            <Button *ngIf="key != ''" class="btn btn-primary" padding="10 0" borderRadius="18" text="Next" (tap)="next()"></Button>
         </StackLayout>
     </ScrollView>
     <GridLayout columns="*" rows="*" row="1" col="0" width="100%" style="background-color:#cb202d; height: 60"
@@ -92,8 +269,15 @@
             verticalAlignment="center" horizontalAlignment="center" row="0" col="0" width="100%"></Label>
     </GridLayout>
     <GridLayout columns="*" rows="*" row="1" col="1" width="100%" style="background-color:#cb202d; height: 60"
-        verticalAlignment="center" horizontalAlignment="center" (tap)="onNavItemTap('/created-app/'+app_id+'/add-product')">
+        verticalAlignment="center" horizontalAlignment="center" (tap)="onNavItemTap('/created-app/'+app_id+'/add-product')"
+        *ngIf="serviceType == 1">
         <Label text="Add Product &#xf055;" class="fa create-app-text" textAlignment="center" textWrap="true"
+            verticalAlignment="center" horizontalAlignment="center" row="0" col="0"></Label>
+    </GridLayout>
+    <GridLayout columns="*" rows="*" row="1" col="1" width="100%" style="background-color:#cb202d; height: 60"
+        verticalAlignment="center" horizontalAlignment="center" (tap)="onNavItemTap('/created-app/'+app_id+'/add-service')"
+        *ngIf="serviceType == 2">
+        <Label text="Add Service &#xf055;" class="fa create-app-text" textAlignment="center" textWrap="true"
             verticalAlignment="center" horizontalAlignment="center" row="0" col="0"></Label>
     </GridLayout>
 </GridLayout>

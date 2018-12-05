@@ -21,7 +21,7 @@
     <GridLayout columns="*" rows="*" class="page page-content">
         <StackLayout col="0" row="0" class="full-content">
             <StackLayout class="form card-form" [formGroup]="form" novalidate>
-                <GridLayout rows="auto, auto, auto, auto,auto">
+                <GridLayout rows="auto, auto, auto">
 
                     <StackLayout row="0">
                         <Label class="card-form-heading" text="Enter Your Business Category"></Label>
@@ -36,16 +36,16 @@
                         </StackLayout>
                     </StackLayout>
 
-                    <StackLayout class="input-filld" row="3">
+                    <StackLayout class="input-filld" row="2">
                         <TextView hint="Description" class="input input-border  m-t-10 cyan-border card-form-field"
-                            returnKeyType="next" formControlName="description" [(ngModel)]="product_category_data.description"></TextView>
+                            returnKeyType="done" formControlName="description" [(ngModel)]="product_category_data.description"></TextView>
 
                     </StackLayout>
 
 
                 </GridLayout>
 
-                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Save" (tap)="updateOwnerInfo()"></Button>
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Submit" (tap)="createProductCategory()"></Button>
             </StackLayout>
         </StackLayout>
     </GridLayout>

@@ -36,6 +36,7 @@
     "nativescript-imagecropper": "^1.0.4",
     "nativescript-imagepicker": "^6.0.4",
     "nativescript-loading-indicator": "^2.4.0",
+    "nativescript-menu": "^1.0.3",
     "nativescript-orientation": "^2.2.1",
     "nativescript-permissions": "^1.2.3",
     "nativescript-plugin-firebase": "^7.4.1",
