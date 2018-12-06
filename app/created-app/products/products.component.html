@@ -24,20 +24,23 @@
                     <ng-template tkListItemTemplate let-category="item" let-i="index">
                         <StackLayout verticalAlignment="top" horizontalAlignment="center" class="category_area" width="100%">
                             <StackLayout verticalAlignment="top" horizontalAlignment="center" class="category_area_container">
-                                <GridLayout columns="auto, *" rows="*" verticalAlignment="center" class="heading_sec">
+                                <GridLayout columns="auto, *" rows="*" verticalAlignment="center" class="heading_sec"
+                                    (tap)="itemToggle(category)">
                                     <GridLayout rows="*" columns="auto,20" verticalAlignment="center"
-                                        horizontalAlignment="left" verticalAlignment="center" col="0" row="0" (tap)="itemToggle(category)">
+                                        horizontalAlignment="left" verticalAlignment="center" col="0" row="0">
                                         <Label [text]="category.category_name" textWrap="true" horizontalAlignment="left"
                                             verticalAlignment="center" col="0" row="0"></Label>
                                         <Label class="fa arrow" horizontalAlignment="right" verticalAlignment="center"
                                             row="0" col="1" [text]="!category.opened ? '&#xf078;' : '&#xf077;'"
                                             textWrap="true"></Label>
                                     </GridLayout>
-                                    <Label [id]="i + 'parent'" padding="3 0" class="fa" text="&#xf142;"
-                                        verticalAlignment="center" textAlignment="center" color="#272727"
-                                         height="20" width="20" (tap)="parentCatTap(i + 'parent',category)"
-                                        horizontalAlignment="right" verticalAlignment="center" col="1" row="0" fontSize="12"
-                                        fontWeight="600"></Label>
+                                    <GridLayout [id]="i + 'parent'" rows="*" columns="*" horizontalAlignment="right"
+                                        verticalAlignment="center" row="0" col="1" (tap)="parentCatTap(i + 'parent',category)"
+                                        height="25" width="25" borderWidth="1" borderColor="#272727" borderRadius="50">
+                                        <Label class="fa" text="&#xf142;" textAlignment="center" color="#272727"
+                                            horizontalAlignment="center" verticalAlignment="center" col="0" row="0"
+                                            fontSize="12" fontWeight="600"></Label>
+                                    </GridLayout>
 
                                 </GridLayout>
                                 <StackLayout verticalAlignment="top" horizontalAlignment="center" *ngIf="category.sub_category != undefined && category.opened">
@@ -48,10 +51,10 @@
                                                     <StackLayout verticalAlignment="top" horizontalAlignment="center"
                                                         class="Sub_category_container">
                                                         <GridLayout columns="auto, *" rows="*" verticalAlignment="center"
-                                                            class="heading_sec">
+                                                            class="heading_sec" (tap)="itemToggle(subCategory)">
                                                             <GridLayout rows="*" columns="auto,20" verticalAlignment="center"
                                                                 horizontalAlignment="left" verticalAlignment="center"
-                                                                col="0" row="0" (tap)="itemToggle(subCategory)">
+                                                                col="0" row="0" >
                                                                 <Label [text]="subCategory.category_name" textWrap="true"
                                                                     horizontalAlignment="left" verticalAlignment="center"
                                                                     col="0" row="0"></Label>
@@ -59,12 +62,17 @@
                                                                     verticalAlignment="center" row="0" col="1" [text]="!subCategory.opened ? '&#xf078;' : '&#xf077;'"
                                                                     textWrap="true"></Label>
                                                             </GridLayout>
-                                                            <Label [id]="i + j + 'sub'" padding="3 0" class="fa" text="&#xf142;"
-                                                                verticalAlignment="center" textAlignment="center" color="#272727"
-                                                                 height="20" width="20" (tap)="subCatTap(i + j + 'sub',subCategory)"
+                                                            <GridLayout [id]="i + j + 'sub'" rows="*" columns="*"
                                                                 horizontalAlignment="right" verticalAlignment="center"
-                                                                col="1" row="0" fontSize="10" fontWeight="600"></Label>
-                                                            
+                                                                row="0" col="1" (tap)="subCatTap(i + j + 'sub',subCategory)"
+                                                                height="25" width="25" borderWidth="1" borderColor="#272727"
+                                                                borderRadius="50">
+                                                                <Label class="fa" text="&#xf142;"
+                                                                    textAlignment="center" color="#272727"
+                                                                    horizontalAlignment="center" verticalAlignment="center"
+                                                                    col="0" row="0" fontSize="12" fontWeight="600"></Label>
+                                                            </GridLayout>
+
                                                         </GridLayout>
                                                         <StackLayout verticalAlignment="top" horizontalAlignment="center"
                                                             *ngIf="subCategory.opened">
@@ -110,7 +118,7 @@
                                                                                         </StackLayout>
                                                                                     </StackLayout>
                                                                                 </StackLayout>
-                                                                                
+
                                                                             </GridLayout>
                                                                             <GridLayout columns="*,*" rows="*"
                                                                                 verticalAlignment="center"
@@ -171,7 +179,7 @@
                                                                 </RadListView>
                                                             </GridLayout>
                                                         </StackLayout>
-                                                    </StackLayout>                                                    
+                                                    </StackLayout>
                                                 </StackLayout>
                                             </ng-template>
                                         </RadListView>
@@ -208,7 +216,7 @@
                                                                         textWrap="true" [ngClass]="[product.discounted_price > 0 ? 'isDiscount' : '']"></Label>
                                                                 </StackLayout>
                                                             </StackLayout>
-                                                        </StackLayout>                                                        
+                                                        </StackLayout>
                                                     </GridLayout>
                                                     <GridLayout columns="*,*" rows="*" verticalAlignment="center"
                                                         horizontalAlignment="center" *ngIf="serviceType == 1">

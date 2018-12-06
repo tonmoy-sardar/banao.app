@@ -18,8 +18,8 @@ export class CreatedAppService {
     return this.http.get(Globals.apiEndpoint + 'app_all_details/' + id + '/')
   }
 
-  getAppProductList(id) {
-    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/')
+  getAppProductList(id, params) {
+    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/' + params)
   }
 
   getAllProductCategoryList(id) {

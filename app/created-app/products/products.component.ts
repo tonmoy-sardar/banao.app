@@ -258,7 +258,11 @@ export class ProductsComponent implements OnInit {
     }
 
     getAppProductList() {
-        this.CreatedAppService.getAppProductList(this.app_id).subscribe(
+        let params = '';
+        if (this.page > 1) {
+            params = '?page=' + this.page;
+        }
+        this.CreatedAppService.getAppProductList(this.app_id, params).subscribe(
             res => {
                 this.next_page = res['next'];
                 if (this.page == 1) {
@@ -277,15 +281,34 @@ export class ProductsComponent implements OnInit {
                         data_list[i]['opened'] = false;
                     }
 
+                    if (data_list[i]['sub_category'] != undefined) {
+                        for (var k = 0; k < data_list[i]['sub_category'].length; k++) {
+                            if (i == 0 && k == 0 && this.page == 1) {
+                                data_list[i]['sub_category'][k]['opened'] = true;
+                            }
+                            else {
+                                data_list[i]['sub_category'][k]['opened'] = false;
+                            }
+                        }
+                    }
+
                     var cat_index = this.category_list.findIndex(x => x.id == data_list[i].id)
                     if (cat_index != -1) {
                         if (data_list[i]['sub_category'] != undefined) {
-                            var Sub_cat_index = this.category_list[cat_index]['sub_category'].findIndex(y => y.id == data_list[i]['sub_category'].id)
-                            if (Sub_cat_index != -1) {
-                                data_list[i]['sub_category'][Sub_cat_index]['products'].forEach(z => {
-                                    this.category_list[cat_index]['sub_category'][Sub_cat_index]['products'].push(z)
-                                })
+                            for (var k = 0; k < data_list[i]['sub_category'].length; k++) {
+                                var Sub_cat_index = this.category_list[cat_index]['sub_category'].findIndex(y => y.id == data_list[i]['sub_category'][k].id)
+                                if (Sub_cat_index != -1) {
+                                    data_list[i]['sub_category'][Sub_cat_index]['products'].forEach(z => {
+                                        this.category_list[cat_index]['sub_category'][Sub_cat_index]['products'].push(z)
+                                    })
+                                }
+                                else {
+                                    data_list[i]['sub_category'].forEach(b => {
+                                        this.category_list[cat_index]['sub_category'].push(b)
+                                    })
+                                }
                             }
+
                         }
                         else {
                             data_list[i]['products'].forEach(m => {
@@ -332,7 +355,7 @@ export class ProductsComponent implements OnInit {
         var count = +num_arr[num_arr.length - 1]
         if (this.page == count - 1) {
             this.page = count;
-            this.getAppDetails();
+            this.getAppProductList();
         }
     }
 
