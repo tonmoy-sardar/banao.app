@@ -70,8 +70,8 @@ export class CreatedAppService {
     return this.http.post(Globals.apiEndpoint + 'create_app_products/', data)
   }
 
-  deleteProduct(id, data) {
-    return this.http.put(Globals.apiEndpoint + 'delete_app_products/' + id + '/', data)
+  deleteProduct(id, force_key, data) {
+    return this.http.put(Globals.apiEndpoint + 'delete_app_products/' + id + '/' + force_key + '/', data)
   }
 
   getDesignationDropdown() {

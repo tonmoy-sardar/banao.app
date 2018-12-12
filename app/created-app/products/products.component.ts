@@ -10,6 +10,9 @@ import { ListViewEventData, RadListView, LoadOnDemandListViewEventData } from "n
 import * as Globals from '../../core/globals';
 import { Menu } from 'nativescript-menu';
 import { Page } from 'tns-core-modules/ui/page/page';
+import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
+import { Color } from "tns-core-modules/color";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 @Component({
     selector: "products",
@@ -59,6 +62,8 @@ export class ProductsComponent implements OnInit {
     @Input() opened = false;
     img_base_url: string;
     all_product_category: any = [];
+    private feedback: Feedback;
+    force_key: number = 0;
     constructor(
         private routerExtensions: RouterExtensions,
         private location: Location,
@@ -67,6 +72,7 @@ export class ProductsComponent implements OnInit {
         public current_page: Page
     ) {
         exploreService.homePageStatus(false);
+        this.feedback = new Feedback();
     }
 
     ngOnInit(): void {
@@ -97,7 +103,7 @@ export class ProductsComponent implements OnInit {
                             this.editCategory(category.id)
                         }
                         else if (vString == "Delete Category") {
-
+                            this.deleteProductCategory(category)
                         }
                     }
                 })
@@ -115,7 +121,7 @@ export class ProductsComponent implements OnInit {
                             this.editCategory(category.id)
                         }
                         else if (vString == "Delete Category") {
-
+                            this.deleteProductCategory(category)
                         }
                     }
                 })
@@ -136,7 +142,7 @@ export class ProductsComponent implements OnInit {
                         this.editSubCategory(subCategory.id)
                     }
                     else if (vString == "Delete Sub Category") {
-
+                        this.deleteProductCategory(subCategory)
                     }
                 }
             })
@@ -152,7 +158,7 @@ export class ProductsComponent implements OnInit {
             (res: any[]) => {
                 console.log(res)
                 this.all_product_category = res;
-                this.getAppProductList()
+                this.getAppProductList('')
             },
             error => {
                 console.log(error)
@@ -257,7 +263,7 @@ export class ProductsComponent implements OnInit {
         )
     }
 
-    getAppProductList() {
+    getAppProductList(key) {
         let params = '';
         if (this.page > 1) {
             params = '?page=' + this.page;
@@ -295,17 +301,15 @@ export class ProductsComponent implements OnInit {
                     var cat_index = this.category_list.findIndex(x => x.id == data_list[i].id)
                     if (cat_index != -1) {
                         if (data_list[i]['sub_category'] != undefined) {
-                            for (var k = 0; k < data_list[i]['sub_category'].length; k++) {
-                                var Sub_cat_index = this.category_list[cat_index]['sub_category'].findIndex(y => y.id == data_list[i]['sub_category'][k].id)
+                            for (var p = 0; p < data_list[i]['sub_category'].length; p++) {
+                                var Sub_cat_index = this.category_list[cat_index]['sub_category'].findIndex(y => y.id == data_list[i]['sub_category'][p].id)
                                 if (Sub_cat_index != -1) {
-                                    data_list[i]['sub_category'][Sub_cat_index]['products'].forEach(z => {
+                                    data_list[i]['sub_category'][p]['products'].forEach(z => {
                                         this.category_list[cat_index]['sub_category'][Sub_cat_index]['products'].push(z)
                                     })
                                 }
                                 else {
-                                    data_list[i]['sub_category'].forEach(b => {
-                                        this.category_list[cat_index]['sub_category'].push(b)
-                                    })
+                                    this.category_list[cat_index]['sub_category'].push(data_list[i]['sub_category'][p])
                                 }
                             }
 
@@ -323,25 +327,46 @@ export class ProductsComponent implements OnInit {
                 }
                 console.log(res)
                 console.log(this.all_product_category)
-                this.all_product_category.forEach(k => {
-                    var chk_cat_index = this.category_list.findIndex(l => l.id == k.id)
-                    if (chk_cat_index == -1) {
-                        this.category_list.push(k)
-                    }
-                    else if (chk_cat_index != -1 && k['sub_category'] != undefined) {
-                        k['sub_category'].forEach(p => {
-                            var chk_sub_cat_index = this.category_list[chk_cat_index]['sub_category'].findIndex(d => d.id == p.id)
-                            if (chk_sub_cat_index == -1) {
-                                this.category_list[chk_cat_index]['sub_category'].push(p)
-                            }
-                        })
+                if (res['next'] == null) {
+                    this.all_product_category.forEach(k => {
+                        var chk_cat_index = this.category_list.findIndex(l => l.id == k.id)
+                        if (chk_cat_index == -1) {
+                            this.category_list.push(k)
+                        }
+                        else if (chk_cat_index != -1 && k['sub_category'] != undefined) {
+                            k['sub_category'].forEach(p => {
+                                var chk_sub_cat_index = this.category_list[chk_cat_index]['sub_category'].findIndex(d => d.id == p.id)
+                                if (chk_sub_cat_index == -1) {
+                                    this.category_list[chk_cat_index]['sub_category'].push(p)
+                                }
+                            })
 
-                    }
+                        }
 
-                })
+                    })
+                }
+
                 console.log(this.category_list)
                 this.visible_key = true
                 this.loader.hide();
+                if (key == 'delete_prod') {
+                    this.feedback.success({
+                        title: 'Product has been deleted successfully',
+                        backgroundColor: new Color("green"),
+                        titleColor: new Color("black"),
+                        position: FeedbackPosition.Bottom,
+                        type: FeedbackType.Custom
+                    });
+                }
+                else if (key == 'delete_cat') {
+                    this.feedback.success({
+                        title: 'Category has been deleted successfully',
+                        backgroundColor: new Color("green"),
+                        titleColor: new Color("black"),
+                        position: FeedbackPosition.Bottom,
+                        type: FeedbackType.Custom
+                    });
+                }
             },
             error => {
                 this.loader.hide();
@@ -355,7 +380,7 @@ export class ProductsComponent implements OnInit {
         var count = +num_arr[num_arr.length - 1]
         if (this.page == count - 1) {
             this.page = count;
-            this.getAppProductList();
+            this.getAppProductList('');
         }
     }
 
@@ -374,38 +399,82 @@ export class ProductsComponent implements OnInit {
         }
     }
 
-    deleteProductCategory(id) {
-        // this.processing = true;
+    deleteProductCategory(category) {
         let data = {
-            is_active: false
+
         }
         this.loader.show(this.lodaing_options);
-        this.CreatedAppService.deleteProductCategory(id, data).subscribe(
+        this.CreatedAppService.deleteProductCategory(category.id, data).subscribe(
             res => {
-                this.loader.hide();
-                this.onNavItemTap('/created-app/' + this.app_id + '/products')
+                console.log(res)
+                this.page = 1;
+                if (category.parent_category_id != 0) {
+                    var cat_index = this.all_product_category.findIndex(x => x.id == category.parent_category_id)
+                    if (cat_index != -1) {
+                        var index = this.all_product_category[cat_index]['sub_category'].findIndex(y => y.id == category.id)
+                        if (index != -1) {
+                            this.all_product_category[cat_index]['sub_category'].splice(index, 1)
+                        }
+                    }
+
+                }
+                else {
+                    var index = this.all_product_category.findIndex(x => x.id == category.id)
+                    if (index != -1) {
+                        this.all_product_category.splice(index, 1)
+                    }
+                }
+
+                this.category_list = [];
+                this.getAppProductList("delete_cat");
             },
             error => {
                 this.loader.hide();
-                // console.log(error)
+                console.log(error)
+                this.feedback.error({
+                    title: error.error.message,
+                    backgroundColor: new Color("red"),
+                    titleColor: new Color("black"),
+                    position: FeedbackPosition.Bottom,
+                    type: FeedbackType.Custom
+                });
             }
         )
     }
 
     deleteProduct(id) {
-        // this.processing = true;
         let data = {
-            is_active: false
+
         }
         this.loader.show(this.lodaing_options);
-        this.CreatedAppService.deleteProduct(id, data).subscribe(
+        this.CreatedAppService.deleteProduct(id, this.force_key, data).subscribe(
             res => {
-                this.loader.hide();
-                this.onNavItemTap('/created-app/' + this.app_id + '/products')
+                console.log(res)
+                this.page = 1;
+                this.category_list = [];
+                this.getAppProductList("delete_prod");
             },
             error => {
                 this.loader.hide();
-                // console.log(error)
+                console.log(error)
+                this.feedback.error({
+                    title: error.error.message,
+                    backgroundColor: new Color("red"),
+                    titleColor: new Color("black"),
+                    position: FeedbackPosition.Bottom,
+                    type: FeedbackType.Custom
+                });
+                dialogs.confirm({
+                    title: "",
+                    message: "Are you sure you want to delete?",
+                    okButtonText: "Yes",
+                    cancelButtonText: "No"
+                }).then(result => {
+                    if (result) {
+                        this.force_key = 1;
+                        this.deleteProduct(id)
+                    }
+                });
             }
         )
     }
