@@ -18,6 +18,7 @@ import { ExploreService } from "../../core/services/explore.service";
 export class PaymentSuccessComponent implements OnInit {
     app_id: string;
     app_details: any;
+    business_name:string
     visible_key: boolean;
     loader = new LoadingIndicator();
     lodaing_options = {
@@ -65,6 +66,7 @@ export class PaymentSuccessComponent implements OnInit {
         this.CreatedAppService.getCreatedAppDetails(id).subscribe(
             res => {
                 this.app_details = res;
+                this.business_name = this.app_details.business_name;
                 this.visible_key = true
                 this.loader.hide();
             },

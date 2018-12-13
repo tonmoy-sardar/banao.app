@@ -11,36 +11,44 @@
         -->
     <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem>
-    <Label class="action-bar-title" [text]="app_details.business_name"></Label>
+    <Label class="action-bar-title" [text]="business_name"></Label>
 </ActionBar>
 <ScrollView>
     <GridLayout columns="*" rows="*" class="page page-content">
         <StackLayout col="0" row="0" class="full-content">
-            <StackLayout class="card-form" *ngIf="visible_key">
-                <StackLayout style="padding-bottom: 5">
-                    <Label class="card-form-heading" text="Subscription Details"></Label>
+            <StackLayout  *ngIf="visible_key">
+                <StackLayout verticalAlignment="center" horizontalAlignment="center">
+                    <AbsoluteLayout width="100%" height="220">
+                        <StackLayout left="0" top="55" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                            <Label class="heading_sec" textWrap="true" height="140" text="Congratulations! Your app has been successfully created." textAlignment="center"></Label>
+                        </StackLayout>
+                        <StackLayout top="0" margin="-5" width="100%" height="120" verticalAlignment="center"
+                            horizontalAlignment="center">
+                            <Image loadMode="async" src="~/images/tick.png" height="100"></Image>
+                        </StackLayout>
+                    </AbsoluteLayout>
                 </StackLayout>
 
-                <StackLayout>
-                    <Label class="card-form-subheading" text="Congratulations! Your app has been successfully created." textWrap="true" textAlignment="center"></Label>
+                <StackLayout class="card-form" verticalAlignment="center" horizontalAlignment="center">
+                    
+                    <StackLayout>
+                        <GridLayout rows="*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
+                            <Label row="0" col="0" text="Business Name" verticalAlignment="center"></Label>
+                            <Label row="0" col="1" textWrap="true" [text]="app_details.business_name" class="body" verticalAlignment="center"></Label>
+                            <Label row="1" col="0" text="Owner's name" verticalAlignment="center"></Label>
+                            <Label row="1" col="1" textWrap="true" [text]="app_details.owner_name" class="body" verticalAlignment="center"></Label>
+                            <Label row="2" col="0" text="Category" verticalAlignment="center"></Label>
+                            <Label row="2" col="1" textWrap="true" [text]="app_details.category" class="body" verticalAlignment="center"></Label>
+                        </GridLayout>
+                    </StackLayout>
 
+                    <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+                    <Label textAlignment="center" fontSize="15" lineHeight="7" text="Now, enjoy the features and make the most of it! You can also visit Banao.partner App to manage your app and make changes."
+                        textWrap="true"></Label> 
+                        <!-- But before these, here’s your app Download Link: -->
+                    <Label textAlignment="center" fontSize="15" lineHeight="10" text="Contact  us on our helpline number 03340074004 for assistance or guidance, any time!"
+                        class="m-t-30" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout>
-                    <GridLayout rows="*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
-                        <Label row="0" col="0" text="Business Name" verticalAlignment="center"></Label>
-                        <Label row="0" col="1" [text]="app_details.business_name" class="body" verticalAlignment="center"></Label>
-                        <Label row="1" col="0" text="Owner's name" verticalAlignment="center"></Label>
-                        <Label row="1" col="1" [text]="app_details.owner_name" class="body" verticalAlignment="center"></Label>
-                        <Label row="2" col="0" text="Category" verticalAlignment="center"></Label>
-                        <Label row="2" col="1" [text]="app_details.category" class="body" verticalAlignment="center"></Label>
-                    </GridLayout>
-                </StackLayout>
-
-                <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
-                <Label textAlignment="center" fontSize="15" lineHeight="10" text="Now, enjoy the features and make the most of it! You can also visit Banao.partner App to manage your app and make changes. But before these, here’s your app Download Link:"
-                    class="m-t-30" textWrap="true"></Label>
-                <Label textAlignment="center" fontSize="15" lineHeight="10" text="to us on our helpline number *********** for assistance or guidance, any time!"
-                    class="m-t-30" textWrap="true"></Label>
             </StackLayout>
         </StackLayout>
     </GridLayout>

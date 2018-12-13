@@ -16,6 +16,8 @@
     <GridLayout columns="*" rows="*" class="page page-content">
         <StackLayout col="0" row="0" class="full-content">
             <StackLayout class="card-form" *ngIf="visible_key">
+
+
                 <StackLayout style="padding-bottom: 5">
                     <Label class="card-form-heading" text="Subscription Details"></Label>
                 </StackLayout>
@@ -26,11 +28,14 @@
                 <StackLayout>
                     <GridLayout rows="*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
                         <Label row="0" col="0" text="Name" verticalAlignment="center"></Label>
-                        <Label row="0" col="1" [text]="subscription_details[0].appmaster_data.business_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="0" col="1" textWrap="true" [text]="subscription_details[0].appmaster_data.business_name"
+                            class="body" verticalAlignment="center"></Label>
                         <Label row="1" col="0" text="Owner's name" verticalAlignment="center"></Label>
-                        <Label row="1" col="1" [text]="subscription_details[0].appmaster_data.owner_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="1" col="1" textWrap="true" [text]="subscription_details[0].appmaster_data.owner_name"
+                            class="body" verticalAlignment="center"></Label>
                         <Label row="2" col="0" text="Category" verticalAlignment="center"></Label>
-                        <Label row="2" col="1" [text]="subscription_details[0].appmaster_data.category" class="body" verticalAlignment="center"></Label>
+                        <Label row="2" col="1" textWrap="true" [text]="subscription_details[0].appmaster_data.category"
+                            class="body" verticalAlignment="center"></Label>
                     </GridLayout>
                 </StackLayout>
 
@@ -41,13 +46,17 @@
                 <StackLayout>
                     <GridLayout rows="*,*,*,*" columns="*,*" class="list-group-item" padding="10" verticalAlignment="center">
                         <Label row="0" col="0" text="Created on" verticalAlignment="center"></Label>
-                        <Label row="0" col="1" [text]="subscription_details[0].created_at | date:'dd-MM-yyyy'" class="body" verticalAlignment="center"></Label>
+                        <Label row="0" col="1" [text]="subscription_details[0].created_at | date:'dd-MM-yyyy'" class="body"
+                            verticalAlignment="center"></Label>
                         <Label row="1" col="0" text="App expiry date" verticalAlignment="center"></Label>
-                        <Label row="1" col="1" [text]="subscription_details[0].valid_until | date:'dd-MM-yyyy'" class="body" verticalAlignment="center"></Label>
+                        <Label row="1" col="1" [text]="subscription_details[0].valid_until | date:'dd-MM-yyyy'" class="body"
+                            verticalAlignment="center"></Label>
                         <Label row="2" col="0" text="Subscription type" verticalAlignment="center"></Label>
-                        <Label row="2" col="1" [text]="subscription_details[0].subscription_type.type_name" class="body" verticalAlignment="center"></Label>
+                        <Label row="2" col="1" [text]="subscription_details[0].subscription_type.type_name" class="body"
+                            verticalAlignment="center"></Label>
                         <Label row="3" col="0" text="Total cost" verticalAlignment="center"></Label>
-                        <Label row="3" col="1" [text]="subscription_details[0].total_cost" class="body" verticalAlignment="center"></Label>
+                        <Label row="3" col="1" [text]="subscription_details[0].total_cost" class="body"
+                            verticalAlignment="center"></Label>
                     </GridLayout>
                 </StackLayout>
             </StackLayout>

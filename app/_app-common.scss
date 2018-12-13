@@ -41,6 +41,13 @@
     margin-top: 5;
     flex-grow: 2;
     vertical-align: top;
+    .heading_sec {
+        background: $background-light;
+        padding: 70 10 20 10;
+        color: $success-dark;
+        font-weight: 600;
+        font-size: 16;
+    }
 }
 
 .boder-color {
@@ -87,7 +94,7 @@
     text-align: left;
     font-size: 20;
     padding-bottom: 5;
-    border-bottom-width: 3;
+    border-bottom-width: 2;
     border-bottom-color: #CCC;
 }
 
@@ -96,7 +103,7 @@
     text-align: left;
     font-size: 17;
     padding-bottom: 5;
-    border-bottom-width: 3;
+    border-bottom-width: 2;
     border-bottom-color: #CCC;
 }
 
