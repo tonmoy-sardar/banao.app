@@ -8,6 +8,11 @@ import { LoadingIndicator } from "nativescript-loading-indicator"
 import { ExploreService } from "../../core/services/explore.service";
 import { ListViewEventData, RadListView, LoadOnDemandListViewEventData } from "nativescript-ui-listview";
 import * as Globals from '../../core/globals';
+import { Menu } from 'nativescript-menu';
+import { Page } from 'tns-core-modules/ui/page/page';
+import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
+import { Color } from "tns-core-modules/color";
+import * as dialogs from "tns-core-modules/ui/dialogs";
 
 @Component({
     selector: "products",
@@ -56,16 +61,22 @@ export class ProductsComponent implements OnInit {
     next_page: string;
     @Input() opened = false;
     img_base_url: string;
+    all_product_category: any = [];
+    private feedback: Feedback;
+    force_key: number = 0;
     constructor(
         private routerExtensions: RouterExtensions,
         private location: Location,
         private exploreService: ExploreService,
         private CreatedAppService: CreatedAppService,
+        public current_page: Page
     ) {
         exploreService.homePageStatus(false);
+        this.feedback = new Feedback();
     }
 
     ngOnInit(): void {
+        this.loader.show(this.lodaing_options);
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         if (full_location.length > 4) {
@@ -73,6 +84,86 @@ export class ProductsComponent implements OnInit {
         }
         this.getAppDetails();
         this.img_base_url = Globals.img_base_url;
+        this.getAllProductCategoryList();
+    }
+
+    parentCatTap(view_id, category) {
+        if (category.products == undefined) {
+            Menu.popup({
+                view: this.current_page.getViewById(view_id),
+                actions: ["Add Sub Category", "Edit Category", "Delete Category"]
+            })
+                .then(value => {
+                    if (value) {
+                        var vString = value.toString()
+                        if (vString == "Add Sub Category") {
+                            this.addSubCategory(category.id)
+                        }
+                        else if (vString == "Edit Category") {
+                            this.editCategory(category.id)
+                        }
+                        else if (vString == "Delete Category") {
+                            this.deleteProductCategory(category)
+                        }
+                    }
+                })
+                .catch(console.log);
+        }
+        else {
+            Menu.popup({
+                view: this.current_page.getViewById(view_id),
+                actions: ["Edit Category", "Delete Category"]
+            })
+                .then(value => {
+                    if (value) {
+                        var vString = value.toString()
+                        if (vString == "Edit Category") {
+                            this.editCategory(category.id)
+                        }
+                        else if (vString == "Delete Category") {
+                            this.deleteProductCategory(category)
+                        }
+                    }
+                })
+                .catch(console.log);
+        }
+
+    }
+
+    subCatTap(view_id, subCategory) {
+        Menu.popup({
+            view: this.current_page.getViewById(view_id),
+            actions: ["Edit Sub Category", "Delete Sub Category"]
+        })
+            .then(value => {
+                if (value) {
+                    var vString = value.toString()
+                    if (vString == "Edit Sub Category") {
+                        this.editSubCategory(subCategory.id)
+                    }
+                    else if (vString == "Delete Sub Category") {
+                        this.deleteProductCategory(subCategory)
+                    }
+                }
+            })
+            .catch(console.log);
+    }
+
+    itemToggle(item: any) {
+        item.opened = !item.opened;
+    }
+
+    getAllProductCategoryList() {
+        this.CreatedAppService.getAllProductCategoryList(this.app_id).subscribe(
+            (res: any[]) => {
+                console.log(res)
+                this.all_product_category = res;
+                this.getAppProductList('')
+            },
+            error => {
+                console.log(error)
+            }
+        )
     }
 
     next() {
@@ -154,58 +245,132 @@ export class ProductsComponent implements OnInit {
     }
 
     getAppDetails() {
-        this.loader.show(this.lodaing_options);
-        this.CreatedAppService.getAppCategoryProductList(this.app_id).subscribe(
+        this.CreatedAppService.getCreatedAppDetails(this.app_id).subscribe(
             res => {
-                // this.next_page = res['next'];
-                // if (this.page == 1) {
-                //     this.category_list = [];
-                // }
-                // this.app_details = res;
-                // var data_list = [];
-                // data_list = this.app_details.app_product_categories;
+                this.app_details = res;
+                if (this.app_details.is_product_service) {
+                    this.serviceType = this.app_details.is_product_service;
+                }
+                else {
+                    this.serviceType = 1
+                }
+                this.app_data.logo = this.app_details.logo;
+                this.app_data.business_name = this.app_details.business_name;
+            },
+            error => {
+                // console.log(error)
+            }
+        )
+    }
 
+    getAppProductList(key) {
+        let params = '';
+        if (this.page > 1) {
+            params = '?page=' + this.page;
+        }
+        this.CreatedAppService.getAppProductList(this.app_id, params).subscribe(
+            res => {
+                this.next_page = res['next'];
+                if (this.page == 1) {
+                    this.category_list = [];
+                }
 
-                // if (this.app_details.is_product_service) {
-                //     this.serviceType = this.app_details.is_product_service;
-                // }
-                // else {
-                //     this.serviceType = 1
-                // }
+                var data_list = [];
+                data_list = res['results'];
 
-                // for (var i = 0; i < data_list.length; i++) {
-                    
-                //     if (i == 0 && this.page == 1) {
-                //         data_list[i]['opened'] = true;
-                //     }
-                //     else {
-                //         data_list[i]['opened'] = false;
-                //     }
+                for (var i = 0; i < data_list.length; i++) {
 
-                //     if (data_list[i]['products'][0].product_image != '') {
-                //         data_list[i]['hasProductImage'] = true;
-                //     }
-                //     else {
-                //         data_list[i]['hasProductImage'] = false;
-                //     }
+                    if (i == 0 && this.page == 1) {
+                        data_list[i]['opened'] = true;
+                    }
+                    else {
+                        data_list[i]['opened'] = false;
+                    }
 
-                //     var cat_index = this.category_list.findIndex(x => x.id == data_list[i].id)
-                //     if (cat_index != -1) {
-                //         data_list[i]['products'].forEach(z => {
-                //             this.category_list[cat_index]['products'].push(z)
-                //         })
-                //     }
-                //     else {
-                //         this.category_list.push(data_list[i])
-                //     }
-                // }
+                    if (data_list[i]['sub_category'] != undefined) {
+                        for (var k = 0; k < data_list[i]['sub_category'].length; k++) {
+                            if (i == 0 && k == 0 && this.page == 1) {
+                                data_list[i]['sub_category'][k]['opened'] = true;
+                            }
+                            else {
+                                data_list[i]['sub_category'][k]['opened'] = false;
+                            }
+                        }
+                    }
+
+                    var cat_index = this.category_list.findIndex(x => x.id == data_list[i].id)
+                    if (cat_index != -1) {
+                        if (data_list[i]['sub_category'] != undefined) {
+                            for (var p = 0; p < data_list[i]['sub_category'].length; p++) {
+                                var Sub_cat_index = this.category_list[cat_index]['sub_category'].findIndex(y => y.id == data_list[i]['sub_category'][p].id)
+                                if (Sub_cat_index != -1) {
+                                    data_list[i]['sub_category'][p]['products'].forEach(z => {
+                                        this.category_list[cat_index]['sub_category'][Sub_cat_index]['products'].push(z)
+                                    })
+                                }
+                                else {
+                                    this.category_list[cat_index]['sub_category'].push(data_list[i]['sub_category'][p])
+                                }
+                            }
+
+                        }
+                        else {
+                            data_list[i]['products'].forEach(m => {
+                                this.category_list[cat_index]['products'].push(m)
+                            })
+                        }
+
+                    }
+                    else {
+                        this.category_list.push(data_list[i])
+                    }
+                }
                 console.log(res)
+                console.log(this.all_product_category)
+                if (res['next'] == null) {
+                    this.all_product_category.forEach(k => {
+                        var chk_cat_index = this.category_list.findIndex(l => l.id == k.id)
+                        if (chk_cat_index == -1) {
+                            this.category_list.push(k)
+                        }
+                        else if (chk_cat_index != -1 && k['sub_category'] != undefined) {
+                            k['sub_category'].forEach(p => {
+                                var chk_sub_cat_index = this.category_list[chk_cat_index]['sub_category'].findIndex(d => d.id == p.id)
+                                if (chk_sub_cat_index == -1) {
+                                    this.category_list[chk_cat_index]['sub_category'].push(p)
+                                }
+                            })
+
+                        }
+
+                    })
+                }
+
+                console.log(this.category_list)
                 this.visible_key = true
                 this.loader.hide();
+                if (key == 'delete_prod') {
+                    this.feedback.success({
+                        title: 'Product has been deleted successfully',
+                        backgroundColor: new Color("green"),
+                        titleColor: new Color("black"),
+                        position: FeedbackPosition.Bottom,
+                        type: FeedbackType.Custom
+                    });
+                }
+                else if (key == 'delete_cat') {
+                    this.feedback.success({
+                        title: 'Category has been deleted successfully',
+                        backgroundColor: new Color("green"),
+                        titleColor: new Color("black"),
+                        position: FeedbackPosition.Bottom,
+                        type: FeedbackType.Custom
+                    });
+                }
             },
             error => {
                 this.loader.hide();
-                console.log(error)
+                // console.log(error)
             }
         )
     }
@@ -215,7 +380,7 @@ export class ProductsComponent implements OnInit {
         var count = +num_arr[num_arr.length - 1]
         if (this.page == count - 1) {
             this.page = count;
-            this.getAppDetails();
+            this.getAppProductList('');
         }
     }
 
@@ -234,40 +399,82 @@ export class ProductsComponent implements OnInit {
         }
     }
 
-    deleteProductCategory(id) {
-        // this.processing = true;
+    deleteProductCategory(category) {
         let data = {
-            is_active: false
+
         }
         this.loader.show(this.lodaing_options);
-        this.CreatedAppService.deleteProductCategory(id, data).subscribe(
+        this.CreatedAppService.deleteProductCategory(category.id, data).subscribe(
             res => {
-                console.log("Success");
-                this.loader.hide();
-                this.onNavItemTap('/created-app/' + this.app_id + '/products')
+                console.log(res)
+                this.page = 1;
+                if (category.parent_category_id != 0) {
+                    var cat_index = this.all_product_category.findIndex(x => x.id == category.parent_category_id)
+                    if (cat_index != -1) {
+                        var index = this.all_product_category[cat_index]['sub_category'].findIndex(y => y.id == category.id)
+                        if (index != -1) {
+                            this.all_product_category[cat_index]['sub_category'].splice(index, 1)
+                        }
+                    }
+
+                }
+                else {
+                    var index = this.all_product_category.findIndex(x => x.id == category.id)
+                    if (index != -1) {
+                        this.all_product_category.splice(index, 1)
+                    }
+                }
+
+                this.category_list = [];
+                this.getAppProductList("delete_cat");
             },
             error => {
                 this.loader.hide();
                 console.log(error)
+                this.feedback.error({
+                    title: error.error.message,
+                    backgroundColor: new Color("red"),
+                    titleColor: new Color("black"),
+                    position: FeedbackPosition.Bottom,
+                    type: FeedbackType.Custom
+                });
             }
         )
     }
 
     deleteProduct(id) {
-        // this.processing = true;
         let data = {
-            is_active: false
+
         }
         this.loader.show(this.lodaing_options);
-        this.CreatedAppService.deleteProduct(id, data).subscribe(
+        this.CreatedAppService.deleteProduct(id, this.force_key, data).subscribe(
             res => {
-                console.log("Success");
-                this.loader.hide();
-                this.onNavItemTap('/created-app/' + this.app_id + '/products')
+                console.log(res)
+                this.page = 1;
+                this.category_list = [];
+                this.getAppProductList("delete_prod");
             },
             error => {
                 this.loader.hide();
                 console.log(error)
+                this.feedback.error({
+                    title: error.error.message,
+                    backgroundColor: new Color("red"),
+                    titleColor: new Color("black"),
+                    position: FeedbackPosition.Bottom,
+                    type: FeedbackType.Custom
+                });
+                dialogs.confirm({
+                    title: "",
+                    message: "Are you sure you want to delete?",
+                    okButtonText: "Yes",
+                    cancelButtonText: "No"
+                }).then(result => {
+                    if (result) {
+                        this.force_key = 1;
+                        this.deleteProduct(id)
+                    }
+                });
             }
         )
     }

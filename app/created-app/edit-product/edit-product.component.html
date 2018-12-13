@@ -18,10 +18,112 @@
 
 
 <ScrollView>
-    <GridLayout columns="*" rows="*" class="page page-content">
-        <StackLayout class="full-content" col="0" row="0">
-            <Label class="page-icon fa" text="&#xf002;"></Label>
-            <Label class="page-placeholder" text="<!-- Page content goes here -->"></Label>
+    <GridLayout columns="*" rows="*" class="page page-content" *ngIf="visible_key">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout style="padding-top:30">
+                <AbsoluteLayout width="50%" height="150">
+                    <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                        <Label class="card-app app-name" text="Product Image" height="80" style="padding-top:40;padding-bottom:10"
+                            textAlignment="center" textWrap="true"></Label>
+                    </StackLayout>
+                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center"
+                        (tap)="pickImage()">
+
+                        <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                            <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="product_image"
+                                    width="70" height="70" actualImageScaleType="fitCenter" roundAsCircle="true"></FrescoDrawee>
+                            </StackLayout>
+                            <Label left="53" backgroundColor="#cb202d" color="#fff" fontSize="10" style="padding: 6"
+                                borderRadius="50%" VerticalAlignment="center" class="fa" text="&#xf030;"></Label>
+                        </AbsoluteLayout>
+                    </StackLayout>
+                </AbsoluteLayout>
+            </StackLayout>
+            <StackLayout class="form card-form" [formGroup]="form" novalidate>
+                <GridLayout rows="auto, auto, auto, auto, auto, auto, auto, auto, auto">
+
+                    <StackLayout row="0">
+                        <Label class="card-form-heading" text="Edit Your Product"></Label>
+                    </StackLayout>
+
+                    <!-- <StackLayout class="input-filld" row="1" *ngIf="parentCategoryList._array.length > 0">
+                        <DropDown #d class="dropdown m-t-10" [items]="parentCategoryList" hint="Select Category"
+                            (selectedIndexChanged)="onCategorychange($event)" borderRadius="2" height="40" fontSize="12"
+                            borderWidth="1" borderColor="#dfdfdf"></DropDown>
+                        <StackLayout *ngIf="parentCategoryError" class="invalid-feedback">
+                            <Label fontSize="8" text="Select Category"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="2" *ngIf="subCategoryList._array.length > 0">
+                        <DropDown #e class="dropdown m-t-10" [items]="subCategoryList" hint="Select Sub Category"
+                            (selectedIndexChanged)="onSubCategorychange($event)" borderRadius="2" height="40" fontSize="12"
+                            borderWidth="1" borderColor="#dfdfdf"></DropDown>
+                        <StackLayout *ngIf="subCategoryError" class="invalid-feedback">
+                            <Label fontSize="8" text="Select Category"></Label>
+                        </StackLayout>
+                    </StackLayout> -->
+
+                    <StackLayout class="input-filld" row="3">
+                        <TextField hint="Product Name" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" formControlName="product_name" [(ngModel)]="product_data.product_name"
+                            [ngClass]="displayFieldCss('product_name')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('product_name')" class="invalid-feedback">
+                            <Label fontSize="8" text="Product Name is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="4">
+                        <TextField hint="Price" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" keyboardType="number" formControlName="price" [(ngModel)]="product_data.price"
+                            [ngClass]="displayFieldCss('price')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('price')" class="invalid-feedback">
+                            <Label fontSize="8" text="Price is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="5">
+                        <TextField hint="Discounted Price" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" keyboardType="number" formControlName="discounted_price" [(ngModel)]="product_data.discounted_price"
+                            [ngClass]="displayFieldCss('discounted_price')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('discounted_price')" class="invalid-feedback">
+                            <Label fontSize="8" text="Discounted price is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="6">
+                        <TextField hint="Packing Charges" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" keyboardType="number" formControlName="packing_charges" [(ngModel)]="product_data.packing_charges"
+                            [ngClass]="displayFieldCss('packing_charges')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('packing_charges')" class="invalid-feedback">
+                            <Label fontSize="8" text="Packing charges is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                    <StackLayout class="input-filld" row="7">
+                        <TextField hint="Tags" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="next" formControlName="tags" [(ngModel)]="product_data.tags" [ngClass]="displayFieldCss('tags')"></TextField>
+                        <StackLayout *ngIf="isFieldValid('tags')" class="invalid-feedback">
+                            <Label fontSize="8" text="Tags is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+
+
+                    <StackLayout class="input-filld" row="8">
+                        <TextView hint="Description" class="input input-border cyan-border  m-t-10 card-form-field"
+                            returnKeyType="done" formControlName="description" [(ngModel)]="product_data.description"
+                            [ngClass]="displayFieldCss('description')"></TextView>
+                        <StackLayout *ngIf="isFieldValid('description')" class="invalid-feedback">
+                            <Label fontSize="8" text="Description is required"></Label>
+                        </StackLayout>
+                    </StackLayout>
+
+                </GridLayout>
+
+                <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Update" (tap)="updateProduct()"></Button>
+            </StackLayout>
         </StackLayout>
     </GridLayout>
 </ScrollView>

@@ -41,7 +41,7 @@
                                         class="min_status_sec">
                                         <Label class="heading" text="Payment Type" textWrap="true" verticalAlignment="center"
                                             horizontalAlignment="center" row="0" col="0"></Label>
-                                        <Label class="title" [text]="order.payment_type == 0 ? 'COD' : 'Paytm'"
+                                        <Label class="title" [text]="order.payment_type == 1 ? 'COD' : 'Paytm'"
                                             textWrap="true" verticalAlignment="center" horizontalAlignment="center" row="1"
                                             col="0"></Label>
                                         <Label class="heading" text="Payment Status" textWrap="true" verticalAlignment="center"
@@ -92,7 +92,7 @@
                                     <StackLayout class="heading_sec" row="0">
                                         <Label text="Total" textWrap="true"></Label>
                                     </StackLayout>
-                                    <GridLayout columns="*,*" rows="*,*,*,*,*,*,*" row="1">
+                                    <GridLayout columns="*,*" rows="*,*,*,*,*,*,*,*" row="1">
                                         <Label row="0" col="0" horizontalAlignment="left" verticalAlignment="center"
                                             text="Total price" class="ttl"></Label>
                                         <Label row="0" col="1" horizontalAlignment="right" verticalAlignment="center"
@@ -106,19 +106,23 @@
                                         <Label row="4" col="0" horizontalAlignment="left" verticalAlignment="center"
                                             text="Payment Type" class="ttl"></Label>
                                         <Label row="4" col="1" horizontalAlignment="right" verticalAlignment="center"
-                                            class="fa price" [text]="order.payment_type == 0 ? 'Cash On Delivery' : 'Paytm'"></Label>
+                                            class="fa price" [text]="order.payment_type == 1 ? 'Cash On Delivery' : 'Paytm'"></Label>
                                         <StackLayout row="5" colSpan="2" class="hr-line"></StackLayout>
                                         <Label row="6" col="0" horizontalAlignment="left" verticalAlignment="center"
                                             text="Payment Status" class="ttl"></Label>
                                         <Label row="6" col="1" horizontalAlignment="right" verticalAlignment="center"
                                             class="fa price" [text]="order.is_paid ? 'Paid' : 'Not Paid'"></Label>
+                                        <Label row="7" col="0" horizontalAlignment="left" verticalAlignment="center"
+                                            text="Order Status" class="ttl" *ngIf="order.is_cancelled == 1"></Label>
+                                        <Label row="7" col="1" horizontalAlignment="right" verticalAlignment="center"
+                                            class="fa price" text="Cancelled" *ngIf="order.is_cancelled == 1"></Label>
                                     </GridLayout>
                                 </GridLayout>
                                 <GridLayout rows="*,*" class="customer_sec">
                                     <StackLayout class="heading_sec" row="0">
                                         <Label text="Customer Info" textWrap="true"></Label>
                                     </StackLayout>
-                                    <GridLayout columns="*,*" rows="*,*,*,*,*," row="1">
+                                    <GridLayout columns="*,auto" rows="*,*,*,*,*," row="1">
                                         <Label row="0" col="0" horizontalAlignment="left" verticalAlignment="center"
                                             text="Name" class="ttl"></Label>
                                         <Label row="0" col="1" horizontalAlignment="right" verticalAlignment="center"
@@ -150,7 +154,7 @@
                                         </Label>
                                     </StackLayout>
                                 </GridLayout>
-                                <GridLayout columns="*,*" rows="*" class="action_sec" *ngIf="!order?.is_paid || !order?.delivery_status">
+                                <GridLayout columns="*,*" rows="*" class="action_sec" *ngIf="(!order?.is_paid || !order?.delivery_status) && order?.is_cancelled == 0">
                                     <Button class="btn btn-primary delivered_btn" padding="10" borderRadius="30" text="Make Delivered"
                                         (tap)="updateCustomerOrderDelivery(order.id)" horizontalAlignment="center"
                                         verticalAlignment="center" row="0" col="0" *ngIf="!order?.delivery_status">

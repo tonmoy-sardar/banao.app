@@ -18,15 +18,21 @@ export class CreatedAppService {
     return this.http.get(Globals.apiEndpoint + 'app_all_details/' + id + '/')
   }
 
-  getAppCategoryProductList(id) {
-    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/')
+  getAppProductList(id, params) {
+    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/' + params)
   }
 
   getAllProductCategoryList(id) {
-    return this.http.get(Globals.apiEndpoint + 'find_app_products_subcategory/' + id + '/')
+    return this.http.get(Globals.apiEndpoint + 'all_category_subcategory_list/' + id + '/')
   }
 
-  // http://132.148.147.239:8001/find_app_products_subcategory/108/?search=b
+  getSubCategoryListByCategory(app_id, cat_id) {
+    return this.http.get(Globals.apiEndpoint + 'all_category_subcategory_list/' + app_id + '/?search=' + cat_id)
+  }
+
+  getParentCategoryList(id) {
+    return this.http.get(Globals.apiEndpoint + 'parent_categoris/' + id + '/')
+  }
 
   getCategoryList(): Observable<any> {
     return this.http.get(Globals.apiEndpoint + 'all_categories/')
@@ -64,8 +70,8 @@ export class CreatedAppService {
     return this.http.post(Globals.apiEndpoint + 'create_app_products/', data)
   }
 
-  deleteProduct(id, data) {
-    return this.http.put(Globals.apiEndpoint + 'delete_app_products/' + id + '/', data)
+  deleteProduct(id, force_key, data) {
+    return this.http.put(Globals.apiEndpoint + 'delete_app_products/' + id + '/' + force_key + '/', data)
   }
 
   getDesignationDropdown() {
