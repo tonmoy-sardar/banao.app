@@ -17,7 +17,15 @@ import { Location } from '@angular/common';
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 import { ExploreService } from "../../core/services/explore.service";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: 'edit-owner-info',
     moduleId: module.id,
@@ -81,6 +89,7 @@ export class EditOwnerInfoComponent implements OnInit {
             hideBezel: true,
         }
     }
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private route: ActivatedRoute,
         private CreatedAppService: CreatedAppService,
@@ -89,13 +98,20 @@ export class EditOwnerInfoComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: RouterExtensions,
         private location: Location,
-        private exploreService: ExploreService
+        private exploreService: ExploreService,
+        private page: Page
     ) {
         this.feedback = new Feedback();
         exploreService.homePageStatus(false);
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         this.form = this.formBuilder.group({
@@ -109,6 +125,31 @@ export class EditOwnerInfoComponent implements OnInit {
 
         this.getDesignationDropdown();
     }
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
+    
+      errorNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
 
     onchange(args: SelectedIndexChangedEventData) {
         console.log(`Drop Down selected index changed from ${args.oldIndex} to ${args.newIndex}. New value is "${this.designations.getValue(
@@ -198,13 +239,8 @@ export class EditOwnerInfoComponent implements OnInit {
         this.CreatedAppService.editOwnerLogo(data).subscribe(
             res => {
                 this.loader.hide();
-                this.feedback.success({
-                    title: 'Owner image updated successfully',
-                    backgroundColor: new Color("green"),
-                    titleColor: new Color("black"),
-                    position: FeedbackPosition.Bottom,
-                    type: FeedbackType.Custom
-                  });
+                this.successNotification("Owner image updated successfully");
+               
                 this.getAppOwnerDetails(this.app_id);
 
             },
@@ -232,13 +268,8 @@ export class EditOwnerInfoComponent implements OnInit {
             this.CreatedAppService.editOwnerInfo(this.owner_data).subscribe(
                 res => {
                     this.loader.hide();
-                    this.feedback.success({
-                        title: 'Owner details have been successfully updated',
-                        backgroundColor: new Color("green"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                      });
+                    this.successNotification("Owner details have been successfully updated");
+                    
                     this.router.navigate(['/created-app/' + this.app_id+'/manage-app'])
                     // this.getAppOwnerDetails(res['id'])
                 },

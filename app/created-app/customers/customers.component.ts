@@ -10,7 +10,15 @@ import { CustomerService } from "../../core/services/customer.service"
 import { LoadingIndicator } from "nativescript-loading-indicator";
 import { Location } from '@angular/common';
 import { ExploreService } from "../../core/services/explore.service";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: 'customers',
     moduleId: module.id,
@@ -47,6 +55,7 @@ export class CustomersComponent implements OnInit {
             hideBezel: true,
         }
     }
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private route: ActivatedRoute,
         private CreatedAppService: CreatedAppService,
@@ -54,12 +63,19 @@ export class CustomersComponent implements OnInit {
         private router: RouterExtensions,
         private customerService: CustomerService,
         private location: Location,
-        private exploreService: ExploreService
+        private exploreService: ExploreService,
+        private page: Page
     ) {
         exploreService.homePageStatus(false);
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         this.getCustomerList(this.app_id);

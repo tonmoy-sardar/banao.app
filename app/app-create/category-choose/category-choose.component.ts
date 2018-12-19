@@ -1,3 +1,4 @@
+
 import { Component, OnInit } from '@angular/core';
 import * as app from "application";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -10,7 +11,15 @@ import { SecureStorage } from "nativescript-secure-storage";
 import { ExploreService } from "../../core/services/explore.service";
 import { getString, setString, getBoolean, setBoolean, clear } from "application-settings";
 import * as Globals from '../../core/globals';
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 
 @Component({
     selector: "category-choose",
@@ -50,17 +59,24 @@ export class CategoryChooseComponent implements OnInit {
             hideBezel: true,
         }
     }
-
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private exploreService: ExploreService,
         private createdAppService: CreatedAppService,
         private router: RouterExtensions,
+        private page: Page
     ) {
         this.secureStorage = new SecureStorage();
+        this.cfalertDialog = new CFAlertDialog();
         //exploreService.homePageStatus(false);
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         this.user_id = getString('user_id');
        
         this.getCategoryList();

@@ -14,7 +14,14 @@ var Globals = require("../app/core/globals");
 import * as Connectivity from "tns-core-modules/connectivity";
 import { Color } from "tns-core-modules/color";
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
 
 @Component({
     selector: "ns-app",
@@ -35,7 +42,7 @@ export class AppComponent implements OnInit {
     logged_user_contact_no: string;
     logged_user_profile_image: string;
     img_base_url;
-
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private router: Router, 
         private routerExtensions: RouterExtensions,
@@ -53,6 +60,7 @@ export class AppComponent implements OnInit {
             }
         });
         loginService.getLoginStatus.subscribe(status => this.changeLoginStatus(status))
+        this.cfalertDialog = new CFAlertDialog();
     }
 
 
@@ -84,28 +92,45 @@ export class AppComponent implements OnInit {
                 this.connectionType = this.connectionToString(connectionType);
                 if (this.connectionType == "0" && !this.is_success) {
                     this.is_success = true;
-                    this.feedback.error({
-                        title: "No Connection!",
-                        backgroundColor: new Color("red"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                    });                    
+
+                    this.errorNotification('No Connection!');
+                                   
                 }
                 else if(this.connectionType == "1" && this.is_success){
                     this.is_success = false;
-                    this.feedback.success({
-                        title: 'Network Connected',
-                        backgroundColor: new Color("green"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                    });
+                    this.successNotification('Network Connected');
+                    
                 }
 
             });
         });
     }
+
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
+    
+      errorNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
 
     connectionToString(connectionType: number): string {
         switch (connectionType) {

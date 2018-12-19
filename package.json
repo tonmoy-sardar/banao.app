@@ -26,6 +26,7 @@
     "nativescript-accordion": "^6.0.0-beta.1",
     "nativescript-angular": "~6.0.6",
     "nativescript-camera": "^4.1.0",
+    "nativescript-cfalert-dialog": "^1.0.12",
     "nativescript-checkbox": "^3.0.3",
     "nativescript-drop-down": "^4.0.1",
     "nativescript-feedback": "^1.3.1",

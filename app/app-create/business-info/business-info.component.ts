@@ -14,7 +14,15 @@ import * as Globals from '../../core/globals';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { ModalDialogService } from "nativescript-angular/directives/dialogs";
 import { UploadSingleImageModalComponent } from "../../core/component/upload-single-image-modal/upload-single-image-modal.component";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: "business-info",
     moduleId: module.id,
@@ -63,6 +71,7 @@ export class BusinessInfoComponent implements OnInit {
     radioOptions?: Array<RadioOption>;
     businessTypeOptions: Array<RadioOption>;
     is_product_service: number = 0;
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private exploreService: ExploreService,
         private createdAppService: CreatedAppService,
@@ -70,11 +79,18 @@ export class BusinessInfoComponent implements OnInit {
         private router: RouterExtensions,
         private modal: ModalDialogService,
         private vcRef: ViewContainerRef,
+        private page: Page
     ) {
         this.secureStorage = new SecureStorage();
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         this.user_id = getString('user_id');
         this.form = this.formBuilder.group({
             business_name: ['', Validators.required],
@@ -91,6 +107,31 @@ export class BusinessInfoComponent implements OnInit {
 
     }
 
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
+    
+      errorNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
     pickImage() {
         this.modal.showModal(UploadSingleImageModalComponent, this.options).then(res => {
 

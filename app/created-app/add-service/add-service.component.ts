@@ -12,7 +12,15 @@ import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import { Color } from "tns-core-modules/color";
 import { ExploreService } from "../../core/services/explore.service";
 import { SelectedIndexChangedEventData, ValueList } from "nativescript-drop-down";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: "add-service",
     moduleId: module.id,
@@ -73,6 +81,7 @@ export class AddServiceComponent implements OnInit {
     subCategoryList: ValueList<string>;
     subCategoryError: boolean;
     isSubCategory: boolean;
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private routerExtensions: RouterExtensions,
         private CreatedAppService: CreatedAppService,
@@ -80,13 +89,22 @@ export class AddServiceComponent implements OnInit {
         private location: Location,
         private modal: ModalDialogService,
         private vcRef: ViewContainerRef,
-        private exploreService: ExploreService
+        private exploreService: ExploreService,
+        private page: Page
     ) {
         this.feedback = new Feedback();
         exploreService.homePageStatus(false);
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit(): void {
+
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
+
         this.loader.show(this.lodaing_options);
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
@@ -107,6 +125,31 @@ export class AddServiceComponent implements OnInit {
         this.getParentCategoryList()
     }
 
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
+    
+      errorNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
     getParentCategoryList() {
         this.CreatedAppService.getParentCategoryList(this.app_id).subscribe(
             (res: any[]) => {
@@ -211,13 +254,15 @@ export class AddServiceComponent implements OnInit {
                             this.onNavItemTap('/created-app/' + this.app_id + '/products' + '/new')
                         }
                         else {
-                            this.feedback.success({
-                                title: 'Product added successfully',
-                                backgroundColor: new Color("green"),
-                                titleColor: new Color("black"),
-                                position: FeedbackPosition.Bottom,
-                                type: FeedbackType.Custom
-                            });
+
+                            this.successNotification("Service added successfully");
+                            // this.feedback.success({
+                            //     title: 'Product added successfully',
+                            //     backgroundColor: new Color("green"),
+                            //     titleColor: new Color("black"),
+                            //     position: FeedbackPosition.Bottom,
+                            //     type: FeedbackType.Custom
+                            // });
                             this.onNavItemTap('/created-app/' + this.app_id + '/products')
                         }
 

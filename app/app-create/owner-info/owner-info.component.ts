@@ -15,7 +15,15 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { SelectedIndexChangedEventData, ValueList } from "nativescript-drop-down";
 import { LocationModalComponent } from '../../core/component/location-modal/location-modal.component';
 import { UploadSingleImageModalComponent } from "../../core/component/upload-single-image-modal/upload-single-image-modal.component";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: "owner-info",
     moduleId: module.id,
@@ -74,7 +82,7 @@ export class OwnerInfoComponent implements OnInit {
             hideBezel: true,
         }
     }
-
+    private cfalertDialog: CFAlertDialog;
     owner_pic: string = '';
     public selectedIndex_d = 1;
     public items: Array<string>;
@@ -85,12 +93,19 @@ export class OwnerInfoComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: RouterExtensions,
         private vcRef: ViewContainerRef,
+        private page: Page
     ) {
         this.secureStorage = new SecureStorage();
+        this.cfalertDialog = new CFAlertDialog();
 
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         this.user_id = getString('user_id');
         this.form = this.formBuilder.group({
             owner_name: ['', Validators.required],

@@ -4,7 +4,6 @@ import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 
 import { Router } from "@angular/router";
 
-import { Page } from "tns-core-modules/ui/page";
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { LoginService } from "../core/services/login.service";
 import { getString, setString, getBoolean, setBoolean, clear } from "application-settings";
@@ -12,6 +11,15 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 import { LoadingIndicator } from "nativescript-loading-indicator"
+import {
+  CFAlertDialog,
+  DialogOptions,
+  CFAlertGravity,
+  CFAlertActionAlignment,
+  CFAlertActionStyle,
+  CFAlertStyle,
+} from 'nativescript-cfalert-dialog';
+import { Page } from "tns-core-modules/ui/page";
 
 @Component({
   selector: "signup",
@@ -49,6 +57,7 @@ export class SignupComponent implements OnInit {
   otpForm: FormGroup;
   showOtpSection = false;
   otp: string;
+  private cfalertDialog: CFAlertDialog;
   constructor(
     private page: Page,
     private router: RouterExtensions,
@@ -57,9 +66,15 @@ export class SignupComponent implements OnInit {
   ) {
     //this.page.actionBarHidden = true;
     this.feedback = new Feedback();
+    this.cfalertDialog = new CFAlertDialog();
   }
 
   ngOnInit() {
+    this.page.on("loaded", (args) => {
+      if (this.page.android) {
+        this.page.android.setFitsSystemWindows(true);
+      }
+    });
 
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
@@ -80,6 +95,32 @@ export class SignupComponent implements OnInit {
     });
 
   }
+
+  successNotification = function (msg) {
+    let options: DialogOptions = {
+      dialogStyle: CFAlertStyle.NOTIFICATION,
+      title: '',
+      message: msg,
+      backgroundBlur: true,
+      cancellable: true,
+      messageColor: '#008000',
+    };
+    this.cfalertDialog.show(options);
+    setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+  };
+
+  errorNotification = function (msg) {
+    let options: DialogOptions = {
+      dialogStyle: CFAlertStyle.NOTIFICATION,
+      title: '',
+      message: msg,
+      backgroundBlur: true,
+      cancellable: true,
+      messageColor: '#DC1431',
+    };
+    this.cfalertDialog.show(options);
+    setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+  };
 
 
   markFormGroupTouched(formGroup: FormGroup) {
@@ -103,13 +144,7 @@ export class SignupComponent implements OnInit {
         error => {
           this.loader.hide();
           console.log(error)
-          this.feedback.error({
-            title: error.error.message,
-            backgroundColor: new Color("red"),
-            titleColor: new Color("black"),
-            position: FeedbackPosition.Bottom,
-            type: FeedbackType.Custom
-          });
+          this.errorNotification(error.error.message);
         }
       )
     }
@@ -127,13 +162,8 @@ export class SignupComponent implements OnInit {
       this.loginService.signup(this.form.value).subscribe(
         res => {
          
-          this.feedback.success({
-            title: 'Your account is successfully created',
-            backgroundColor: new Color("green"),
-            titleColor: new Color("black"),
-            position: FeedbackPosition.Bottom,
-            type: FeedbackType.Custom
-          });
+          this.successNotification("Your account is successfully created");
+          
           
           this.loader.hide();
           
@@ -153,13 +183,9 @@ export class SignupComponent implements OnInit {
       )
     }
     else {
-      this.feedback.error({
-        title: 'Please Enter Valid OTP',
-        backgroundColor: new Color("red"),
-        titleColor: new Color("black"),
-        position: FeedbackPosition.Bottom,
-        type: FeedbackType.Custom
-      });
+
+      this.errorNotification('Please Enter Valid OTP');
+      
 
     }
   }
@@ -174,13 +200,7 @@ export class SignupComponent implements OnInit {
       error => {
         this.loader.hide();
         console.log(error)
-        this.feedback.error({
-          title: error.error.message,
-          backgroundColor: new Color("red"),
-          titleColor: new Color("black"),
-          position: FeedbackPosition.Bottom,
-          type: FeedbackType.Custom
-        });
+        this.errorNotification(error.error.message);
       }
     )
   }

@@ -11,6 +11,15 @@ require("nativescript-websockets");
 import { LoadingIndicator } from "nativescript-loading-indicator";
 import { NotificationService } from "../../core/services/notification.service";
 import { ExploreService } from "../../core/services/explore.service";
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 
 @Component({
     selector: 'chat',
@@ -50,7 +59,7 @@ export class ChatComponent implements OnInit, OnDestroy {
             hideBezel: true,
         }
     }
-
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private route: ActivatedRoute,
         private location: Location,
@@ -59,14 +68,21 @@ export class ChatComponent implements OnInit, OnDestroy {
         private zone: NgZone,
         private CreatedAppService: CreatedAppService,
         private notificationService: NotificationService,
-        private exploreService: ExploreService
+        private exploreService: ExploreService,
+        private page: Page
     ) {
         exploreService.homePageStatus(false);
         this.messages = [];
         this.message = "";
+        this.cfalertDialog = new CFAlertDialog();
     }
     customer_device_token: string;
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         this.user_id = this.route.snapshot.params["user"];

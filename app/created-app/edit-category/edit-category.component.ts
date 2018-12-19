@@ -9,7 +9,15 @@ import { Location } from '@angular/common';
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 import { ExploreService } from "../../core/services/explore.service";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+} from 'nativescript-cfalert-dialog';
+import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: "edit-category",
     moduleId: module.id,
@@ -55,18 +63,26 @@ export class EditCategoryComponent implements OnInit {
     key: string = '';
     product_category_id: string;
     product_category_details: any;
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private routerExtensions: RouterExtensions,
         private CreatedAppService: CreatedAppService,
         private formBuilder: FormBuilder,
         private location: Location,
-        private exploreService: ExploreService
+        private exploreService: ExploreService,
+        private page: Page
     ) {
         this.feedback = new Feedback();
         exploreService.homePageStatus(false);
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit(): void {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+                this.page.android.setFitsSystemWindows(true);
+            }
+        });
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         this.product_category_id = full_location[4].trim();
@@ -98,6 +114,31 @@ export class EditCategoryComponent implements OnInit {
         )
     }
 
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+    };
+
+    errorNotification = function (msg) {
+        let options: DialogOptions = {
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+    };
     updateProductCategory() {
         if (this.form.valid) {
             this.loader.show(this.lodaing_options);
@@ -109,13 +150,8 @@ export class EditCategoryComponent implements OnInit {
                         this.onNavItemTap('/created-app/' + this.app_id + '/products' + '/new')
                     }
                     else {
-                        this.feedback.success({
-                            title: 'Category updated successfully',
-                            backgroundColor: new Color("green"),
-                            titleColor: new Color("black"),
-                            position: FeedbackPosition.Bottom,
-                            type: FeedbackType.Custom
-                        });
+                        this.successNotification("Category updated successfully");
+
                         this.onNavItemTap('/created-app/' + this.app_id + '/products')
                     }
 
@@ -130,7 +166,7 @@ export class EditCategoryComponent implements OnInit {
         else {
             this.markFormGroupTouched(this.form)
         }
-    }    
+    }
 
     markFormGroupTouched(formGroup: FormGroup) {
         (<any>Object).values(formGroup.controls).forEach(control => {

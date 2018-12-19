@@ -20,7 +20,15 @@ import { FORMS_DIRECTIVES } from 'nativescript-angular/forms';
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 import { ExploreService } from "../../core/services/explore.service";
-
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+  } from 'nativescript-cfalert-dialog';
+  import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: 'edit-social-media',
     moduleId: module.id,
@@ -64,6 +72,7 @@ export class EditSocialMediaComponent implements OnInit {
         }
     ]
     private feedback: Feedback;
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private route: ActivatedRoute,
         private CreatedAppService: CreatedAppService,
@@ -72,19 +81,51 @@ export class EditSocialMediaComponent implements OnInit {
         private formBuilder: FormBuilder,
         private router: RouterExtensions,
         private location: Location,
-        private exploreService: ExploreService
+        private exploreService: ExploreService,
+        private page: Page
     ) {
         exploreService.homePageStatus(false);
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+              this.page.android.setFitsSystemWindows(true);
+            }
+          });
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         this.getAppSocialMedia(this.app_id);
         this.feedback = new Feedback();
     }
 
-
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
+    
+      errorNotification = function (msg) {
+        let options: DialogOptions = {
+          dialogStyle: CFAlertStyle.NOTIFICATION,
+          title: '',
+          message: msg,
+          backgroundBlur: true,
+          cancellable: true,
+          messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+      };
+    
 
     getSocialMediaType() {
 
@@ -171,13 +212,8 @@ export class EditSocialMediaComponent implements OnInit {
         this.CreatedAppService.updateAppSocialMedia(data).subscribe(
             res => {
                 this.loader.hide();
-                this.feedback.success({
-                    title: 'Social media links have been successfully updated',
-                    backgroundColor: new Color("green"),
-                    titleColor: new Color("black"),
-                    position: FeedbackPosition.Bottom,
-                    type: FeedbackType.Custom
-                });
+                this.successNotification("Social media links have been successfully updated");
+               
                 this.router.navigate(['/created-app/' + this.app_id + '/manage-app'])
             },
             error => {

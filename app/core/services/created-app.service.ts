@@ -148,6 +148,13 @@ export class CreatedAppService {
     return this.http.get(Globals.apiEndpoint + 'get_payment_details/?app_id=' + app_id + '&order_amount=' + order_amount + '&type=app' + '&customer_email=' + customer_email)
   }
 
+  freeSubscription(data): Observable<any> {
+   
+    return this.http.post(Globals.apiEndpoint + 'free_subscription/', data)
+  }
+
+
+
   appSubscription(data) {
     return this.http.post(Globals.apiEndpoint + 'app_subscription/', data)
   }

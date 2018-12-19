@@ -35,7 +35,7 @@
                         </StackLayout>
                     </StackLayout>
 
-                    <StackLayout row="2" class="input-filld">
+                    <StackLayout row="2" class="input-filld" *ngIf="subscription_type != 4">
                         <Label class="section_heading" text="Item Details"></Label>
                         <GridLayout columns="*,*" rows="*" *ngFor="let item of priceList" orientation="vertical" verticalAlignment="center" class="form">
                             <Label row="0" col="0" [text]="item.title" verticalAlignment="center"></Label>
@@ -45,7 +45,7 @@
                                 (blur)="totalPriceChange($event)"></TextField>
                         </GridLayout>
                     </StackLayout>
-                    <StackLayout row="3">
+                    <StackLayout row="3" *ngIf="subscription_type != 4">
                         <StackLayout width="100%" textAlignment="left" class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
                         <StackLayout>
                             <Label text="Have a coupon?" textAlignment="left"></Label>
@@ -100,7 +100,10 @@
                             <CheckBox #terms text="Agree" checked="false" row="0" col="0" verticalAlignment="center" (tap)="toggleTermsCheck()"></CheckBox>
                             <Label text=" Terms & Conditions" (tap)="openTermsModal()" row="0" col="1" verticalAlignment="center"></Label>
                         </GridLayout>
-                        <Button class="btn btn-primary simple-btn" text="Proceed To Pay!" (tap)="pay()"></Button>
+
+                        
+                        <Button *ngIf="subscription_type != 4" class="btn btn-primary simple-btn" text="Proceed To Pay!" (tap)="pay()"></Button>
+                        <Button  *ngIf="subscription_type == 4"class="btn btn-primary simple-btn" text="Proceed" (tap)="proceed()"></Button>
                     </StackLayout>
                 </GridLayout>
             </StackLayout>

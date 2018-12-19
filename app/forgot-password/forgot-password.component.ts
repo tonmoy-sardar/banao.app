@@ -12,6 +12,14 @@ import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback"
 import { Color } from "tns-core-modules/color";
 import { LoadingIndicator } from "nativescript-loading-indicator";
 
+import {
+  CFAlertDialog,
+  DialogOptions,
+  CFAlertGravity,
+  CFAlertActionAlignment,
+  CFAlertActionStyle,
+  CFAlertStyle,
+} from 'nativescript-cfalert-dialog';
 
 
 @Component({
@@ -34,7 +42,7 @@ export class ForgotPasswordComponent implements OnInit {
   private feedback: Feedback;
   loader = new LoadingIndicator();
   otp;
-
+  
   lodaing_options = {
     message: 'Loading...',
     progress: 0.65,
@@ -59,7 +67,7 @@ export class ForgotPasswordComponent implements OnInit {
     }
   }
 
-
+  private cfalertDialog: CFAlertDialog;
   constructor(
     private page: Page,
     private router: RouterExtensions,
@@ -68,9 +76,15 @@ export class ForgotPasswordComponent implements OnInit {
   ) {
     //this.page.actionBarHidden = true;
     this.feedback = new Feedback();
+    this.cfalertDialog = new CFAlertDialog();
   }
 
   ngOnInit() {
+    this.page.on("loaded", (args) => {
+      if (this.page.android) {
+        this.page.android.setFitsSystemWindows(true);
+      }
+    });
     this.form = this.formBuilder.group({
       contact_no: ['', [
         Validators.required,
@@ -89,6 +103,32 @@ export class ForgotPasswordComponent implements OnInit {
     });
 
   }
+
+  successNotification = function (msg) {
+    let options: DialogOptions = {
+      dialogStyle: CFAlertStyle.NOTIFICATION,
+      title: '',
+      message: msg,
+      backgroundBlur: true,
+      cancellable: true,
+      messageColor: '#008000',
+    };
+    this.cfalertDialog.show(options);
+    setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+  };
+
+  errorNotification = function (msg) {
+    let options: DialogOptions = {
+      dialogStyle: CFAlertStyle.NOTIFICATION,
+      title: '',
+      message: msg,
+      backgroundBlur: true,
+      cancellable: true,
+      messageColor: '#DC1431',
+    };
+    this.cfalertDialog.show(options);
+    setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+  };
 
   isFieldValid(form: FormGroup, field: string) {
     return !form.get(field).valid && (form.get(field).dirty || form.get(field).touched);
@@ -118,13 +158,8 @@ export class ForgotPasswordComponent implements OnInit {
 
           this.loader.hide();
           console.log(error)
-          this.feedback.error({
-            title: error.error.msg,
-            backgroundColor: new Color("red"),
-            titleColor: new Color("black"),
-            position: FeedbackPosition.Bottom,
-            type: FeedbackType.Custom
-          });
+          this.errorNotification(error.error.msg);
+          
         }
       )
     }
@@ -149,13 +184,7 @@ export class ForgotPasswordComponent implements OnInit {
 
         this.loader.hide();
         console.log(error)
-        this.feedback.error({
-          title: error.error.msg,
-          backgroundColor: new Color("red"),
-          titleColor: new Color("black"),
-          position: FeedbackPosition.Bottom,
-          type: FeedbackType.Custom
-        });
+        this.errorNotification(error.error.msg);
       }
     )
   }
@@ -167,13 +196,8 @@ export class ForgotPasswordComponent implements OnInit {
       this.otp_check = 1;
     }
     else {
-      this.feedback.error({
-        title: 'Please Enter Valid OTP',
-        backgroundColor: new Color("red"),
-        titleColor: new Color("black"),
-        position: FeedbackPosition.Bottom,
-        type: FeedbackType.Custom
-      });
+      this.errorNotification('Please Enter Valid OTP');
+      
 
     }
   }
@@ -181,13 +205,9 @@ export class ForgotPasswordComponent implements OnInit {
 
     if (this.passwordForm.valid) {
       if (this.passwordForm.value.conf_password != this.passwordForm.value.password) {
-        this.feedback.error({
-          title: 'Password & Confirm Password are not same',
-          backgroundColor: new Color("red"),
-          titleColor: new Color("black"),
-          position: FeedbackPosition.Bottom,
-          type: FeedbackType.Custom
-        });
+
+        this.errorNotification('Password & Confirm Password are not same');
+        
       }
       else {
         this.loader.show(this.lodaing_options);
@@ -199,13 +219,8 @@ export class ForgotPasswordComponent implements OnInit {
         this.loginService.userForgetPasswordUpdate(data).subscribe(
           res => {
             this.loader.hide();
-            this.feedback.success({
-              title: 'Password has been successfully changed. ',
-              backgroundColor: new Color("green"),
-              titleColor: new Color("black"),
-              position: FeedbackPosition.Bottom,
-              type: FeedbackType.Custom
-            });
+            this.successNotification("Password has been successfully changed.");
+            
 
             var navItemRoute = '/login'
             this.router.navigate([navItemRoute], {
@@ -221,13 +236,7 @@ export class ForgotPasswordComponent implements OnInit {
 
             this.loader.hide();
             console.log(error)
-            this.feedback.error({
-              title: error.error.msg,
-              backgroundColor: new Color("red"),
-              titleColor: new Color("black"),
-              position: FeedbackPosition.Bottom,
-              type: FeedbackType.Custom
-            });
+            this.errorNotification(error.error.msg);
           }
         )
 

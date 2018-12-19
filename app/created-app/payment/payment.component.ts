@@ -21,6 +21,15 @@ import {
     IOSCallback
 } from "@nstudio/nativescript-paytm";
 
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+} from 'nativescript-cfalert-dialog';
+import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: 'payment',
     moduleId: module.id,
@@ -93,6 +102,7 @@ export class PaymentComponent implements OnInit {
     };
     agree_terms_condition: boolean = false;
     customer_email: string;
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private route: ActivatedRoute,
         private ngZone: NgZone,
@@ -102,13 +112,20 @@ export class PaymentComponent implements OnInit {
         private location: Location,
         private exploreService: ExploreService,
         private modal: ModalDialogService,
-        private vcRef: ViewContainerRef
+        private vcRef: ViewContainerRef,
+        private page: Page
     ) {
         this.feedback = new Feedback();
         exploreService.homePageStatus(false);
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit() {
+        this.page.on("loaded", (args) => {
+            if (this.page.android) {
+                this.page.android.setFitsSystemWindows(true);
+            }
+        });
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
         if (getString('email') != undefined) {
@@ -130,6 +147,31 @@ export class PaymentComponent implements OnInit {
         });
     }
 
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+    };
+
+    errorNotification = function (msg) {
+        let options: DialogOptions = {
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+    };
     totalPriceChange() {
         var intial = parseFloat(this.priceList[0].cost)
         if (this.totalPrice < intial) {
@@ -164,7 +206,12 @@ export class PaymentComponent implements OnInit {
     }
 
     getPaidTotal() {
-        return (this.subscription_value * this.totalPrice).toFixed(2)
+        if (this.subscription_type == 4) {
+            return '0.00';
+        }
+        else {
+            return (this.subscription_value * this.totalPrice).toFixed(2)
+        }
     }
 
 
@@ -254,23 +301,13 @@ export class PaymentComponent implements OnInit {
                 this.offer_price = valid[0].offer_value;
                 this.coupon_code = valid[0].offer_code;
                 console.log("sdadawd")
-                this.feedback.success({
-                    title: 'Coupon code accepted',
-                    backgroundColor: new Color("green"),
-                    titleColor: new Color("black"),
-                    position: FeedbackPosition.Bottom,
-                    type: FeedbackType.Custom
-                });
+                this.successNotification("Coupon code accepted");
+
             }
             else {
+
                 console.log("qweqw")
-                this.feedback.error({
-                    title: 'Invalid Coupon code!',
-                    backgroundColor: new Color("red"),
-                    titleColor: new Color("black"),
-                    position: FeedbackPosition.Bottom,
-                    type: FeedbackType.Custom
-                });
+                this.errorNotification('Invalid Coupon code!');
 
             }
         } else {
@@ -288,23 +325,13 @@ export class PaymentComponent implements OnInit {
                 res => {
                     console.log(res)
                     this.referral_user_id = res['referral_user_id'];
-                    this.feedback.success({
-                        title: 'Referral code accepted',
-                        backgroundColor: new Color("green"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                    });
+                    this.successNotification("Referral code accepted");
+
                 },
                 error => {
                     console.log(error)
-                    this.feedback.error({
-                        title: 'Invalid Referral Code!',
-                        backgroundColor: new Color("red"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                    });
+                    this.errorNotification('Invalid Referral Code!');
+
                 }
             )
         } else {
@@ -312,9 +339,14 @@ export class PaymentComponent implements OnInit {
         }
     }
     getPaidTotalAfterOffer() {
-        var totalPrice = this.subscription_value * this.totalPrice;
-        var totalAfterOffer = totalPrice - this.offer_price;
-        return (totalAfterOffer).toFixed(2);
+        if (this.subscription_type == 4) {
+            return '0.00';
+        }
+        else {
+            var totalPrice = this.subscription_value * this.totalPrice;
+            var totalAfterOffer = totalPrice - this.offer_price;
+            return (totalAfterOffer).toFixed(2);
+        }
 
     }
 
@@ -341,26 +373,33 @@ export class PaymentComponent implements OnInit {
     toggleTermsCheck() {
         this.agree_terms_condition = !this.agree_terms_condition;
     }
+
+    proceed()
+    {
+        var subscription_data = {
+            app_master: +this.app_id,
+        }
+
+        this.CreatedAppService.freeSubscription(subscription_data).subscribe(
+            res => {
+                this.router.navigate(['/created-app/', this.app_id, 'payment-success'])
+            },
+            error => {
+                console.log(error)
+            }
+        )
+    }
+
     pay() {
         console.log(this.agree_terms_condition)
         var intial = parseFloat(this.priceList[0].cost)
         if (this.totalPrice < intial) {
-            this.feedback.error({
-                title: 'Price per day cannot be less than ' + intial,
-                backgroundColor: new Color("red"),
-                titleColor: new Color("black"),
-                position: FeedbackPosition.Bottom,
-                type: FeedbackType.Custom
-            });
+            this.errorNotification('Price per day cannot be less than ' + intial);
+
         }
         else if (!this.agree_terms_condition) {
-            this.feedback.error({
-                title: 'Please accept terms & conditions',
-                backgroundColor: new Color("red"),
-                titleColor: new Color("black"),
-                position: FeedbackPosition.Bottom,
-                type: FeedbackType.Custom
-            });
+            this.errorNotification('Please accept terms & conditions');
+
 
         }
         else {
@@ -522,24 +561,24 @@ export class PaymentComponent implements OnInit {
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.showDrawer();
-      }
-    
-      onNavItemTap(navItemRoute: string): void {
-    
-    
+    }
+
+    onNavItemTap(navItemRoute: string): void {
+
+
         this.router.navigate([navItemRoute], {
-          transition: {
-            name: "fade"
-          }
+            transition: {
+                name: "fade"
+            }
         });
-    
+
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.closeDrawer();
-      }
-    
-      onNavBtnTap() {
+    }
+
+    onNavBtnTap() {
         // This code will be called only in Android.
         this.router.back();
-      }
-    
+    }
+
 }

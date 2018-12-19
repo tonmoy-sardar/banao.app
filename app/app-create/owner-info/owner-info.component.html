@@ -68,13 +68,13 @@
                     </StackLayout>
 
                     <StackLayout class="input-filld" row="3">
-                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="next"
-                            formControlName="business_est_year" [(ngModel)]="owner_details.business_est_year"></TextView>
+                        <TextView hint="Foundation Year" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="next"
+                            formControlName="business_est_year" keyboardType="number" [(ngModel)]="owner_details.business_est_year"></TextView>
 
                     </StackLayout>
 
-                    <StackLayout class="input-filld" row="3">
-                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="done"
+                    <StackLayout class="input-filld" row="4">
+                        <TextView hint="Business Location" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="done"
                             formControlName="store_address" [(ngModel)]="owner_details.store_address" (tap)="searchLocation()"></TextView>
 
                     </StackLayout>

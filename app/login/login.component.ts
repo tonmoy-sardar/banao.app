@@ -9,7 +9,15 @@ import { RouterExtensions } from "nativescript-angular/router";
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 import { LoadingIndicator } from "nativescript-loading-indicator"
-
+import {
+  CFAlertDialog,
+  DialogOptions,
+  CFAlertGravity,
+  CFAlertActionAlignment,
+  CFAlertActionStyle,
+  CFAlertStyle,
+} from 'nativescript-cfalert-dialog';
+import { Page } from "tns-core-modules/ui/page";
 @Component({
   selector: "Login",
   moduleId: module.id,
@@ -46,22 +54,55 @@ export class LoginComponent implements OnInit {
       hideBezel: true,
     }
   }
-
+  private cfalertDialog: CFAlertDialog;
   constructor(
     private router: RouterExtensions,
     private formBuilder: FormBuilder,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private page: Page
   ) {
 
     this.feedback = new Feedback();
+    this.cfalertDialog = new CFAlertDialog();
   }
 
   ngOnInit() {
+    this.page.on("loaded", (args) => {
+      if (this.page.android) {
+        this.page.android.setFitsSystemWindows(true);
+      }
+    });
     this.form = this.formBuilder.group({
       username: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
+
+  successNotification = function (msg) {
+    let options: DialogOptions = {
+      dialogStyle: CFAlertStyle.NOTIFICATION,
+      title: '',
+      message: msg,
+      backgroundBlur: true,
+      cancellable: true,
+      messageColor: '#008000',
+    };
+    this.cfalertDialog.show(options);
+    setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+  };
+
+  errorNotification = function (msg) {
+    let options: DialogOptions = {
+      dialogStyle: CFAlertStyle.NOTIFICATION,
+      title: '',
+      message: msg,
+      backgroundBlur: true,
+      cancellable: true,
+      messageColor: '#DC1431',
+    };
+    this.cfalertDialog.show(options);
+    setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+  };
 
   isFieldValid(field: string) {
     return !this.form.get(field).valid && (this.form.get(field).dirty || this.form.get(field).touched);
@@ -90,6 +131,7 @@ export class LoginComponent implements OnInit {
           setString('user_id', res.user_id.toString())
           this.loader.hide();
           this.loginService.loginStatus(false)
+          this.successNotification("Login successfully");
           var navItemRoute = '/'
           this.router.navigate([navItemRoute], {
             transition: {
@@ -103,13 +145,14 @@ export class LoginComponent implements OnInit {
         error => {
           this.loader.hide();
           console.log(error)
-          this.feedback.error({
-            title: error.error.message,
-            backgroundColor: new Color("red"),
-            titleColor: new Color("black"),
-            position: FeedbackPosition.Bottom,
-            type: FeedbackType.Custom
-          });
+          this.errorNotification(error.error.message);
+          // this.feedback.error({
+          //   title: error.error.message,
+          //   backgroundColor: new Color("red"),
+          //   titleColor: new Color("black"),
+          //   position: FeedbackPosition.Bottom,
+          //   type: FeedbackType.Custom
+          // });
         }
       )
     }
