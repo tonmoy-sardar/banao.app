@@ -152,7 +152,7 @@ export class EditSubCategoryComponent implements OnInit {
                         this.onNavItemTap('/created-app/' + this.app_id + '/products' + '/new')
                     }
                     else {
-                        this.successNotification("Category updated successfully");
+                        this.successNotification("Sub category updated successfully");
                         
                         this.onNavItemTap('/created-app/' + this.app_id + '/products')
                     }

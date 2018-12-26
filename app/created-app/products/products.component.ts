@@ -13,6 +13,14 @@ import { Page } from 'tns-core-modules/ui/page/page';
 import { Feedback, FeedbackType, FeedbackPosition } from "nativescript-feedback";
 import { Color } from "tns-core-modules/color";
 import * as dialogs from "tns-core-modules/ui/dialogs";
+import {
+    CFAlertDialog,
+    DialogOptions,
+    CFAlertGravity,
+    CFAlertActionAlignment,
+    CFAlertActionStyle,
+    CFAlertStyle,
+} from 'nativescript-cfalert-dialog';
 
 @Component({
     selector: "products",
@@ -64,6 +72,7 @@ export class ProductsComponent implements OnInit {
     all_product_category: any = [];
     private feedback: Feedback;
     force_key: number = 0;
+    private cfalertDialog: CFAlertDialog;
     constructor(
         private routerExtensions: RouterExtensions,
         private location: Location,
@@ -73,6 +82,7 @@ export class ProductsComponent implements OnInit {
     ) {
         exploreService.homePageStatus(false);
         this.feedback = new Feedback();
+        this.cfalertDialog = new CFAlertDialog();
     }
 
     ngOnInit(): void {
@@ -350,22 +360,10 @@ export class ProductsComponent implements OnInit {
                 this.visible_key = true
                 this.loader.hide();
                 if (key == 'delete_prod') {
-                    this.feedback.success({
-                        title: 'Product has been deleted successfully',
-                        backgroundColor: new Color("green"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                    });
+                    this.successNotification("Product has been deleted successfully");
                 }
                 else if (key == 'delete_cat') {
-                    this.feedback.success({
-                        title: 'Category has been deleted successfully',
-                        backgroundColor: new Color("green"),
-                        titleColor: new Color("black"),
-                        position: FeedbackPosition.Bottom,
-                        type: FeedbackType.Custom
-                    });
+                    this.successNotification("Category has been deleted successfully");
                 }
             },
             error => {
@@ -400,84 +398,170 @@ export class ProductsComponent implements OnInit {
     }
 
     deleteProductCategory(category) {
-        let data = {
 
-        }
-        this.loader.show(this.lodaing_options);
-        this.CreatedAppService.deleteProductCategory(category.id, data).subscribe(
-            res => {
-                console.log(res)
-                this.page = 1;
-                if (category.parent_category_id != 0) {
-                    var cat_index = this.all_product_category.findIndex(x => x.id == category.parent_category_id)
-                    if (cat_index != -1) {
-                        var index = this.all_product_category[cat_index]['sub_category'].findIndex(y => y.id == category.id)
-                        if (index != -1) {
-                            this.all_product_category[cat_index]['sub_category'].splice(index, 1)
+        dialogs.confirm({
+            title: "",
+            message: "Are you sure you want to delete?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then(result => {
+            if (result) {
+                let data = {
+
+                }
+                this.loader.show(this.lodaing_options);
+                this.CreatedAppService.deleteProductCategory(category.id, data).subscribe(
+                    res => {
+                        console.log(res)
+                        this.page = 1;
+                        if (category.parent_category_id != 0) {
+                            var cat_index = this.all_product_category.findIndex(x => x.id == category.parent_category_id)
+                            if (cat_index != -1) {
+                                var index = this.all_product_category[cat_index]['sub_category'].findIndex(y => y.id == category.id)
+                                if (index != -1) {
+                                    this.all_product_category[cat_index]['sub_category'].splice(index, 1)
+                                }
+                            }
+
                         }
-                    }
+                        else {
+                            var index = this.all_product_category.findIndex(x => x.id == category.id)
+                            if (index != -1) {
+                                this.all_product_category.splice(index, 1)
+                            }
+                        }
 
-                }
-                else {
-                    var index = this.all_product_category.findIndex(x => x.id == category.id)
-                    if (index != -1) {
-                        this.all_product_category.splice(index, 1)
+                        this.category_list = [];
+                        this.getAppProductList("delete_cat");
+                    },
+                    error => {
+                        this.loader.hide();
+                        console.log(error)
+                        if(this.serviceType==1)
+                        {
+                            this.errorNotification('Please delete product/sub category first.')
+                        }
+                        else{
+                            this.errorNotification('Please delete service/sub category first.')
+                        }
+                        
                     }
-                }
-
-                this.category_list = [];
-                this.getAppProductList("delete_cat");
-            },
-            error => {
-                this.loader.hide();
-                console.log(error)
-                this.feedback.error({
-                    title: error.error.message,
-                    backgroundColor: new Color("red"),
-                    titleColor: new Color("black"),
-                    position: FeedbackPosition.Bottom,
-                    type: FeedbackType.Custom
-                });
+                )
             }
-        )
+        });
+
+
     }
 
+
+    deleteService(id)
+    {
+        dialogs.confirm({
+            title: "",
+            message: "Are you sure you want to delete?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then(result => {
+            if (result) {
+                let data = {
+
+                }
+                this.loader.show(this.lodaing_options);
+                this.CreatedAppService.deleteProduct(id, this.force_key, data).subscribe(
+                    res => {
+                        console.log(res)
+                        this.page = 1;
+                        this.category_list = [];
+                        this.getAppProductList("delete_prod");
+                    },
+                    error => {
+                        this.loader.hide();
+                        console.log(error)
+                        //this.errorNotification(error.error.message)
+                        dialogs.confirm({
+                            title: "",
+                            message: "This service has pending deliveries. Are you sure you want to delete?",
+                            okButtonText: "Yes",
+                            cancelButtonText: "No"
+                        }).then(result => {
+                            if (result) {
+                                this.force_key = 1;
+                                this.deleteProduct(id)
+                            }
+                        });
+                    }
+                )
+            }
+        });
+
+    }
     deleteProduct(id) {
-        let data = {
 
-        }
-        this.loader.show(this.lodaing_options);
-        this.CreatedAppService.deleteProduct(id, this.force_key, data).subscribe(
-            res => {
-                console.log(res)
-                this.page = 1;
-                this.category_list = [];
-                this.getAppProductList("delete_prod");
-            },
-            error => {
-                this.loader.hide();
-                console.log(error)
-                this.feedback.error({
-                    title: error.error.message,
-                    backgroundColor: new Color("red"),
-                    titleColor: new Color("black"),
-                    position: FeedbackPosition.Bottom,
-                    type: FeedbackType.Custom
-                });
-                dialogs.confirm({
-                    title: "",
-                    message: "Are you sure you want to delete?",
-                    okButtonText: "Yes",
-                    cancelButtonText: "No"
-                }).then(result => {
-                    if (result) {
-                        this.force_key = 1;
-                        this.deleteProduct(id)
+        dialogs.confirm({
+            title: "",
+            message: "Are you sure you want to delete?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        }).then(result => {
+            if (result) {
+                let data = {
+
+                }
+                this.loader.show(this.lodaing_options);
+                this.CreatedAppService.deleteProduct(id, this.force_key, data).subscribe(
+                    res => {
+                        console.log(res)
+                        this.page = 1;
+                        this.category_list = [];
+                        this.getAppProductList("delete_prod");
+                    },
+                    error => {
+                        this.loader.hide();
+                        console.log(error)
+                        //this.errorNotification(error.error.message)
+                        dialogs.confirm({
+                            title: "",
+                            message: "This product has pending deliveries. Are you sure you want to delete?",
+                            okButtonText: "Yes",
+                            cancelButtonText: "No"
+                        }).then(result => {
+                            if (result) {
+                                this.force_key = 1;
+                                this.deleteProduct(id)
+                            }
+                        });
                     }
-                });
+                )
             }
-        )
+        });
+
     }
+
+    successNotification = function (msg) {
+        let options: DialogOptions = {
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#008000',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+    };
+
+    errorNotification = function (msg) {
+        let options: DialogOptions = {
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#DC1431',
+        };
+        this.cfalertDialog.show(options);
+        setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
+    };
 
     getDiscount(price, discounted_price) {
         return Math.floor(((price - discounted_price) * 100) / price) + '%';
@@ -503,6 +587,7 @@ export class ProductsComponent implements OnInit {
 
     onNavBtnTap() {
         // This code will be called only in Android.
-        this.routerExtensions.back();
+        // this.routerExtensions.back();
+        this.onNavItemTap('/created-app/' + this.app_id + '/manage-app')
     }
 }

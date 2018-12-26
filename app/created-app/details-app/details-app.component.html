@@ -54,19 +54,31 @@
                     </StackLayout>
                     <Label textAlignment="center" text="My Customer" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="shareApp()" >
+                <StackLayout  *ngIf="app_details?.android_app_url" col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="shareApp()" >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf1e0;" ></Label>
                     </StackLayout>
                     <Label textAlignment="center" text="Market App" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout *ngIf="!app_details?.is_paid" col="2" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/payment')" >
+                <StackLayout *ngIf="app_details?.android_app_url && !app_details?.is_paid" col="2" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/payment')" >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
                     </StackLayout>
                     <Label textAlignment="center" text="Make Payment" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout *ngIf="app_details?.is_paid" col="2" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/subscription-details')" >
+                <StackLayout *ngIf="app_details?.android_app_url && app_details?.is_paid" col="2" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/subscription-details')" >
+                    <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
+                        <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Subscription" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout *ngIf="!app_details?.android_app_url && !app_details?.is_paid" col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/payment')" >
+                    <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
+                        <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Make Payment" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout *ngIf="!app_details?.android_app_url && app_details?.is_paid" col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/subscription-details')" >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
                     </StackLayout>

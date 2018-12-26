@@ -9,7 +9,7 @@ import { CreatedAppService } from "../../core/services/created-app.service";
 import { RouterExtensions } from "nativescript-angular/router";
 import { LoadingIndicator } from "nativescript-loading-indicator"
 import { ExploreService } from "../../core/services/explore.service";
-
+import * as utils from "tns-core-modules/utils/utils";
 @Component({
     selector: 'payment-success',
     moduleId: module.id,
@@ -75,6 +75,10 @@ export class PaymentSuccessComponent implements OnInit {
                 console.log(error)
             }
         )
+    }
+
+    openWebUrl() {
+        utils.openUrl('https://play.google.com/store/apps/details?id=org.nativescript.banao.partner')
     }
 
     ok() {

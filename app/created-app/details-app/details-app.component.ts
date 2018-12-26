@@ -109,7 +109,11 @@ export class DetailsAppComponent implements OnInit {
   }
 
   shareApp() {
-    SocialShare.shareText("I love NativeScript!");
+
+    if(this.app_details.android_app_url)
+    {
+      SocialShare.shareText('Please check out my business app on google play store . '+ this.app_details.android_app_url);
+    }
   }
 
 

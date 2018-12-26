@@ -133,7 +133,7 @@ export class AddSubCategoryComponent implements OnInit {
                         this.onNavItemTap('/created-app/' + this.app_id + '/products' + '/new')
                     }
                     else {
-                        this.successNotification("Category added successfully");
+                        this.successNotification("Sub category added successfully");
                         
                         this.onNavItemTap('/created-app/' + this.app_id + '/products')
                     }

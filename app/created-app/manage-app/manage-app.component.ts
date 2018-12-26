@@ -163,7 +163,8 @@ export class ManageAppComponent implements OnInit {
 
   onNavBtnTap() {
     // This code will be called only in Android.
-    this.router.back();
+    // this.router.back();
+    this.onNavItemTap('/created-app/' + this.app_id + '/details')
   }
 
 
