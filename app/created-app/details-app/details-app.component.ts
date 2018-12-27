@@ -13,6 +13,7 @@ import { MessageService } from '../../core/services/message.service';
 import { NotificationService } from "../../core/services/notification.service";
 import { ExploreService } from "../../core/services/explore.service";
 import * as Globals from '../../core/globals';
+import { getString, setString, getBoolean, setBoolean, clear } from "application-settings";
 
 @Component({
   selector: 'details-app',
@@ -58,6 +59,8 @@ export class DetailsAppComponent implements OnInit {
   unSeenOrder: number = 0;
   unSeenMessage: number = 0;
   badgeCountStatus: boolean;
+  user_id: string;
+  app_user_id: string;
   constructor(
     private route: ActivatedRoute,
     private router: RouterExtensions,
@@ -84,6 +87,7 @@ export class DetailsAppComponent implements OnInit {
   ngOnInit() {
     var full_location = this.location.path().split('/');
     this.app_id = full_location[2].trim();
+    this.user_id = getString('user_id');    
     this.getAppDetails(this.app_id);
     this.getOrderSeenActivity(this.app_id);
     this.gerMessageSeenActivity(this.app_id)
@@ -97,6 +101,7 @@ export class DetailsAppComponent implements OnInit {
         this.app_details = res;
         this.app_data.logo = this.app_details.logo;
         this.app_data.business_name = this.app_details.business_name;
+        this.app_user_id = this.app_details.user.id
         this.visible_key = true
 
         this.loader.hide();
@@ -110,9 +115,8 @@ export class DetailsAppComponent implements OnInit {
 
   shareApp() {
 
-    if(this.app_details.android_app_url)
-    {
-      SocialShare.shareText('Please check out my business app on google play store . '+ this.app_details.android_app_url);
+    if (this.app_details.android_app_url) {
+      SocialShare.shareText('Please check out my business app on google play store . ' + this.app_details.android_app_url);
     }
   }
 

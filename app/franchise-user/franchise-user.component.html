@@ -1,0 +1,55 @@
+<ActionBar class="action-bar">
+    <!-- 
+    Use the NavigationButton as a side-drawer button in Android
+    because ActionItems are shown on the right side of the ActionBar
+    -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+    Use the ActionItem for IOS with position set to left. Using the
+    NavigationButton as a side-drawer button in iOS is not possible,
+    because its function is to always navigate back in the application.
+    -->
+    <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()"
+        ios.position="left">
+    </ActionItem>
+    <Label class="action-bar-title" text="Franchise User"></Label>
+</ActionBar>
+
+<GridLayout rows="*" class="page page-content">
+    <ScrollView row="0">
+
+        <StackLayout class="full-content">
+            <Image horizontalAlignment="center" verticalAlignment="top" loadMode="async" src="~/images/addvertise.png" width="100%"></Image>
+            <Label class="tag-line-grey m-b-10 m-t-10">
+                <FormattedString>
+                    <Span text="Your Franchise User" class="bold-tag"></Span>
+                </FormattedString>
+            </Label>
+            <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+
+            <GridLayout tkExampleTitle tkToggleNavButton>
+                <RadListView [items]="FranchiseUserList">
+                    <ng-template tkListItemTemplate let-item="item" let-i="index">
+                        <GridLayout columns="*" rows="*"  verticalAlignment="center" (tap)="onNavItemTap('/dashboard/' + item.user.id + '/' + item.user.first_name)">
+                            <AbsoluteLayout width="100%" height="150">
+                                <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                    <Label class="card-app app-name" [text]="item.user.first_name" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
+                                        textWrap="true"></Label>
+                                </StackLayout>
+                                <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                    <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                        <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                            <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="base_url + item.users_pic" width="70" height="70" actualImageScaleType="fitCenter"
+                                                roundAsCircle="true" backgroundColor="#ffffff" borderRadius="50"></FrescoDrawee>
+                                        </StackLayout>
+                                    </AbsoluteLayout>
+                                </StackLayout>
+                            </AbsoluteLayout>
+                        </GridLayout>
+                    </ng-template>
+                    <ListViewGridLayout tkListViewLayout scrollDirection="Vertical" spanCount="2"></ListViewGridLayout>
+                </RadListView>
+            </GridLayout>
+        </StackLayout>
+    </ScrollView>
+</GridLayout>

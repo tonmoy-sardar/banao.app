@@ -5,12 +5,24 @@ import { getString, setString, getBoolean, setBoolean, clear } from "application
 
 @Injectable()
 export class AuthGuard implements CanLoad {
-
-    constructor(private _routerExtensions: RouterExtensions) { }
+    user_id: string;
+    logged_user_group: string;
+    constructor(private _routerExtensions: RouterExtensions) {
+        this.user_id = getString('user_id');
+        this.logged_user_group = getString('logged_user_group');
+    }
 
     canLoad(): boolean {
-        if (getBoolean('isLoggedin') || getBoolean('isSkipped')) {
-            return true;
+        if (getBoolean('isLoggedin')) {
+            if (this.logged_user_group == undefined) {
+                this._routerExtensions.navigate(["/dashboard/" + this.user_id], { clearHistory: true });
+                return true;
+            }
+            else {
+                this._routerExtensions.navigate(["/franchise-user"], { clearHistory: true });
+                return true;
+            }
+
         }
         this._routerExtensions.navigate(["/login"], { clearHistory: true });
         return false;

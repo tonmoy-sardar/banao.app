@@ -29,32 +29,32 @@
                 </AbsoluteLayout>
             </StackLayout>
 
-            <GridLayout  columns="*,*,*" rows="*,*">
-                <StackLayout col="0" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/manage-app')" >
+            <GridLayout  columns="*,*,*" rows="*,*" *ngIf="app_user_id == user_id">
+                <StackLayout col="0" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/manage-app')">
                     <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
                     </StackLayout>
                     <Label textAlignment="center" text="Manage App" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout col="1" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/order-history')" >
+                <StackLayout col="1" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/order-history')">
                     <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf1ea;" ></Label>
                     </StackLayout>
                     <Label textAlignment="center" text="Order Details" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout col="2" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/messages')" >
+                <StackLayout col="2" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/messages')"  >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf27b;" ></Label>
                     </StackLayout>
                     <Label textAlignment="center" text="Messages" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout col="0" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/customers')">
+                <StackLayout col="0" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/customers')" >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0c0;" ></Label>
                     </StackLayout>
                     <Label textAlignment="center" text="My Customer" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
-                <StackLayout  *ngIf="app_details?.android_app_url" col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="shareApp()" >
+                <StackLayout  *ngIf="app_details?.android_app_url" col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="shareApp()"  >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf1e0;" ></Label>
                     </StackLayout>
@@ -79,6 +79,26 @@
                     <Label textAlignment="center" text="Make Payment" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
                 </StackLayout>
                 <StackLayout *ngIf="!app_details?.android_app_url && app_details?.is_paid" col="1" row="1" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/subscription-details')" >
+                    <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
+                        <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Subscription" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+            </GridLayout>
+            <GridLayout  columns="*,*,*" rows="*,*" *ngIf="app_user_id != user_id">
+                <StackLayout col="0" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/manage-app')">
+                    <StackLayout class="card-menu-icon" width="45" height="45" verticalAlignment="center" horizontalAlignment="center">
+                        <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Manage App" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout *ngIf="!app_details?.android_app_url && !app_details?.is_paid" col="1" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/payment')" >
+                    <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
+                        <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
+                    </StackLayout>
+                    <Label textAlignment="center" text="Make Payment" VerticalAlignment="center" style="padding-top:10" textWrap="true"></Label>
+                </StackLayout>
+                <StackLayout *ngIf="!app_details?.android_app_url && app_details?.is_paid" col="1" row="0" verticalAlignment="center" height="120" class="card-menu" (tap)="onNavItemTap('/created-app/'+app_id+'/subscription-details')" >
                     <StackLayout class="card-menu-icon" width="45" height="45"  verticalAlignment="center" horizontalAlignment="center">
                         <Label verticalAlignment="center" horizontalAlignment="center" class="fa" text="&#xf0f7;" ></Label>
                     </StackLayout>

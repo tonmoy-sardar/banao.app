@@ -5,7 +5,8 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { DashboardComponent } from "./dashboard.component";
 
 const routes: Routes = [
-    { path: "", component: DashboardComponent },
+    { path: ":id", component: DashboardComponent },
+    { path: ":id/:user", component: DashboardComponent },
 ];
 
 @NgModule({

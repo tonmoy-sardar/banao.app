@@ -173,7 +173,7 @@ export class BusinessInfoComponent implements OnInit {
             var data = {
                 app_category: this.create_app_data.app_category,
                 business_name: this.form.value.business_name,
-                business_description: this.form.value.business_name,
+                business_description: this.form.value.business_description,
                 app_website_url: this.form.value.app_website_url,
                 is_product_service: this.is_product_service,
                 logo: this.logo

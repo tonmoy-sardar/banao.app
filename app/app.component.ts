@@ -21,7 +21,7 @@ import {
     CFAlertActionAlignment,
     CFAlertActionStyle,
     CFAlertStyle,
-  } from 'nativescript-cfalert-dialog';
+} from 'nativescript-cfalert-dialog';
 
 @Component({
     selector: "ns-app",
@@ -43,8 +43,9 @@ export class AppComponent implements OnInit {
     logged_user_profile_image: string;
     img_base_url;
     private cfalertDialog: CFAlertDialog;
+    logged_user_group: string;
     constructor(
-        private router: Router, 
+        private router: Router,
         private routerExtensions: RouterExtensions,
         private loginService: LoginService,
         private zone: NgZone,
@@ -75,14 +76,14 @@ export class AppComponent implements OnInit {
 
     ngOnInit(): void {
 
-        
 
-        this._activatedUrl = "/home";
+
+        this._activatedUrl = "/dashboard/" + this.logged_user_id;
         this._sideDrawerTransition = new SlideInOnTopTransition();
 
         this.router.events
-        .pipe(filter((event: any) => event instanceof NavigationEnd))
-        .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
+            .pipe(filter((event: any) => event instanceof NavigationEnd))
+            .subscribe((event: NavigationEnd) => this._activatedUrl = event.urlAfterRedirects);
         this.loadUserData();
         this.img_base_url = Globals.img_base_url;
 
@@ -94,12 +95,12 @@ export class AppComponent implements OnInit {
                     this.is_success = true;
 
                     this.errorNotification('No Connection!');
-                                   
+
                 }
-                else if(this.connectionType == "1" && this.is_success){
+                else if (this.connectionType == "1" && this.is_success) {
                     this.is_success = false;
                     this.successNotification('Network Connected');
-                    
+
                 }
 
             });
@@ -108,29 +109,29 @@ export class AppComponent implements OnInit {
 
     successNotification = function (msg) {
         let options: DialogOptions = {
-          dialogStyle: CFAlertStyle.NOTIFICATION,
-          title: '',
-          message: msg,
-          backgroundBlur: true,
-          cancellable: true,
-          messageColor: '#008000',
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#008000',
         };
         this.cfalertDialog.show(options);
         setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
-      };
-    
-      errorNotification = function (msg) {
+    };
+
+    errorNotification = function (msg) {
         let options: DialogOptions = {
-          dialogStyle: CFAlertStyle.NOTIFICATION,
-          title: '',
-          message: msg,
-          backgroundBlur: true,
-          cancellable: true,
-          messageColor: '#DC1431',
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#DC1431',
         };
         this.cfalertDialog.show(options);
         setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
-      };
+    };
 
     connectionToString(connectionType: number): string {
         switch (connectionType) {
@@ -152,6 +153,8 @@ export class AppComponent implements OnInit {
         this.logged_user_last_name = getString('last_name');
         this.logged_user_email = getString('email');
         this.logged_user_contact_no = getString('contact_no');
+        this.logged_user_group = getString('logged_user_group');
+        console.log(this.logged_user_group)
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {

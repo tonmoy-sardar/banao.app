@@ -14,9 +14,10 @@
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
     <Label class="action-bar-title" text="Business Images"></Label>
 </ActionBar>
-<ScrollView>
-    <GridLayout columns="*" rows="*,60" class="page page-content">
-        <StackLayout row="0" class="full-content">
+
+<GridLayout columns="*" rows="*,60" class="page page-content">
+    <ScrollView row="0" col="0">
+        <StackLayout class="full-content">
             <StackLayout class="card-form">
 
                 <StackLayout style="padding-bottom: 20px;">
@@ -46,82 +47,31 @@
                 </GridLayout>
             </StackLayout>
         </StackLayout>
+    </ScrollView>
+    <GridLayout *ngIf="key != ''" columns="*,*" rows="*" row="1" col="0" width="100%" verticalAlignment="center"
+        horizontalAlignment="center">
 
-        <GridLayout *ngIf="key != ''" columns="*,*" rows="*" row="1" col="0" width="100%" verticalAlignment="center"
-            horizontalAlignment="center">
-
-            <StackLayout *ngIf="gallery_images.length < 3" row="0" col="0" width="100%" style="background-color:#cb202d; height: 60" verticalAlignment="center"
-                horizontalAlignment="center" borderRightWidth="1" borderColor="#393939" (tap)="pickNewBusinessImages()">
-                <Label text="Upload Business Image &#xf030;" class="fa create-app-text" textAlignment="center" textWrap="true"></Label>
-            </StackLayout>
-            <StackLayout *ngIf="gallery_images.length < 3" row="0" col="1" width="100%" style="background-color:#cb202d; height: 60" verticalAlignment="center"
-                horizontalAlignment="center" (tap)="next()">
-                <Label text="Next" class="create-app-text" textAlignment="center" textWrap="true"></Label>
-            </StackLayout>
-            <StackLayout *ngIf="gallery_images.length >= 3" row="0" colSpan="2" width="100%" style="background-color:#cb202d; height: 60" verticalAlignment="center"
-                horizontalAlignment="center" (tap)="next()">
-                <Label text="Next" class="create-app-text" textAlignment="center" textWrap="true"></Label>
-            </StackLayout>
-        </GridLayout>
-        <GridLayout *ngIf="key == ''" columns="*" rows="*" row="1" col="0" width="100%" verticalAlignment="center"
-            horizontalAlignment="center">
-
-            <StackLayout *ngIf="gallery_images.length < 3" row="0" col="0" width="100%" style="background-color:#cb202d; height: 60" verticalAlignment="center"
-                horizontalAlignment="center" borderRightWidth="1" borderColor="#393939" (tap)="pickNewBusinessImages()">
-                <Label text="Upload Business Image &#xf030;" class="fa create-app-text" textAlignment="center" textWrap="true"></Label>
-            </StackLayout>
-
-        </GridLayout>
-
-        <!-- <GridLayout columns="*" rows="*" row="1" col="1" width="100%" style="background-color:#cb202d; height: 60"
+        <StackLayout *ngIf="gallery_images.length < 3" row="0" col="0" width="100%" style="background-color:#cb202d; height: 60"
+            verticalAlignment="center" horizontalAlignment="center" borderRightWidth="1" borderColor="#393939" (tap)="pickNewBusinessImages()">
+            <Label text="Upload Business Image &#xf030;" class="fa create-app-text" textAlignment="center" textWrap="true"></Label>
+        </StackLayout>
+        <StackLayout *ngIf="gallery_images.length < 3" row="0" col="1" width="100%" style="background-color:#cb202d; height: 60"
             verticalAlignment="center" horizontalAlignment="center" (tap)="next()">
-            <Label text="Next" class="create-app-text" textAlignment="center" textWrap="true" verticalAlignment="center"
-                horizontalAlignment="center" row="0" col="0"></Label>
-        </GridLayout> -->
-        <!-- <StackLayout *ngIf="gallery_images.length < 4" row="1" width="100%" style="background-color:#cb202d; height: 60"
-            verticalAlignment="center" horizontalAlignment="center" (tap)="pickNewBusinessImages()">
+            <Label text="Next" class="create-app-text" textAlignment="center" textWrap="true"></Label>
+        </StackLayout>
+        <StackLayout *ngIf="gallery_images.length >= 3" row="0" colSpan="2" width="100%" style="background-color:#cb202d; height: 60"
+            verticalAlignment="center" horizontalAlignment="center" (tap)="next()">
+            <Label text="Next" class="create-app-text" textAlignment="center" textWrap="true"></Label>
+        </StackLayout>
+    </GridLayout>
+    <GridLayout *ngIf="key == ''" columns="*" rows="*" row="1" col="0" width="100%" verticalAlignment="center"
+        horizontalAlignment="center">
+
+        <StackLayout *ngIf="gallery_images.length < 3" row="0" col="0" width="100%" style="background-color:#cb202d; height: 60"
+            verticalAlignment="center" horizontalAlignment="center" borderRightWidth="1" borderColor="#393939" (tap)="pickNewBusinessImages()">
             <Label text="Upload Business Image &#xf030;" class="fa create-app-text" textAlignment="center" textWrap="true"></Label>
         </StackLayout>
 
-        <Button *ngIf="key != ''" class="btn btn-primary simple-btn" text="Next" (tap)="next()">
-        </Button> -->
-
     </GridLayout>
-</ScrollView>
-<!-- <ScrollView row="0">
-    <StackLayout class="full-dashboard">
-        <Label color="#021733" textAlignment="center" fontSize="15" text="Edit Business Image"></Label>
-        <StackLayout width="100%" textAlignment="center" class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
 
-
-        <FlexboxLayout marginBottom="30" flexWrap="wrap" justifyContent="space-around" alignItems="flex-start">
-            <CardView *ngFor="let item of gallery_images" class="card" elevation="0" borderColor="#6c6969" shadowOffsetWidth="0" shadowOffsetHeight="0" alignSelf="flex-start" width="33%">
-                <StackLayout orientation="vertical">
-                    <StackLayout class="app-icon" (tap)="pickBusinessImages(item.id)">
-
-                        <AbsoluteLayout class="camera-icon" paddingLeft="20">
-                            <Image borderColor="#d3d3d3" borderWidth="1" [src]="item.app_images" *ngIf="item.app_images != '' || item.app_images != null"></Image>
-
-                            <Image src="~/images/no-image-logo.jpg" *ngIf="item.app_images == '' || item.app_images == null"></Image>
-
-                            <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo  upload-image" [text]="'fa-camera' | fonticon"></Label>
-                        </AbsoluteLayout>
-
-                    </StackLayout>
-                </StackLayout>
-            </CardView>
-            <CardView class="card" *ngIf="gallery_images.length < 3" elevation="0" radius="0" shadowOpacity="0" shadowOffsetWidth="0" shadowOffsetHeight="0" alignSelf="flex-start" width="33%">
-                <StackLayout orientation="vertical">
-                    <StackLayout class="app-icon" (tap)="pickNewBusinessImages()">
-                        <AbsoluteLayout class="camera-icon" paddingLeft="20">
-                            <Image borderColor="#d3d3d3" borderWidth="1" src="~/images/no-image-logo.jpg"></Image>
-                            <Label backgroundColor="#cb202d" color="#fff" fontSize="8" borderRadius="50%" VerticalAlignment="center" class="fa change_logo upload-image" VerticalAlignment="center" [text]="'fa-camera' | fonticon"></Label>
-                        </AbsoluteLayout>
-                    </StackLayout>
-                </StackLayout>
-            </CardView>
-        </FlexboxLayout>
-        <Button *ngIf="key != ''" class="btn btn-primary simple-btn" text="Next" (tap)="next()">
-        </Button>
-    </StackLayout>
-</ScrollView> -->
+</GridLayout>

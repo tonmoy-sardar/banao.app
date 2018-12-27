@@ -1,0 +1,96 @@
+<ActionBar class="action-bar">
+    <!-- 
+        Use the NavigationButton as a side-drawer button in Android
+        because ActionItems are shown on the right side of the ActionBar
+        -->
+    <NavigationButton ios:visibility="collapsed" icon="res://menu" (tap)="onDrawerButtonTap()"></NavigationButton>
+    <!-- 
+        Use the ActionItem for IOS with position set to left. Using the
+        NavigationButton as a side-drawer button in iOS is not possible,
+        because its function is to always navigate back in the application.
+        -->
+    <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
+    </ActionItem> -->
+    <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
+    <Label class="action-bar-title" text="Franchise User Details"></Label>
+</ActionBar>
+<ScrollView>
+    <GridLayout columns="*" rows="*" class="page page-content">
+        <StackLayout col="0" row="0" class="full-content">
+            <StackLayout style="padding-top:30">
+                <StackLayout class="form card-form" [formGroup]="form" novalidate *ngIf="!showOtpSection">
+                    <GridLayout rows="auto, auto, auto, auto,auto">
+
+                        <StackLayout row="0">
+                            <Label class="card-form-heading" text="Enter Franchise User Details"></Label>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="1">
+                            <TextField hint="Name" class="input input-border cyan-border  m-t-10 card-form-field"
+                                returnKeyType="next" formControlName="name" [(ngModel)]="franchise_user_details.name"
+                                [ngClass]="displayFieldCss(form,'name')"></TextField>
+                            <StackLayout *ngIf="isFieldValid(form,'name')" class="invalid-feedback">
+                                <Label fontSize="8" text="Name is required"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="2">
+                            <TextField class="input input-border cyan-border m-t-10" hint="Contact No." returnKeyType="next"
+                                formControlName="contact_no" [ngClass]="displayFieldCss(form,'contact_no')"
+                                keyboardType="number" [(ngModel)]="franchise_user_details.contact_no"></TextField>
+                            <StackLayout *ngIf="isFieldValid(form,'contact_no')" class="invalid-feedback">
+                                <Label fontSize="8" text="Please enter valid phone number"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="3">
+                            <TextField class="input input-border cyan-border m-t-10" hint="Email id" returnKeyType="next"
+                                formControlName="email" [ngClass]="displayFieldCss(form,'email')" keyboardType="email"
+                                [(ngModel)]="franchise_user_details.email"></TextField>
+                            <StackLayout *ngIf="isFieldValid(form,'email')" class="invalid-feedback">
+                                <Label fontSize="8" text="Please enter a valid email address"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="4">
+                            <TextField class="input input-border cyan-border m-t-10" hint="Password" returnKeyType="done"
+                                formControlName="password" [ngClass]="displayFieldCss(form,'password')" secure="true"
+                                [(ngModel)]="franchise_user_details.password"></TextField>
+                            <StackLayout *ngIf="isFieldValid(form,'password')" class="invalid-feedback">
+                                <Label fontSize="8" text="Please enter password"></Label>
+                            </StackLayout>
+                        </StackLayout>
+
+                    </GridLayout>
+
+                    <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="Next" (tap)="submitFranchiseInfo()"></Button>
+                </StackLayout>
+                <StackLayout class="form card-form" [formGroup]="otpForm" novalidate *ngIf="showOtpSection">
+                    <GridLayout rows="auto,auto">
+                        <StackLayout row="0">
+                            <Label class="card-form-heading" text="Confirm OTP"></Label>
+                        </StackLayout>
+
+                        <StackLayout class="input-filld" row="1">
+                            <TextField class="input input-border cyan-border m-t-10" hint="Enter OTP" returnKeyType="done"
+                                formControlName="otp" [ngClass]="displayFieldCss(otpForm,'otp')"></TextField>
+                            <StackLayout *ngIf="isFieldValid(otpForm,'otp')" class="invalid-feedback">
+                                <Label fontSize="8" text="Enter Otp"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                    </GridLayout>
+
+                    <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="CONFIRM" (tap)="submitOtp()"
+                        width="50%">
+                    </Button>
+                    <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
+                    <Label class="tag-line-grey m-b-10 m-t-10" style="padding-bottom:20" (tap)="resendOtp()">
+                        <FormattedString>
+                            <Span text="Resend OTP" class="bold-tag"></Span>
+                        </FormattedString>
+                    </Label>
+                </StackLayout>
+            </StackLayout>
+        </StackLayout>
+    </GridLayout>
+</ScrollView>

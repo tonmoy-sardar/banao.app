@@ -22,8 +22,8 @@ import {
     CFAlertActionAlignment,
     CFAlertActionStyle,
     CFAlertStyle,
-  } from 'nativescript-cfalert-dialog';
-  import { Page } from "tns-core-modules/ui/page";
+} from 'nativescript-cfalert-dialog';
+import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: "owner-info",
     moduleId: module.id,
@@ -40,7 +40,7 @@ export class OwnerInfoComponent implements OnInit {
 
     owner_details: any = {
         owner_name: '',
-        owner_designation: '',
+        owner_designation: null,
         owner_pic: '',
         business_est_year: '',
         store_address: '',
@@ -53,8 +53,7 @@ export class OwnerInfoComponent implements OnInit {
         fullscreen: false,
         viewContainerRef: this.vcRef
     };
-
-    selectedIndex: number = null;
+    
     hint = "Select Designation";
     designations: ValueList<string>;
 
@@ -84,8 +83,9 @@ export class OwnerInfoComponent implements OnInit {
     }
     private cfalertDialog: CFAlertDialog;
     owner_pic: string = '';
-    public selectedIndex_d = 1;
-    public items: Array<string>;
+    public selectedIndex = null;
+    
+    logged_user_group: string;
     constructor(
         private exploreService: ExploreService,
         private createdAppService: CreatedAppService,
@@ -103,9 +103,9 @@ export class OwnerInfoComponent implements OnInit {
     ngOnInit() {
         this.page.on("loaded", (args) => {
             if (this.page.android) {
-              this.page.android.setFitsSystemWindows(true);
+                this.page.android.setFitsSystemWindows(true);
             }
-          });
+        });
         this.user_id = getString('user_id');
         this.form = this.formBuilder.group({
             owner_name: ['', Validators.required],
@@ -119,20 +119,20 @@ export class OwnerInfoComponent implements OnInit {
         this.loader.show(this.lodaing_options);
         this.getDesignationDropdown();
         this.populateData();
-
+        this.logged_user_group = getString('logged_user_group');
     }
 
     pickImage() {
         this.modal.showModal(UploadSingleImageModalComponent, this.options).then(res => {
-            
+
             if (res != undefined) {
                 if (res.camera == true) {
-                    
+
                     var _pic = 'data:image/png;base64,' + res.image;
                     this.owner_pic = _pic
                 }
                 else if (res.gallery == true) {
-                    
+
                     var _pic = 'data:image/png;base64,' + res.image
                     this.owner_pic = _pic
                 }
@@ -151,7 +151,7 @@ export class OwnerInfoComponent implements OnInit {
 
         this.createdAppService.getDesignationDropdown().subscribe(
             (data: any[]) => {
-               
+
                 this.designations = new ValueList<string>();
                 for (let i = 0; i < data.length; i++) {
                     this.designations.push({
@@ -159,10 +159,7 @@ export class OwnerInfoComponent implements OnInit {
                         display: data[i]['designation_name'],
                     });
                 }
-                this.items = [];
-                for (var i = 0; i < 5; i++) {
-                    this.items.push("data item " + i);
-                }
+                console.log(this.designations)
                 this.loader.hide();
             },
             error => {
@@ -178,7 +175,7 @@ export class OwnerInfoComponent implements OnInit {
         }).then(
             value => {
                 var data = JSON.parse(value);
-                
+
                 if (data != null) {
                     this.create_app_data = data;
                 }
@@ -207,21 +204,29 @@ export class OwnerInfoComponent implements OnInit {
                 owner_pic: this.owner_pic,
                 user: this.user_id
             }
-           
+            
             this.loader.show(this.lodaing_options);
-            this.createdAppService.createNewApp(data).subscribe(
-                res => {
-                   
-                    var d = {};
-                    this.setCreateAppData(d)
-                    this.loader.hide()
-                    this.router.navigate(['/created-app/' + res['id'] + '/edit-business-images/' + 'new'])
-                },
-                error => {
-                    console.log(error)
-                    this.loader.hide()
-                }
-            )
+            if (this.logged_user_group != undefined) {
+                this.loader.hide()
+                this.setCreateAppData(data)
+                this.router.navigate(['/app-create/franchise-info'])
+            }
+            else {
+                this.createdAppService.createNewApp(data).subscribe(
+                    res => {
+
+                        var d = {};
+                        this.setCreateAppData(d)
+                        this.loader.hide()
+                        this.router.navigate(['/created-app/' + res['id'] + '/edit-business-images/' + 'new'])
+                    },
+                    error => {
+                        console.log(error)
+                        this.loader.hide()
+                    }
+                )
+            }
+
 
         }
         else {
@@ -234,7 +239,7 @@ export class OwnerInfoComponent implements OnInit {
             key: 'create_app_data',
             value: JSON.stringify(data)
         }).then(success => {
-            
+
         });
     };
 
@@ -245,7 +250,7 @@ export class OwnerInfoComponent implements OnInit {
             viewContainerRef: this.vcRef
         };
         this.modal.showModal(LocationModalComponent, option).then(res => {
-           
+
             if (res.name != "") {
                 this.owner_details.store_address = res.name;
                 this.owner_details.lat = res.latitude;
@@ -278,24 +283,24 @@ export class OwnerInfoComponent implements OnInit {
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.showDrawer();
-      }
-    
-      onNavItemTap(navItemRoute: string): void {
-    
+    }
+
+    onNavItemTap(navItemRoute: string): void {
+
         console.log(navItemRoute);
         this.router.navigate([navItemRoute], {
-          transition: {
-            name: "fade"
-          }
+            transition: {
+                name: "fade"
+            }
         });
-    
+
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.closeDrawer();
-      }
-    
-      onNavBtnTap() {
+    }
+
+    onNavBtnTap() {
         // This code will be called only in Android.
         this.router.back();
-      }
+    }
 
 }

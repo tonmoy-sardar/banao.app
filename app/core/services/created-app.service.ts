@@ -149,7 +149,7 @@ export class CreatedAppService {
   }
 
   freeSubscription(data): Observable<any> {
-   
+
     return this.http.post(Globals.apiEndpoint + 'free_subscription/', data)
   }
 
@@ -182,6 +182,14 @@ export class CreatedAppService {
 
   checkReferralCode(data) {
     return this.http.post(Globals.apiEndpoint + 'check_referral_code/', data)
+  }
+
+  createOriginalAppByFranchise(data): Observable<any> {
+    return this.http.post(Globals.apiEndpoint + 'newapp_create_franchise/', data)
+  }
+
+  sendAppCreateOtp(data) {
+    return this.http.post(Globals.apiEndpoint + 'otp_resend/', data)
   }
 
 

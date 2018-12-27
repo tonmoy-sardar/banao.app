@@ -23,6 +23,7 @@ import { CreatedAppService } from './services/created-app.service';
 import { MessageService } from './services/message.service';
 import { CustomerService } from './services/customer.service';
 import { NotificationService } from './services/notification.service';
+import { FranchiseUserService } from './services/franchise-user.service';
 // component
 import { ActionBarComponent } from './component/action-bar/action-bar.component';
 import { UploadSingleImageModalComponent } from './component/upload-single-image-modal/upload-single-image-modal.component';
@@ -96,7 +97,8 @@ export class CoreModule {
                 CreatedAppService,
                 MessageService,
                 CustomerService,
-                NotificationService
+                NotificationService,
+                FranchiseUserService
             ]
         };
     }

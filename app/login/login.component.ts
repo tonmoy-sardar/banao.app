@@ -129,10 +129,17 @@ export class LoginComponent implements OnInit {
           setString('email', res.email)
           setString('contact_no', res.contact_no.toString())
           setString('user_id', res.user_id.toString())
+          var navItemRoute = '';
+          if (res.group.toLowerCase() == "franchise") {
+            setString('logged_user_group', res.group.toLowerCase());
+            var navItemRoute = '/franchise-user'            
+          }
+          else{
+            var navItemRoute = '/dashboard/' + res.user_id.toString()
+          }
           this.loader.hide();
           this.loginService.loginStatus(false)
-          this.successNotification("Login successfully");
-          var navItemRoute = '/'
+          this.successNotification("Login successfully");          
           this.router.navigate([navItemRoute], {
             transition: {
               name: "fade"

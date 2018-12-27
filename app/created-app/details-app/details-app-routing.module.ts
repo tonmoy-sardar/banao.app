@@ -5,7 +5,7 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { DetailsAppComponent } from "./details-app.component";
 
 const routes: Routes = [
-    { path: "", component: DetailsAppComponent },
+    { path: "", component: DetailsAppComponent }
 ];
 
 @NgModule({

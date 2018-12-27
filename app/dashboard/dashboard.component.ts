@@ -8,6 +8,7 @@ import { getString, setString, getBoolean, setBoolean, clear } from "application
 import * as Globals from '../core/globals';
 import { NotificationService } from "../core/services/notification.service";
 const firebase = require("nativescript-plugin-firebase");
+import { Location } from '@angular/common';
 
 @Component({
     selector: "dashboard",
@@ -46,10 +47,12 @@ export class DashboardComponent implements OnInit {
     }
     device_token: string;
     badgeCountStatus: boolean;
+    user_name: string;
     constructor(
         private router: RouterExtensions,
         private exploreService: ExploreService,
-        private notificationService: NotificationService
+        private notificationService: NotificationService,
+        private location: Location,
     ) {
         firebase.getCurrentPushToken().then((token: string) => {
             // may be null if not known yet
@@ -63,12 +66,20 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.loader.show(this.lodaing_options);
-        this.user_id = getString('user_id');
+        var full_location = this.location.path().split('/');
+        console.log(full_location.length)
+        this.user_id = full_location[2].trim();
+        if (full_location.length > 3) {
+            this.user_name = full_location[3].trim();
+        }
+        // this.user_id = getString('user_id');
         this.device_token = getString('device_token');
         console.log(this.device_token);
         console.log(this.user_id);
         this.getDashboardAppList();
-        this.updateDeviceToken();
+        if (this.user_name == undefined) {
+            this.updateDeviceToken();
+        }
     }
 
     private changebadgeCountStatus(status: boolean): void {
@@ -128,18 +139,22 @@ export class DashboardComponent implements OnInit {
     onDrawerButtonTap(): void {
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.showDrawer();
-      }
-    
-      onNavItemTap(navItemRoute: string): void {
+    }
 
-        console.log(navItemRoute);
+    onNavItemTap(navItemRoute: string): void {   
+
         this.router.navigate([navItemRoute], {
-          transition: {
-            name: "fade"
-          }
+            transition: {
+                name: "fade"
+            }
         });
-    
+
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.closeDrawer();
-      }
+    }
+
+    onNavBtnTap() {
+        // This code will be called only in Android.
+        this.router.back();
+    }
 }
