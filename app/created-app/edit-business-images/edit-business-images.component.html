@@ -15,7 +15,7 @@
     <Label class="action-bar-title" text="Business Images"></Label>
 </ActionBar>
 
-<GridLayout columns="*" rows="*,60" class="page page-content">
+<GridLayout columns="*" [rows]="gallery_images.length < 3 ? '*,60' : '*'" class="page page-content">
     <ScrollView row="0" col="0">
         <StackLayout class="full-content">
             <StackLayout class="card-form">

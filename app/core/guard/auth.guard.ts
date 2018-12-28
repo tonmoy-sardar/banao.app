@@ -14,6 +14,7 @@ export class AuthGuard implements CanLoad {
 
     canLoad(): boolean {
         if (getBoolean('isLoggedin')) {
+            // console.log(this.logged_user_group)
             if (this.logged_user_group == undefined) {
                 this._routerExtensions.navigate(["/dashboard/" + this.user_id], { clearHistory: true });
                 return true;

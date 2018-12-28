@@ -130,13 +130,15 @@ export class LoginComponent implements OnInit {
           setString('contact_no', res.contact_no.toString())
           setString('user_id', res.user_id.toString())
           var navItemRoute = '';
+          // console.log(res.group.toLowerCase())
           if (res.group.toLowerCase() == "franchise") {
             setString('logged_user_group', res.group.toLowerCase());
-            var navItemRoute = '/franchise-user'            
+            navItemRoute = '/franchise-user'            
           }
           else{
-            var navItemRoute = '/dashboard/' + res.user_id.toString()
+            navItemRoute = '/dashboard/' + res.user_id.toString()
           }
+          // console.log(navItemRoute)
           this.loader.hide();
           this.loginService.loginStatus(false)
           this.successNotification("Login successfully");          
