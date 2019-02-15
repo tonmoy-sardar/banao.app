@@ -19,7 +19,9 @@
         <StackLayout class="full-content">
 
             <StackLayout class="apps-container">
-                <Image class="logo m-t-10" src="~/images/logo.png"></Image>
+                <!-- <Image class="logo m-t-10" src="~/images/logo.png"></Image> -->
+                <FrescoDrawee verticalAlignment="center" placeholderImageUri="~/images/placeholder.png" aspectRatio="1.33"
+                imageUri="~/images/logo.png" width="120" height="120" roundAsCircle="true" actualImageScaleType="fitCenter"></FrescoDrawee>
                 <StackLayout class="form" [formGroup]="form" novalidate *ngIf="!showOtpSection">
                     <GridLayout rows="auto, auto, auto, auto">
 

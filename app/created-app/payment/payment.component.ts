@@ -429,7 +429,10 @@ export class PaymentComponent implements OnInit {
                     if (this.referral_user_id != null) {
                         subscription_data['referral_code_userid'] = this.referral_user_id;
                     }
-                    // console.log(subscription_data)
+                    console.log(subscription_data);
+                    console.log("---------------------");
+                    console.log(this.paymentdetails_data);
+                    console.log("---------------------");
                     this.appSubscribe(subscription_data)
                 }
             ),
@@ -439,7 +442,9 @@ export class PaymentComponent implements OnInit {
     appSubscribe(data) {
         this.CreatedAppService.appSubscription(data).subscribe(
             res => {
+                console.log("---------------------1111");
                 this.payViaPaytm();
+                console.log("---------------------2222");
             },
             error => {
                 console.log(error)
@@ -491,18 +496,20 @@ export class PaymentComponent implements OnInit {
             CALLBACK_URL: this.paymentdetails_data['CALLBACK_URL'],
             CHECKSUMHASH: this.paymentdetails_data['CHECKSUMHASH']
         };
+        
         console.log(this.orderToPaytm)
+        
         console.log(new Date());
-        console.log("createOrder");
+        
         this.paytm.createOrder(this.orderToPaytm);
-        this.paytm.initialize("STAGING");
+        this.paytm.initialize("PRODUCTION");
         this.paytm.startPaymentTransaction({
             someUIErrorOccurred: function (inErrorMessage) {
-                console.log("1");
+                
                 console.log(inErrorMessage);
             },
             onTransactionResponse: function (inResponse) {
-                console.log("2");
+                
                 console.log(inResponse);
                 var response = JSON.parse(inResponse);
                 console.log(response);
@@ -532,11 +539,11 @@ export class PaymentComponent implements OnInit {
 
             },
             networkNotAvailable: function () {
-                console.log("3");
+                
                 console.log("Network not available");
             },
             clientAuthenticationFailed: function (inErrorMessage) {
-                console.log("4")
+                
                 console.log(inErrorMessage);
             },
             onErrorLoadingWebPage: function (
@@ -544,15 +551,15 @@ export class PaymentComponent implements OnInit {
                 inErrorMessage,
                 inFailingUrl
             ) {
-                console.log("5")
+               
                 console.log(iniErrorCode, inErrorMessage, inFailingUrl);
             },
             onBackPressedCancelTransaction: function () {
-                console.log("6")
+                
                 console.log("User cancelled transaction by pressing back button");
             },
             onTransactionCancel: function (inErrorMessage, inResponse) {
-                console.log("7")
+                
                 console.log(inErrorMessage, inResponse);
             }
         });
