@@ -12,6 +12,11 @@ const routes: Routes = [
     { path: "forgot-password", loadChildren: "./forgot-password/forgot-password.module#ForgotPasswordModule" },
     { path: 'created-app', loadChildren: './created-app/created-app.module#CreatedAppModule' },
     { path: 'app-create', loadChildren: './app-create/app-create.module#AppCreateModule' },
+    { path: "about-us", loadChildren: "./about-us/about-us.module#AboutUsModule" },
+    { path: "contact-us", loadChildren: "./contact-us/contact-us.module#ContactUsModule" },
+    { path: "terms-conditions", loadChildren: "./terms-conditions/terms-conditions.module#TermsConditionsModule" },
+    { path: "privacy-policy", loadChildren: "./privacy-policy/privacy-policy.module#PrivacyPolicyModule" },
+    { path: "refund-cancellation", loadChildren: "./refund-cancellation/refund-cancellation.module#RefundCancellationModule" },
 ];
 
 @NgModule({

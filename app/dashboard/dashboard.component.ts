@@ -66,8 +66,9 @@ export class DashboardComponent implements OnInit {
 
     ngOnInit() {
         this.loader.show(this.lodaing_options);
+        console.log(this.location.path())
         var full_location = this.location.path().split('/');
-        console.log(full_location.length)
+        console.log(full_location)
         this.user_id = full_location[2].trim();
         if (full_location.length > 3) {
             this.user_name = full_location[3].trim();

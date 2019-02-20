@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewContainerRef } from "@angular/core";
 import * as app from "application";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 import { RouterExtensions } from "nativescript-angular/router";
@@ -18,6 +18,9 @@ import {
     CFAlertStyle,
 } from 'nativescript-cfalert-dialog';
 import { Page } from "tns-core-modules/ui/page";
+import { ModalDialogService } from "nativescript-angular/directives/dialogs";
+import { UploadSingleImageModalComponent } from "../../core/component/upload-single-image-modal/upload-single-image-modal.component";
+
 @Component({
     selector: "edit-category",
     moduleId: module.id,
@@ -63,6 +66,12 @@ export class EditCategoryComponent implements OnInit {
     key: string = '';
     product_category_id: string;
     product_category_details: any;
+    category_image: string = '';
+    options = {
+        context: {},
+        fullscreen: false,
+        viewContainerRef: this.vcRef
+    };
     private cfalertDialog: CFAlertDialog;
     constructor(
         private routerExtensions: RouterExtensions,
@@ -70,7 +79,9 @@ export class EditCategoryComponent implements OnInit {
         private formBuilder: FormBuilder,
         private location: Location,
         private exploreService: ExploreService,
-        private page: Page
+        private page: Page,
+        private modal: ModalDialogService,
+        private vcRef: ViewContainerRef,
     ) {
         this.feedback = new Feedback();
         exploreService.homePageStatus(false);
@@ -104,6 +115,7 @@ export class EditCategoryComponent implements OnInit {
                 this.product_category_data.category_name = this.product_category_details.category_name;
                 this.product_category_data.description = this.product_category_details.description;
                 this.product_category_data.app_master = this.app_id;
+                this.category_image = this.product_category_details.category_image
                 this.visible_key = true
                 this.loader.hide();
             },
@@ -139,6 +151,28 @@ export class EditCategoryComponent implements OnInit {
         this.cfalertDialog.show(options);
         setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
     };
+
+    pickImage() {
+        this.modal.showModal(UploadSingleImageModalComponent, this.options).then(res => {
+
+            if (res != undefined) {
+                if (res.camera == true) {
+
+                    var _pic = 'data:image/png;base64,' + res.image;
+                    this.category_image = _pic
+                    this.product_category_data['category_image'] = this.category_image
+                }
+                else if (res.gallery == true) {
+
+                    var _pic = 'data:image/png;base64,' + res.image
+                    this.category_image = _pic
+                    this.product_category_data['category_image'] = this.category_image
+                }
+            }
+        })
+    }
+
+
     updateProductCategory() {
         if (this.form.valid) {
             this.loader.show(this.lodaing_options);

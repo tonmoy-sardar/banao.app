@@ -6,29 +6,20 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
 <RadSideDrawer [drawerTransition]="sideDrawerTransition">
     <GridLayout tkDrawerContent rows="auto, *" class="sidedrawer sidedrawer-left">
 
-        <!-- <StackLayout row="0" class="sidedrawer-header" *ngIf="isLoggedin">
-            <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
-            <Label class="sidedrawer-header-brand" text="User Name"></Label>
-            <Label class="footnote" text="username@mail.com"></Label>
-        </StackLayout>
-        <StackLayout row="0" class="sidedrawer-header" *ngIf="!isLoggedin">
-            <Label class="sidedrawer-header-image fa" text="&#xf2bd;"></Label>
-            <Label class="sidedrawer-header-brand" text="{{logged_user_first_name}} {{logged_user_last_name}}"></Label>
-            <Label class="footnote" [text]="logged_user_email"></Label>
-        </StackLayout> -->
-
         <StackLayout row="0" class="sidedrawer-header" *ngIf="isLoggedin" orientation="vertical">
-            <FrescoDrawee horizontalAlignment="center" placeholderImageUri="~/images/placeholder.png" aspectRatio="1.33" [imageUri]="img_base_url + logged_user_profile_image"
-                class="sidedrawer-header-image" roundAsCircle="true"></FrescoDrawee>
+            <FrescoDrawee horizontalAlignment="center" placeholderImageUri="~/images/placeholder.png" aspectRatio="1.33"
+                [imageUri]="img_base_url + logged_user_profile_image" class="sidedrawer-header-image" roundAsCircle="true"></FrescoDrawee>
             <Label horizontalAlignment="center" class="sidedrawer-header-brand" text="{{logged_user_first_name}} {{logged_user_last_name}}"></Label>
             <Label horizontalAlignment="center" class="footnote" [text]="logged_user_email"></Label>
         </StackLayout>
         <StackLayout row="0" class="sidedrawer-header" *ngIf="!isLoggedin" orientation="vertical">
-            <FrescoDrawee horizontalAlignment="center" placeholderImageUri="~/images/placeholder.png" aspectRatio="1.33" imageUri="~/images/logo.png"
-                class="sidedrawer-header-image" roundAsCircle="true"></FrescoDrawee>
+            <FrescoDrawee horizontalAlignment="center" placeholderImageUri="~/images/placeholder.png" aspectRatio="1.33"
+                imageUri="~/images/logo.png" class="sidedrawer-header-image" roundAsCircle="true"></FrescoDrawee>
+            <Label horizontalAlignment="center" class="sidedrawer-header-brand" text="Banao App"></Label>
+            <Label horizontalAlignment="center" class="footnote" text="Lorem Ipsum is simply dummy text of the printing and typesetting industry."></Label>
         </StackLayout>
 
-        
+
         <ScrollView row="1">
             <StackLayout class="sidedrawer-content">
                 <GridLayout *ngIf="!isLoggedin" columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/login')"
@@ -36,35 +27,46 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
                     <Label col="0" text="&#xf015;" class="fa"></Label>
                     <Label col="1" text="Sign In" class="p-r-10"></Label>
                 </GridLayout>
-                
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/dashboard/' + logged_user_id)" (tap)="onNavItemTap('/dashboard/' + logged_user_id)">
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/dashboard/' + logged_user_id)"
+                    (tap)="onNavItemTap('/dashboard/' + logged_user_id)">
                     <Label col="0" text="&#xf015;" class="fa"></Label>
                     <Label col="1" text="Dashboard" class="p-r-10"></Label>
                 </GridLayout>
 
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/franchise-user')" (tap)="onNavItemTap('/franchise-user')" *ngIf="logged_user_group != undefined">
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/franchise-user')"
+                    (tap)="onNavItemTap('/franchise-user')" *ngIf="logged_user_group != undefined">
                     <Label col="0" text="&#xf0c0;" class="fa"></Label>
                     <Label col="1" text="Franchise User" class="p-r-10"></Label>
                 </GridLayout>
-                
-                <!-- <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/home')" (tap)="onNavItemTap('/home')">
-                    <Label col="0" text="&#xf015;" class="fa"></Label>
-                    <Label col="1" text="Home" class="p-r-10"></Label>
+
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/about-us')"
+                    (tap)="onNavItemTap('/about-us')">
+                    <Label col="0" text="&#xf129;" class="fa"></Label>
+                    <Label col="1" text="About Us" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/contact-us')"
+                    (tap)="onNavItemTap('/contact-us')">
+                    <Label col="0" text="&#xf2bb;" class="fa"></Label>
+                    <Label col="1" text="Contact Us" class="p-r-10"></Label>
                 </GridLayout>
 
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/browse')" (tap)="onNavItemTap('/browse')">
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/terms-conditions')"
+                    (tap)="onNavItemTap('/terms-conditions')" *ngIf="isLoggedin">
                     <Label col="0" text="&#xf1ea;" class="fa"></Label>
-                    <Label col="1" text="Browse" class="p-r-10"></Label>
+                    <Label col="1" text="Terms & Conditions" class="p-r-10"></Label>
                 </GridLayout>
 
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/search')" (tap)="onNavItemTap('/search')">
-                    <Label col="0" text="&#xf002;" class="fa"></Label>
-                    <Label col="1" text="Search" class="p-r-10"></Label>
+                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/privacy-policy')"
+                    (tap)="onNavItemTap('/privacy-policy')" *ngIf="isLoggedin">
+                    <Label col="0" text="&#xf23e;" class="fa"></Label>
+                    <Label col="1" text="Policy" class="p-r-10"></Label>
                 </GridLayout>
 
-                <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/featured')" (tap)="onNavItemTap('/featured')">
-                    <Label col="0" text="&#xf005;" class="fa"></Label>
-                    <Label col="1" text="Featured" class="p-r-10"></Label>
+                <!-- <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/refund-cancellation')"
+                    (tap)="onNavItemTap('/refund-cancellation')">
+                    <Label col="0" text="&#xf155;" class="fa"></Label>
+                    <Label col="1" text="Refund & Cancellation" class="p-r-10"></Label>
                 </GridLayout> -->
 
                 <StackLayout class="hr-light"></StackLayout>
