@@ -38,12 +38,12 @@
                                         textWrap="true"></Label>
                                 </StackLayout>
 
-                                <StackLayout top="0" margin="5" width="100%" *ngIf="item.is_paid" verticalAlignment="center" horizontalAlignment="center">
+                                <StackLayout top="0" margin="5 0" width="100%" *ngIf="item.is_paid" verticalAlignment="center" horizontalAlignment="center" orientation="vertical">
 
                                     <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
-                                        <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                        <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center" orientation="vertical">
                                             <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="base_url + item.logo" width="70" height="70" actualImageScaleType="fitCenter"
-                                                roundAsCircle="true" backgroundColor="#ffffff" borderRadius="50"></FrescoDrawee>
+                                                roundAsCircle="true" backgroundColor="#ffffff" borderRadius="50" horizontalAlignment="center"></FrescoDrawee>
 
                                         </StackLayout>
                                         <Label left="53" *ngIf="item.total_unread_notification > 0" verticalAlignment="center" [text]="item.total_unread_notification" class="unread" textAlignment="center"></Label>
@@ -51,12 +51,12 @@
 
                                 </StackLayout>
 
-                                <StackLayout top="0" margin="5" width="100%" *ngIf="!item.is_paid" verticalAlignment="center" horizontalAlignment="center">
+                                <StackLayout top="0" margin="5 0" width="100%" *ngIf="!item.is_paid" verticalAlignment="center" horizontalAlignment="center" orientation="vertical">
 
                                     <AbsoluteLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
-                                        <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center">
+                                        <StackLayout width="100%" verticalAlignment="center" horizontalAlignment="center" orientation="vertical">
                                             <FrescoDrawee placeholderImageUri="~/images/placeholder.png" imageUri="~/images/payment-due.png" width="70" height="70" actualImageScaleType="fitCenter"
-                                                roundAsCircle="true"></FrescoDrawee>
+                                                roundAsCircle="true" horizontalAlignment="center"></FrescoDrawee>
 
                                         </StackLayout>
                                         <Label left="53" *ngIf="item.total_unread_notification > 0" verticalAlignment="center" [text]="item.total_unread_notification" class="unread" textAlignment="center"></Label>

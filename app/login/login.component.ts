@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild  } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import * as app from "application";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 
@@ -56,7 +56,7 @@ export class LoginComponent implements OnInit {
   }
   private cfalertDialog: CFAlertDialog;
   constructor(
-    private router: RouterExtensions,
+    private routerExtensions: RouterExtensions,
     private formBuilder: FormBuilder,
     private loginService: LoginService,
     private page: Page
@@ -133,23 +133,24 @@ export class LoginComponent implements OnInit {
           // console.log(res.group.toLowerCase())
           if (res.group.toLowerCase() == "franchise") {
             setString('logged_user_group', res.group.toLowerCase());
-            navItemRoute = '/franchise-user'            
+            navItemRoute = '/franchise-user'
           }
-          else{
-            navItemRoute = '/dashboard/' + res.user_id.toString()
+          else {
+            navItemRoute = '/dashboard/' + res.user_id
           }
-          // console.log(navItemRoute)
+          console.log(navItemRoute)
           this.loader.hide();
-          this.loginService.loginStatus(false)
-          this.successNotification("Login successfully");          
-          this.router.navigate([navItemRoute], {
-            transition: {
-              name: "fade"
-            }
-          });
-          const sideDrawer = <RadSideDrawer>app.getRootView();
-          sideDrawer.closeDrawer();
-  
+          this.loginService.loginStatus(true)
+          //this.successNotification("Login successfully");
+          this.onNavItemTap(navItemRoute);
+          // this.routerExtensions.navigate([navItemRoute], {
+          //   transition: {
+          //     name: "fade"
+          //   }
+          // });
+          // const sideDrawer = <RadSideDrawer>app.getRootView();
+          // sideDrawer.closeDrawer();
+
         },
         error => {
           this.loader.hide();
@@ -181,7 +182,7 @@ export class LoginComponent implements OnInit {
 
   skip() {
     setBoolean("isSkipped", true)
-    this.router.navigate(['/'])
+    this.routerExtensions.navigate(['/'])
   }
 
 
@@ -201,7 +202,7 @@ export class LoginComponent implements OnInit {
   }
 
   onNavItemTap(navItemRoute: string): void {
-    this.router.navigate([navItemRoute], {
+    this.routerExtensions.navigate([navItemRoute], {
       transition: {
         name: "fade"
       }

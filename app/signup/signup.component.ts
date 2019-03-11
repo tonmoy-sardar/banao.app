@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild  } from "@angular/core";
+import { Component, OnInit, ViewChild } from "@angular/core";
 import * as app from "application";
 import { RadSideDrawer } from "nativescript-ui-sidedrawer";
 
@@ -79,6 +79,7 @@ export class SignupComponent implements OnInit {
     this.form = this.formBuilder.group({
       name: ['', Validators.required],
       email: ['', [
+        Validators.required,
         Validators.pattern(/^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/)
       ]],
       contact_no: ['', [
@@ -161,12 +162,12 @@ export class SignupComponent implements OnInit {
       })
       this.loginService.signup(this.form.value).subscribe(
         res => {
-         
+
           this.successNotification("Your account is successfully created");
-          
-          
+
+
           this.loader.hide();
-          
+
           var navItemRoute = '/login'
           this.router.navigate([navItemRoute], {
             transition: {
@@ -185,7 +186,7 @@ export class SignupComponent implements OnInit {
     else {
 
       this.errorNotification('Please Enter Valid OTP');
-      
+
 
     }
   }

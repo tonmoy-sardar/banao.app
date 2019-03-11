@@ -62,7 +62,7 @@ export class EditOwnerInfoComponent implements OnInit {
     }
 
     selectedIndex: number = null;
-    hint = "User's designation";
+    hint = "Select Designation";
     designations: ValueList<string>;
 
     loader = new LoadingIndicator();
@@ -193,6 +193,23 @@ export class EditOwnerInfoComponent implements OnInit {
         )
     }
 
+    // searchLocation() {
+    //     var option = {
+    //         context: {},
+    //         fullscreen: true,
+    //         viewContainerRef: this.vcRef
+    //     };
+    //     this.modal.showModal(LocationModalComponent, option).then(res => {
+
+    //         if (res.name != "") {
+    //             this.owner_details.store_address = res.name;
+    //             this.owner_details.lat = res.latitude;
+    //             this.owner_details.long = res.longitude
+    //             // data.structured_formatting.main_text
+    //         }
+    //     })
+    // }
+
     searchLocation() {
         var option = {
             context: {},
@@ -200,12 +217,10 @@ export class EditOwnerInfoComponent implements OnInit {
             viewContainerRef: this.vcRef
         };
         this.modal.showModal(LocationModalComponent, option).then(res => {
-
-            if (res.name != "") {
-                this.owner_details.store_address = res.name;
-                this.owner_details.lat = res.latitude;
-                this.owner_details.long = res.longitude
-                // data.structured_formatting.main_text
+            if (res.close == undefined) {
+                this.owner_details.store_address = res.formatted_address;
+                this.owner_details.lat = res.geometry.location.lat;
+                this.owner_details.long = res.geometry.location.lng;
             }
         })
     }

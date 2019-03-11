@@ -12,7 +12,7 @@
     <!-- <ActionItem icon="res://navigation/menu" android:visibility="collapsed" (tap)="onDrawerButtonTap()" ios.position="left">
     </ActionItem> -->
     <NavigationButton text="Go Back" android.systemIcon="ic_menu_back" (tap)="onNavBtnTap()" ios.position="left"></NavigationButton>
-    <Label class="action-bar-title" text="Owner Details"></Label>
+    <Label class="action-bar-title" text="Owner's Details"></Label>
 </ActionBar>
 <ScrollView>
     <GridLayout columns="*" rows="*" class="page page-content">
@@ -20,11 +20,11 @@
             <StackLayout style="padding-top:30">
                 <AbsoluteLayout width="50%" height="150">
                     <StackLayout left="0" top="30" width="100%" verticalAlignment="center" horizontalAlignment="center">
-                        <Label class="card-app app-name" text="Owner Image" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
+                        <Label class="card-app app-name" text="Owner's Image" height="80" style="padding-top:40;padding-bottom:10" textAlignment="center"
                             textWrap="true"></Label>
                     </StackLayout>
 
-                    <StackLayout top="0" margin="5" width="100%" verticalAlignment="center" horizontalAlignment="center" (tap)="pickLogo()">
+                    <StackLayout top="0" margin="5 0" width="100%" verticalAlignment="center" horizontalAlignment="center" (tap)="pickLogo()">
                         <!-- <FrescoDrawee placeholderImageUri="~/images/placeholder.png" [imageUri]="owner_details.owner_pic" width="70" height="70" actualImageScaleType="fitCenter"
                             roundAsCircle="true"></FrescoDrawee> -->
 
@@ -63,13 +63,13 @@
                     </StackLayout>
 
                     <StackLayout class="input-filld" row="3">
-                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="next"
+                        <TextView hint="Business established year" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="next"
                             formControlName="business_est_year" [(ngModel)]="owner_details.business_est_year"></TextView>
 
                     </StackLayout>
 
                     <StackLayout class="input-filld" row="4">
-                        <TextView hint="A few lines about your business" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="done"
+                        <TextView hint="Business location" class="input input-border  m-t-10 cyan-border card-form-field" returnKeyType="done"
                             formControlName="store_address" [(ngModel)]="owner_details.store_address" (tap)="searchLocation()"></TextView>
 
                     </StackLayout>

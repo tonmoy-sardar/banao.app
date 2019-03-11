@@ -19,8 +19,8 @@ import {
     CFAlertActionAlignment,
     CFAlertActionStyle,
     CFAlertStyle,
-  } from 'nativescript-cfalert-dialog';
-  import { Page } from "tns-core-modules/ui/page";
+} from 'nativescript-cfalert-dialog';
+import { Page } from "tns-core-modules/ui/page";
 @Component({
     selector: "add-product",
     moduleId: module.id,
@@ -100,9 +100,9 @@ export class AddProductComponent implements OnInit {
     ngOnInit(): void {
         this.page.on("loaded", (args) => {
             if (this.page.android) {
-              this.page.android.setFitsSystemWindows(true);
+                this.page.android.setFitsSystemWindows(true);
             }
-          });
+        });
         this.loader.show(this.lodaing_options);
         var full_location = this.location.path().split('/');
         this.app_id = full_location[2].trim();
@@ -116,7 +116,7 @@ export class AddProductComponent implements OnInit {
             discounted_price: [''],
             packing_charges: [''],
             tags: [''],
-            description: ['']
+            description: ['', Validators.required]
         });
         this.parentCategoryList = new ValueList<string>();
         this.subCategoryList = new ValueList<string>();
@@ -125,29 +125,29 @@ export class AddProductComponent implements OnInit {
 
     successNotification = function (msg) {
         let options: DialogOptions = {
-          dialogStyle: CFAlertStyle.NOTIFICATION,
-          title: '',
-          message: msg,
-          backgroundBlur: true,
-          cancellable: true,
-          messageColor: '#008000',
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#008000',
         };
         this.cfalertDialog.show(options);
         setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
-      };
-    
-      errorNotification = function (msg) {
+    };
+
+    errorNotification = function (msg) {
         let options: DialogOptions = {
-          dialogStyle: CFAlertStyle.NOTIFICATION,
-          title: '',
-          message: msg,
-          backgroundBlur: true,
-          cancellable: true,
-          messageColor: '#DC1431',
+            dialogStyle: CFAlertStyle.NOTIFICATION,
+            title: '',
+            message: msg,
+            backgroundBlur: true,
+            cancellable: true,
+            messageColor: '#DC1431',
         };
         this.cfalertDialog.show(options);
         setTimeout(() => this.cfalertDialog.dismiss(true), 2000);
-      };
+    };
     getParentCategoryList() {
         this.CreatedAppService.getParentCategoryList(this.app_id).subscribe(
             (res: any[]) => {
@@ -253,7 +253,7 @@ export class AddProductComponent implements OnInit {
                         }
                         else {
                             this.successNotification("Product added successfully");
-                            
+
                             this.onNavItemTap('/created-app/' + this.app_id + '/products')
                         }
 

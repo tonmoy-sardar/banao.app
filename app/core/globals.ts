@@ -5,3 +5,4 @@ export const itemPerPage: number = 10;
 export const paginationMaxSize: number = 2;
 export const server_key: string = 'AIzaSyBPdXWCWf5uOL28k4hWy1njSWM22w5AAFk';
 export const firebase_url: string = 'https://fcm.googleapis.com/fcm/send';
+export const google_api_key: string = "AIzaSyAkkz_K6d5CBMaY6qOBVSCuybYnP_AkagU";

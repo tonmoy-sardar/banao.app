@@ -24,12 +24,17 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
             <StackLayout class="sidedrawer-content">
                 <GridLayout *ngIf="!isLoggedin" columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/login')"
                     (tap)="onNavItemTap('/login')">
-                    <Label col="0" text="&#xf015;" class="fa"></Label>
+                    <Label col="0" text="&#xf090;" class="fa"></Label>
                     <Label col="1" text="Sign In" class="p-r-10"></Label>
+                </GridLayout>
+                <GridLayout *ngIf="!isLoggedin" columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/signup')"
+                    (tap)="onNavItemTap('/signup')">
+                    <Label col="0" text="&#xf234;" class="fa"></Label>
+                    <Label col="1" text="Sign Up" class="p-r-10"></Label>
                 </GridLayout>
 
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/dashboard/' + logged_user_id)"
-                    (tap)="onNavItemTap('/dashboard/' + logged_user_id)">
+                    (tap)="onNavItemTap('/dashboard/' + logged_user_id)" *ngIf="isLoggedin">
                     <Label col="0" text="&#xf015;" class="fa"></Label>
                     <Label col="1" text="Dashboard" class="p-r-10"></Label>
                 </GridLayout>

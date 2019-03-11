@@ -155,6 +155,7 @@ export class AppComponent implements OnInit {
         this.logged_user_contact_no = getString('contact_no');
         this.logged_user_group = getString('logged_user_group');
         console.log(this.logged_user_group)
+        console.log("logged_user_id:" + this.logged_user_id)
     }
 
     get sideDrawerTransition(): DrawerTransitionBase {

@@ -2,17 +2,22 @@ import { Component, OnInit } from "@angular/core";
 import { ModalDialogParams } from "nativescript-angular/directives/dialogs";
 import { Observable } from 'tns-core-modules/data/observable';
 import { GooglePlacesAutocomplete } from 'nativescript-google-places-autocomplete';
-let API_KEY = "AIzaSyB3FKbaqonmY-bDPanbzJSH9U7HXF8dpS4";
-let googlePlacesAutocomplete = new GooglePlacesAutocomplete(API_KEY);
+
 import { Subject } from "rxjs";
 import { debounceTime, distinctUntilChanged } from 'rxjs/operators';
 import { TextField } from "tns-core-modules/ui/text-field";
 import { EventData } from "tns-core-modules/data/observable";
 import * as geoLocation from "nativescript-geolocation";
+import * as Globals from '../../globals';
+let API_KEY = Globals.google_api_key
+let googlePlacesAutocomplete = new GooglePlacesAutocomplete(API_KEY);
+import { ExploreService } from "../../services/explore.service";
+
 @Component({
     selector: "location-modal",
     moduleId: module.id,
     templateUrl: "location-modal.component.html",
+    styleUrls: ["location-modal.component.css"]
 })
 
 export class LocationModalComponent extends Observable {
@@ -21,7 +26,8 @@ export class LocationModalComponent extends Observable {
     items;
     currentGeoLocation: any;
     constructor(
-        private params: ModalDialogParams
+        private params: ModalDialogParams,
+        private exploreService: ExploreService,
     ) {
         super();
         this.searchInput.pipe(
@@ -33,13 +39,14 @@ export class LocationModalComponent extends Observable {
                     .then((places: any) => {
                         this.items = [];
                         this.items = places;
+                        // console.log(this.items)
                     }, (error => {
-                        console.log(error)
+                        // console.log(error)
                     }));
             }
             ,
             error => {
-                console.log(error);
+                // console.log(error);
             }
         );
     }
@@ -57,8 +64,15 @@ export class LocationModalComponent extends Observable {
     showLocation(): void {
         geoLocation.watchLocation(location => {
             this.currentGeoLocation = location;
-            this.params.closeCallback(location);
-            // alert(this.currentGeoLocation)
+            this.exploreService.getAdressFromLatLong(location['latitude'], location['longitude']).subscribe(
+                res => {
+                    this.params.closeCallback(res['results'][0]);
+                },
+                error => {
+                    console.log(error)
+                }
+            )
+            
         }, error => {
             alert(error);
         }, {
@@ -70,11 +84,16 @@ export class LocationModalComponent extends Observable {
 
     getPlace(place) {
         googlePlacesAutocomplete.getPlaceById(place.placeId).then((place) => {
-            // dialogs.alert("Frmatted address :" + place.formattedAddress + "\n latitude: " + place.latitude + "\n longitude: " + place.longitude)
-            //     .then(function () { });
-            this.params.closeCallback(place);
+            this.exploreService.getAdressFromLatLong(place['latitude'], place['longitude']).subscribe(
+                res => {
+                    this.params.closeCallback(res['results'][0]);
+                },
+                error => {
+                    console.log(error)
+                }
+            )            
         }, error => {
-            console.log(error)
+            // console.log(error)
         })
     }
 

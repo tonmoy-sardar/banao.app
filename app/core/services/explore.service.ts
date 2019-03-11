@@ -33,4 +33,9 @@ export class ExploreService {
     return this.http.get(Globals.apiEndpoint + 'app_and_user_details/' + id + '/')
   }
 
+  getAdressFromLatLong(lat, lng): Observable<any> {
+    let url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + lat + "," + lng + "&key=" + Globals.google_api_key;
+    return this.http.get(url);
+  }
+
 }

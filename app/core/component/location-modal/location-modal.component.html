@@ -3,34 +3,29 @@
 
         <AbsoluteLayout title="" class="action-bar" backgroundColor="#cb202d">
             <StackLayout>
-
-
-
                 <GridLayout rows="*" columns="30,*,40,40" verticalAlignment="center">
-
-
                     <Image src="~/images/back.png" class="back-prev" row="0" col="0" verticalAlignment="center" (tap)="close()"></Image>
-
-                    <Label text="Back" class="action-label" fontSize="12" row="0" col="1" verticalAlignment="center" (tap)="close()"></Label>
-
-
-
+                    <Label text="Back" class="action-label" fontSize="12" row="0" col="1" verticalAlignment="center"
+                        (tap)="close()"></Label>
                 </GridLayout>
             </StackLayout>
         </AbsoluteLayout>
-         <Button class="current-location" text="Use Current location" (tap)="enableLocationServices()" *ngIf="!currentGeoLocation" height="50"></Button>
-        <SearchBar hint="Search by Location" text="" (textChange)="searchFieldChanged($event)" color="#000" textFieldBackgroundColor="white" textFieldHintColor="white" borderColor="#ababab" borderRadius="5" borderWidth="1"></SearchBar>
-
+        <Button class="current-location" text="Use Current location" (tap)="enableLocationServices()" *ngIf="!currentGeoLocation"
+            height="50"></Button>
+        <SearchBar hint="Search by Location" text="" (textChange)="searchFieldChanged($event)" color="#000"
+            textFieldBackgroundColor="white" textFieldHintColor="white" borderColor="#ababab" borderRadius="5"
+            borderWidth="1"></SearchBar>
         <ListView class="list-group" [items]="items" (itemTap)="listViewItemTap($event)">
             <ng-template let-app="item">
                 <GridLayout columns="auto,auto" rows="*,*" class="list-group-item" verticalAlignment="center">
-                    <Label id="arrow-icon"  text="&#xf011;" text="&#xf041;" class="fa icon-location" row="0" col="0" verticalAlignment="center"></Label>
-                    <Label [text]="app.data.structured_formatting.main_text" class="list-group-item-heading" row="0" col="1" verticalAlignment="center"></Label>
-                    <Label [text]="app.description" class="list-group-item-heading area-detail" row="1" col="1" verticalAlignment="center"></Label>
+                    <Label id="arrow-icon" text="&#xf011;" text="&#xf041;" class="fa icon-location" row="0" col="0"
+                        verticalAlignment="center"></Label>
+                    <Label [text]="app.data.structured_formatting.main_text" class="list-group-item-heading" row="0"
+                        col="1" verticalAlignment="center"></Label>
+                    <Label [text]="app.description" class="list-group-item-heading area-detail" row="1" col="1"
+                        verticalAlignment="center"></Label>
                 </GridLayout>
             </ng-template>
         </ListView>
-
     </StackLayout>
-
 </FlexboxLayout>
