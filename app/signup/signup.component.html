@@ -21,43 +21,67 @@
             <StackLayout class="apps-container">
                 <!-- <Image class="logo m-t-10" src="~/images/logo.png"></Image> -->
                 <FrescoDrawee verticalAlignment="center" placeholderImageUri="~/images/placeholder.png" aspectRatio="1.33"
-                imageUri="~/images/logo.png" width="120" height="120" roundAsCircle="true" actualImageScaleType="fitCenter"></FrescoDrawee>
+                    imageUri="~/images/logo.png" width="120" height="120" roundAsCircle="true" actualImageScaleType="fitCenter"></FrescoDrawee>
                 <StackLayout class="form" [formGroup]="form" novalidate *ngIf="!showOtpSection">
-                    <GridLayout rows="auto, auto, auto, auto">
+                    <GridLayout rows="auto, auto, auto, auto,auto">
 
 
                         <StackLayout class="input-filld" row="0">
-                            <TextField class="input input-border cyan-border m-t-10"  hint="Name"
-                                returnKeyType="next" formControlName="name" [ngClass]="displayFieldCss(form,'name')" padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
+                            <TextField class="input input-border cyan-border m-t-10" hint="Name" returnKeyType="next"
+                                formControlName="name" [ngClass]="displayFieldCss(form,'name')" padding="10"
+                                borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
                             <StackLayout *ngIf="isFieldValid(form,'name')" class="invalid-feedback">
-                                <Label  text="Please enter your name"></Label>
+                                <Label text="Please enter your name"></Label>
                             </StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-filld" row="1">
-                            <TextField class="input input-border cyan-border m-t-10"  hint="Contact No."
-                                returnKeyType="next" formControlName="contact_no" [ngClass]="displayFieldCss(form,'contact_no')"
-                                 keyboardType="number" padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
+                            <TextField class="input input-border cyan-border m-t-10" hint="Mobile Number" returnKeyType="next"
+                                formControlName="contact_no" [ngClass]="displayFieldCss(form,'contact_no')"
+                                keyboardType="number" padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341"
+                                style="placeholder-color:#FF2341;"></TextField>
                             <StackLayout *ngIf="isFieldValid(form,'contact_no')" class="invalid-feedback">
-                                <Label  text="Please enter valid phone number"></Label>
+                                <Label text="Please enter valid mobile number"></Label>
                             </StackLayout>
                         </StackLayout>
 
 
                         <StackLayout class="input-filld" row="2">
-                            <TextField class="input input-border cyan-border m-t-10"  hint="Email id"
-                                returnKeyType="next" formControlName="email" [ngClass]="displayFieldCss(form,'email')"  keyboardType="email" padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
+                            <TextField class="input input-border cyan-border m-t-10" hint="Email id" returnKeyType="next"
+                                formControlName="email" [ngClass]="displayFieldCss(form,'email')" keyboardType="email"
+                                padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
                             <StackLayout *ngIf="isFieldValid(form,'email')" class="invalid-feedback">
-                                <Label  text="Please enter a valid email address"></Label>
+                                <Label text="Please enter a valid email address"></Label>
                             </StackLayout>
                         </StackLayout>
 
                         <StackLayout class="input-filld" row="3">
-                            <TextField class="input input-border cyan-border m-t-10" hint="Password"
-                                returnKeyType="done" formControlName="password" [ngClass]="displayFieldCss(form,'password')"
-                                padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;" secure="true"></TextField>
+                            <TextField class="input input-border cyan-border m-t-10" hint="Password" returnKeyType="done"
+                                formControlName="password" [ngClass]="displayFieldCss(form,'password')" padding="10"
+                                borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"
+                                secure="true"></TextField>
                             <StackLayout *ngIf="isFieldValid(form,'password')" class="invalid-feedback">
-                                <Label  text="Please enter password"></Label>
+                                <Label text="Please enter password"></Label>
+                            </StackLayout>
+                        </StackLayout>
+                        <StackLayout class="input-filld" row="4">
+                            <StackLayout orientation="horizontal" verticalAlignment="top" [ngClass]="displayFieldCss(form,'terms')"
+                                class="input">
+                                <CheckBox #CB1 text="" checked="false" verticalAlignment="top" formControlName="terms"></CheckBox>
+                                <GridLayout rows="auto, auto" columns="auto" marginTop="3">
+                                    <StackLayout orientation="horizontal" verticalAlignment="top" row="0" col="0">
+                                        <Label text="I agree to the " textWrap="true"></Label>
+                                        <Label text="Terms & Conditions" textDecoration="underline" textWrap="true"
+                                            (tap)="goToUrl('https://www.banaoapp.com/#/customer/terms-conditions')"></Label>
+                                    </StackLayout>
+                                    <StackLayout orientation="horizontal" verticalAlignment="top" row="1" col="0">
+                                        <Label text="and " textWrap="true"></Label>
+                                        <Label text="privacy policy" textDecoration="underline" textWrap="true" (tap)="goToUrl('https://www.banaoapp.com/#/customer/privacy-policy')"></Label>
+                                    </StackLayout>
+                                </GridLayout>
+                            </StackLayout>
+                            <StackLayout *ngIf="isFieldValid(form,'terms')" class="invalid-feedback">
+                                <Label text="Please agree to the Terms & Conditions and privacy policy" textWrap="true"></Label>
                             </StackLayout>
                         </StackLayout>
                     </GridLayout>
@@ -65,7 +89,7 @@
                     <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="SIGN UP" (tap)="signUp()">
                     </Button>
                     <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
-                    <Label class="tag-line-grey m-b-10 m-t-10" style="padding-bottom:20" (tap)="onNavItemTap('/login')">
+                    <Label class="tag-line-grey" (tap)="onNavItemTap('/login')">
                         <FormattedString>
                             <Span text="Back to login" class="bold-tag"></Span>
                         </FormattedString>
@@ -74,23 +98,25 @@
                 <StackLayout class="form" [formGroup]="otpForm" novalidate *ngIf="showOtpSection">
                     <GridLayout rows="auto">
                         <StackLayout class="input-filld" row="0">
-                            <TextField class="input input-border cyan-border m-t-10" hint="Enter OTP"
-                                returnKeyType="done" formControlName="otp" [ngClass]="displayFieldCss(otpForm,'otp')" padding="10" borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
+                            <TextField class="input input-border cyan-border m-t-10" hint="Enter OTP" returnKeyType="done"
+                                formControlName="otp" [ngClass]="displayFieldCss(otpForm,'otp')" padding="10"
+                                borderRadius="18" backgroundColor="#FFFFFF" color="#FF2341" style="placeholder-color:#FF2341;"></TextField>
                             <StackLayout *ngIf="isFieldValid(otpForm,'otp')" class="invalid-feedback">
                                 <Label fontSize="8" text="Enter Otp"></Label>
                             </StackLayout>
                         </StackLayout>
                     </GridLayout>
 
-                    <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="CONFIRM" (tap)="submitOtp()" width="50%">
+                    <Button class="btn btn-primary" padding="10 0" borderRadius="18" text="CONFIRM" (tap)="submitOtp()"
+                        width="50%">
                     </Button>
                     <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
-                    <Label class="tag-line-grey m-b-10 m-t-10" style="padding-bottom:20" (tap)="resendOtp()">
+                    <Label class="tag-line-grey" (tap)="resendOtp()">
                         <FormattedString>
-                            <Span text="Resend OTP" class="bold-tag"></Span>
+                            <Span text="Resend OTP" class="bold-tag" textDecoration="underline"></Span>
                         </FormattedString>
                     </Label>
-                    <Label class="tag-line-grey m-b-10 m-t-10" style="padding-bottom:20" (tap)="onNavItemTap('/login')">
+                    <Label class="tag-line-grey m-t-10" (tap)="onNavItemTap('/login')">
                         <FormattedString>
                             <Span text="Back to login" class="bold-tag"></Span>
                         </FormattedString>

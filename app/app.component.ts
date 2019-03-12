@@ -22,6 +22,7 @@ import {
     CFAlertActionStyle,
     CFAlertStyle,
 } from 'nativescript-cfalert-dialog';
+import * as utils from "tns-core-modules/utils/utils";
 
 @Component({
     selector: "ns-app",
@@ -190,5 +191,9 @@ export class AppComponent implements OnInit {
         });
         const sideDrawer = <RadSideDrawer>app.getRootView();
         sideDrawer.closeDrawer();
+    }
+
+    goToUrl(url) {
+        utils.openUrl(url)
     }
 }

@@ -76,9 +76,9 @@
                                                         [text]="item.product_details.product_name" textWrap="true"></Label>
                                                     <StackLayout orientation="horizontal" row="2" col="1"
                                                         verticalAlignment="center">
-                                                        <Label [text]="'&#xf156;' + (item.quantity * item.product_details.discounted_price)"
+                                                        <Label [text]="'&#xf156;' + item.product_details.discounted_price"
                                                             class="fa discounted_price" textWrap="true" *ngIf="item.product_details.discounted_price > 0"></Label>
-                                                        <Label [text]="'&#xf156;' + (item.quantity * item.product_details.price)"
+                                                        <Label [text]="'&#xf156;' + item.product_details.price"
                                                             class="fa original_price" textWrap="true" [ngClass]="[item.product_details.discounted_price > 0 ? 'isDiscount' : '']"></Label>
                                                     </StackLayout>
                                                     <Label class="quantity" [text]="'QTY: ' + item.quantity" row="2"

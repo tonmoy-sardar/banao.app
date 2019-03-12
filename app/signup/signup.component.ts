@@ -20,7 +20,7 @@ import {
   CFAlertStyle,
 } from 'nativescript-cfalert-dialog';
 import { Page } from "tns-core-modules/ui/page";
-
+import * as utils from "tns-core-modules/utils/utils";
 @Component({
   selector: "signup",
   moduleId: module.id,
@@ -88,7 +88,11 @@ export class SignupComponent implements OnInit {
         Validators.maxLength(10)
       ]],
       password: ['', Validators.required],
-      otp_flag: [0]
+      otp_flag: [0],
+      terms: [false, [
+        Validators.required,
+        Validators.pattern('true')
+      ]],
     });
 
     this.otpForm = this.formBuilder.group({
@@ -231,6 +235,10 @@ export class SignupComponent implements OnInit {
 
     const sideDrawer = <RadSideDrawer>app.getRootView();
     sideDrawer.closeDrawer();
+  }
+
+  goToUrl(url) {
+    utils.openUrl(url)
   }
 
 }

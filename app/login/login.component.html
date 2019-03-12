@@ -45,13 +45,13 @@
                     <Button class="btn btn-primary" text="SIGN IN"  padding="10 0" borderRadius="18" (tap)="signIn()">
                     </Button>
                     <StackLayout class="hr-light pading-gap m-b-10 m-t-10"></StackLayout>
-                    <Label  class="tag-line-grey m-b-10 m-t-10" (tap)="onNavItemTap('/forgot-password')">
+                    <Label  class="tag-line-grey" (tap)="onNavItemTap('/forgot-password')">
                         <FormattedString>
                                 <Span text="Forgot your password?" class="bold-tag"></Span>
                             </FormattedString>
                     </Label>
 
-                    <Label class="tag-line-grey m-b-10 m-t-10" style="padding-bottom:20" (tap)="onNavItemTap('/signup')">
+                    <Label class="tag-line-grey m-t-10" (tap)="onNavItemTap('/signup')">
                         <FormattedString>
                             <Span text="Not a member?" class="bold-tag"></Span>
                             <Span text=" Register here." class="bold-tag"></Span>

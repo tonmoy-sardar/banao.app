@@ -57,13 +57,13 @@ http://docs.telerik.com/devtools/nativescript-ui/Controls/NativeScript/SideDrawe
                 </GridLayout>
 
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/terms-conditions')"
-                    (tap)="onNavItemTap('/terms-conditions')" *ngIf="isLoggedin">
+                    (tap)="goToUrl('https://www.banaoapp.com/#/customer/terms-conditions')" *ngIf="isLoggedin">
                     <Label col="0" text="&#xf1ea;" class="fa"></Label>
                     <Label col="1" text="Terms & Conditions" class="p-r-10"></Label>
                 </GridLayout>
 
                 <GridLayout columns="auto, *" class="sidedrawer-list-item" [class.selected]="isComponentSelected('/privacy-policy')"
-                    (tap)="onNavItemTap('/privacy-policy')" *ngIf="isLoggedin">
+                    (tap)="goToUrl('https://www.banaoapp.com/#/customer/privacy-policy')" *ngIf="isLoggedin">
                     <Label col="0" text="&#xf23e;" class="fa"></Label>
                     <Label col="1" text="Policy" class="p-r-10"></Label>
                 </GridLayout>
